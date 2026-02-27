@@ -34,3 +34,10 @@ El objetivo del Producto Mínimo Viable es disponer de una aplicación funcional
 
 ## Estado del proyecto
 El desarrollo se organiza en un timeline de tres meses, con abril y junio como meses de trabajo completo y mayo como mes de avance a media marcha. El proyecto evoluciona de forma progresiva desde la creación de la estructura base hasta la integración final y la preparación de la presentación.
+
+
+flowchart TD
+    A[Frontend<br>React + Vite] -->|HTTP Requests| B[Backend<br>Spring Boot]
+    B -->|Consultas SQL| C[(MySQL)]
+    B -->|Llamadas externas| D[APIs externas<br>Discogs / MusicBrainz / Vision / ACRCloud]
+    A <-->|JSON Responses| B
