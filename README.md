@@ -31,6 +31,3 @@ El objetivo del Producto Mínimo Viable es disponer de una aplicación funcional
 - Buscar discos manualmente.  
 - Consultar información detallada de cada disco.  
 - Guardar discos en una colección personal.  
-
-## Estado del proyecto
-El desarrollo se organiza en un timeline de tres meses, con abril y junio como meses de trabajo completo y mayo como mes de avance a media marcha. El proyecto evoluciona de forma progresiva desde la creación de la estructura base hasta la integración final y la preparación de la presentación.
