@@ -5,9 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class VinilosApplication {
-
-	public static void main(String[] args) {
-		SpringApplication.run(VinilosApplication.class, args);
-	}
-
+    public static void main(String[] args) {
+        SpringApplication.run(VinilosApplication.class, args);
+    }
 }

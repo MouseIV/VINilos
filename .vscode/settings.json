@@ -4,5 +4,7 @@
     "java.project.referencedLibraries": [
         "lib/**/*.jar",
         "target/**/*.jar"
-    ]
+    ],
+    "java.configuration.updateBuildConfiguration": "interactive",
+    "java.compile.nullAnalysis.mode": "automatic"
 }

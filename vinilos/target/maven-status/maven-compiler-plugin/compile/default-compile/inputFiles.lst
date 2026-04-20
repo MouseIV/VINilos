@@ -1,2 +1,14 @@
-C:\Users\Alumno.DESKTOP-DI5KTUG\Documents\GitHub\VINilos\vinilos\src\main\java\com\vinilos\vinilos\controller\HelloController.java
+C:\Users\Alumno.DESKTOP-DI5KTUG\Documents\GitHub\VINilos\vinilos\src\main\java\com\vinilos\vinilos\config\JwtUtil.java
+C:\Users\Alumno.DESKTOP-DI5KTUG\Documents\GitHub\VINilos\vinilos\src\main\java\com\vinilos\vinilos\config\SecurityConfig.java
+C:\Users\Alumno.DESKTOP-DI5KTUG\Documents\GitHub\VINilos\vinilos\src\main\java\com\vinilos\vinilos\controller\AuthController.java
+C:\Users\Alumno.DESKTOP-DI5KTUG\Documents\GitHub\VINilos\vinilos\src\main\java\com\vinilos\vinilos\controller\DiscoController.java
+C:\Users\Alumno.DESKTOP-DI5KTUG\Documents\GitHub\VINilos\vinilos\src\main\java\com\vinilos\vinilos\controller\HolaController.java
+C:\Users\Alumno.DESKTOP-DI5KTUG\Documents\GitHub\VINilos\vinilos\src\main\java\com\vinilos\vinilos\dto\LoginRequest.java
+C:\Users\Alumno.DESKTOP-DI5KTUG\Documents\GitHub\VINilos\vinilos\src\main\java\com\vinilos\vinilos\dto\LoginResponse.java
+C:\Users\Alumno.DESKTOP-DI5KTUG\Documents\GitHub\VINilos\vinilos\src\main\java\com\vinilos\vinilos\dto\RegistroRequest.java
+C:\Users\Alumno.DESKTOP-DI5KTUG\Documents\GitHub\VINilos\vinilos\src\main\java\com\vinilos\vinilos\model\Disco.java
+C:\Users\Alumno.DESKTOP-DI5KTUG\Documents\GitHub\VINilos\vinilos\src\main\java\com\vinilos\vinilos\model\Usuario.java
+C:\Users\Alumno.DESKTOP-DI5KTUG\Documents\GitHub\VINilos\vinilos\src\main\java\com\vinilos\vinilos\repository\UsuarioRepository.java
+C:\Users\Alumno.DESKTOP-DI5KTUG\Documents\GitHub\VINilos\vinilos\src\main\java\com\vinilos\vinilos\service\DiscoService.java
+C:\Users\Alumno.DESKTOP-DI5KTUG\Documents\GitHub\VINilos\vinilos\src\main\java\com\vinilos\vinilos\service\UsuarioService.java
 C:\Users\Alumno.DESKTOP-DI5KTUG\Documents\GitHub\VINilos\vinilos\src\main\java\com\vinilos\vinilos\VinilosApplication.java
