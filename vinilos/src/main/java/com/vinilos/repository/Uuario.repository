@@ -1,0 +1,11 @@
+package com.vinilos.repository;
+
+import com.vinilos.entity.Usuario; // importa tu entidad
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository // opcional, Spring lo detecta automáticamente
+public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
+    // Aquí puedes agregar métodos personalizados si quieres, por ejemplo:
+    // List<Usuario> findByNombre(String nombre);
+}
