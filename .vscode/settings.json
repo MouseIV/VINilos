@@ -1,8 +1,12 @@
 {
+// <<<<<<< Updated upstream
     "java.project.sourcePaths": ["src/main/java"],
     "java.project.outputPath": "target/classes",
     "java.project.referencedLibraries": [
         "lib/**/*.jar",
         "target/**/*.jar"
-    ]
+    ],
+
+  "java.compile.nullAnalysis.mode": "disabled"
 }
+// >>>>>>> Stashed changes
