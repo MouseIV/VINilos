@@ -1,5 +1,7 @@
 package com.vinilos.vinilos.service;
 
+import java.util.List;
+
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -16,12 +18,12 @@ public class UsuarioService {
     
     private final UsuarioRepository usuarioRepository;
     private final PasswordEncoder passwordEncoder;
-    private final JwtUtil jwtUtil;  // ← Asegúrate que esto existe
+    private final JwtUtil jwtUtil;
     
     public UsuarioService(UsuarioRepository usuarioRepository, JwtUtil jwtUtil) {
         this.usuarioRepository = usuarioRepository;
         this.passwordEncoder = new BCryptPasswordEncoder();
-        this.jwtUtil = jwtUtil;  // ← Inyecta la instancia
+        this.jwtUtil = jwtUtil;
     }
     
     public Usuario registrar(RegistroRequest request) {
@@ -58,5 +60,9 @@ public class UsuarioService {
             usuario.getNombre(),
             token
         );
+    }
+
+    public List<Usuario> listarTodos() {
+        return usuarioRepository.findAll();
     }
 }
