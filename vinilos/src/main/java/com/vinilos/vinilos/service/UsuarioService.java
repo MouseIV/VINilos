@@ -62,7 +62,6 @@ public class UsuarioService {
         );
     }
 
-    // ← MÉTODO NUEVO PARA LISTAR USUARIOS
     public List<Usuario> listarTodos() {
         return usuarioRepository.findAll();
     }

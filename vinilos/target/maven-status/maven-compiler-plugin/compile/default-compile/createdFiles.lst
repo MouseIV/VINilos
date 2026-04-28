@@ -1,0 +1,14 @@
+com\vinilos\vinilos\dto\LoginRequest.class
+com\vinilos\vinilos\dto\RegistroRequest.class
+com\vinilos\vinilos\model\Usuario.class
+com\vinilos\vinilos\repository\UsuarioRepository.class
+com\vinilos\vinilos\controller\HolaController.class
+com\vinilos\vinilos\config\JwtUtil.class
+com\vinilos\vinilos\service\DiscoService.class
+com\vinilos\vinilos\VinilosApplication.class
+com\vinilos\vinilos\dto\LoginResponse.class
+com\vinilos\vinilos\service\UsuarioService.class
+com\vinilos\vinilos\controller\DiscoController.class
+com\vinilos\vinilos\model\Disco.class
+com\vinilos\vinilos\controller\AuthController.class
+com\vinilos\vinilos\config\SecurityConfig.class
