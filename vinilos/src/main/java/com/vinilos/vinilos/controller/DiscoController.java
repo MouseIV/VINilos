@@ -50,4 +50,13 @@ public class DiscoController {
     public List<Disco> buscarEnDiscogs(@RequestParam String q) {
         return discogsService.buscarDiscos(q);
     }
+
+    @GetMapping("/detalle/{discogsId}")
+    public ResponseEntity<Disco> obtenerDetalleDiscogs(@PathVariable String discogsId) {
+        Disco disco = discogsService.obtenerDetalleDisco(discogsId);
+        if (disco == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(disco);
+    }
 }

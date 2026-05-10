@@ -26,4 +26,13 @@ public class DiscogsClient {
             .bodyToMono(String.class)
             .block();
     }
+
+    public String obtenerDetalleDisco(String discogsId) {
+    String url = "https://api.discogs.com/releases/" + discogsId;
+    return webClient.get()
+            .uri(url)
+            .retrieve()
+            .bodyToMono(String.class)
+            .block();
+    }
 }

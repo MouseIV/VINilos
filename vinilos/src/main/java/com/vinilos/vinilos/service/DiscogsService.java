@@ -80,4 +80,42 @@ public class DiscogsService {
         }
         return "Sin género";
     }
+
+        public Disco obtenerDetalleDisco(String discogsId) {
+        try {
+            String respuesta = discogsClient.obtenerDetalleDisco(discogsId);
+            JsonNode root = objectMapper.readTree(respuesta);
+            
+            Disco disco = new Disco();
+            disco.setTitulo(root.has("title") ? root.get("title").asText() : "Sin título");
+            disco.setArtista(extraerArtistasDetalle(root));
+            disco.setAnio(root.has("year") ? root.get("year").asInt() : 0);
+            disco.setGenero(extraerGenerosDetalle(root));
+            disco.setImagenUrl(root.has("images") && root.get("images").size() > 0 
+                    ? root.get("images").get(0).get("uri").asText() : "");
+            
+            return disco;
+        } catch (Exception e) {
+            System.err.println("Error al obtener detalle: " + e.getMessage());
+            return null;
+        }
+    }
+    
+    private String extraerArtistasDetalle(JsonNode root) {
+        if (root.has("artists") && !root.get("artists").isEmpty()) {
+            return root.get("artists").get(0).get("name").asText();
+        }
+        return "Artista desconocido";
+    }
+    
+    private String extraerGenerosDetalle(JsonNode root) {
+        if (root.has("genres") && !root.get("genres").isEmpty()) {
+            List<String> generos = new ArrayList<>();
+            for (JsonNode g : root.get("genres")) {
+                generos.add(g.asText());
+            }
+            return String.join(", ", generos);
+        }
+        return "Sin género";
+    }
 }
