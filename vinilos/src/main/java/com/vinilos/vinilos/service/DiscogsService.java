@@ -118,4 +118,26 @@ public class DiscogsService {
         }
         return "Sin género";
     }
+
+        public Disco convertirADisco(JsonNode root, String discogsId) {
+        Disco disco = new Disco();
+        disco.setTitulo(root.has("title") ? root.get("title").asText() : "Sin título");
+        disco.setArtista(extraerArtistasDetalle(root));
+        disco.setAnio(root.has("year") ? root.get("year").asInt() : 0);
+        disco.setGenero(extraerGenerosDetalle(root));
+        disco.setImagenUrl(extraerImagenDetalle(root));
+        disco.setDiscogsId(discogsId);
+        return disco;
+    }
+    
+    public Disco obtenerDetalleDiscoEntity(String discogsId) {
+        try {
+            String respuesta = discogsClient.obtenerDetalleDisco(discogsId);
+            JsonNode root = objectMapper.readTree(respuesta);
+            return convertirADisco(root, discogsId);
+        } catch (Exception e) {
+            System.err.println("Error: " + e.getMessage());
+            return null;
+        }
+    }
 }

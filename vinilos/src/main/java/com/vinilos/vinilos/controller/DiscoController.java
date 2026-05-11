@@ -59,4 +59,19 @@ public class DiscoController {
         }
         return ResponseEntity.ok(disco);
     }
+
+    @PostMapping("/importar/{discogsId}")
+    public ResponseEntity<?> importarDisco(@PathVariable String discogsId) {
+        try {
+            Disco nuevo = discoService.importarDesdeDiscogs(discogsId);
+            return ResponseEntity.status(HttpStatus.CREATED).body(nuevo);
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+    
+    @GetMapping("/listar")
+    public List<Disco> listarDiscosBD() {
+        return discoService.listarTodosBD();
+    }
 }
