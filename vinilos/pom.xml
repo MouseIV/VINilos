@@ -14,7 +14,7 @@
     </parent>
 
     <groupId>com.vinilos</groupId>
-    <artifactId>vinilos</artifactId>
+    <artifactId>vinilos</artifactId>F
     <version>0.0.1-SNAPSHOT</version>
     <name>vinilos</name>
     <description>Demo project for Spring Boot</description>
