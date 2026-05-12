@@ -62,11 +62,6 @@ public class UsuarioService {
         );
     }
 
-<<<<<<< Updated upstream
-    // ← MÉTODO NUEVO PARA LISTAR USUARIOS
-=======
-    // Método para listar todos los usuarios
->>>>>>> Stashed changes
     public List<Usuario> listarTodos() {
         return usuarioRepository.findAll();
     }
