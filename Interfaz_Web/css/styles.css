@@ -1,69 +1,261 @@
+/* =========================================
+   🎧 VINYLMARKET - RETRO VINTAGE FULL CSS
+========================================= */
+
 body {
   margin: 0;
-  font-family: Arial, sans-serif;
-  background: #1a1f1a; /* verde oliva oscuro tirando a negro */
-  color: #e6e6e6;
+  font-family: "Georgia", serif;
+  background: #f3e7d3;
+  color: #3b2f2f;
 }
 
-/* CONTENEDOR */
-.container {
-  width: 320px;
-  margin: 100px auto;
-  padding: 25px;
-  background: #232a23; /* un poco más claro que el fondo */
-  border-radius: 12px;
-  text-align: center;
-  box-shadow: 0 0 15px rgba(0,0,0,0.5);
+/* =========================
+   🔝 NAVBAR
+========================= */
+
+.navbar {
   display: flex;
   flex-direction: column;
-  align-items: center; /* centra todo */
-}
-
-
-/* TITULO */
-h2 {
-  margin-bottom: 20px;
-}
-
-/* INPUTS */
-input {
+  position: fixed;
+  top: 0;
   width: 100%;
-  padding: 12px;
-  margin: 10px 0;
-  border: none;
-  border-radius: 6px;
-  background: #2f382f;
-  color: white;
-  
-  box-sizing: border-box; 
+  background: #f3e7d3;
+  border-bottom: 2px solid #3b2f2f;
+  z-index: 1000;
 }
 
-/* BOTONES (IMPORTANTE AQUÍ) */
-button {
-  width: 100%;
-  padding: 12px;
-  margin-top: 10px;
-  background: #556b2f; /* verde oliva */
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
+.navbar-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+}
+
+.logo {
+  font-size: 22px;
   font-weight: bold;
-  transition: all 0.3s ease;
 }
 
-/* HOVER (efecto bonito) */
-button:hover {
-  background: #6b8e23; /* más claro al pasar el ratón */
-  transform: scale(1.03);
+.search-bar {
+  flex: 1;
+  margin: 0 20px;
+  padding: 10px;
+  border: 1px solid #3b2f2f;
+  border-radius: 8px;
+  background: #fffaf3;
 }
 
-/* LINKS */
-a {
-  color: #9acd32;
-  text-decoration: none;
+.menu-left,
+.menu-right {
+  font-size: 24px;
+  cursor: pointer;
 }
 
-a:hover {
+.navbar-bottom {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  padding: 10px;
+  border-top: 1px solid #3b2f2f;
+}
+
+.navbar-bottom a:hover {
+  color: #8b0000;
   text-decoration: underline;
+}
+
+/* =========================
+   🧱 LAYOUT PRINCIPAL
+========================= */
+
+.dashboard {
+  display: grid;
+  grid-template-columns: 260px 1fr 260px;
+  min-height: 100vh;
+  margin-top: 120px;
+}
+.dashboard {
+  display: block; /* más limpio con fixed sidebars */
+}
+
+/* =========================
+   📚 SIDEBARS
+========================= */
+
+.sidebar-left,
+.sidebar-right {
+  position: fixed;
+  top: 120px;
+  width: 260px;
+  height: calc(100vh - 120px);
+  background: #f3e7d3;
+  padding: 15px;
+  overflow-y: auto;
+  transition: 0.3s ease;
+}
+
+.sidebar-left {
+  left: 0;
+  transform: translateX(-100%);
+  border-right: 2px solid #3b2f2f;
+}
+
+.sidebar-right {
+  right: 0;
+  transform: translateX(100%);
+  border-left: 2px solid #3b2f2f;
+}
+
+.sidebar-left.active {
+  transform: translateX(0);
+}
+
+.sidebar-right.active {
+  transform: translateX(0);
+}
+
+.close {
+  cursor: pointer;
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+/* =========================
+   ⭐ CONTENIDO PRINCIPAL
+========================= */
+
+.main-content {
+  padding: 20px;
+  margin-left: 260px;
+  margin-right: 260px;
+}
+
+/* =========================
+   ⭐ FEATURED CARRUSEL PRO
+========================= */
+
+.featured-wrapper {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+/* zona scroll */
+.featured-grid {
+  display: flex;
+  gap: 15px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  padding: 10px;
+  width: 100%;
+}
+
+/* ocultar scrollbar */
+.featured-grid::-webkit-scrollbar {
+  display: none;
+}
+
+/* cards */
+.featured-item {
+  flex: 0 0 180px;
+  height: 180px;
+  background: #fffaf3;
+  border: 2px solid #3b2f2f;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 2px 2px 0 #3b2f2f;
+  border-radius: 10px;
+}
+
+/* botones scroll */
+.scroll-btn {
+  background: #3b2f2f;
+  color: #f3e7d3;
+  border: none;
+  width: 35px;
+  height: 35px;
+  cursor: pointer;
+  border-radius: 50%;
+  margin: 0 5px;
+  transition: 0.2s;
+}
+
+.scroll-btn:hover {
+  transform: scale(1.1);
+}
+/* =========================
+   🎧 GRID VINILOS (4 POR FILA FIX)
+========================= */
+
+.vinyl-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr)); /* 🔥 CLAVE FIX */
+  gap: 25px;
+  padding: 10px;
+}
+
+/* 📱 RESPONSIVE */
+@media (max-width: 1200px) {
+  .vinyl-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 900px) {
+  .vinyl-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .vinyl-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* =========================
+   🎧 CARD VINILO
+========================= */
+
+.vinyl-card {
+  width: 100%;
+  height: 320px;
+  background: #fffaf3;
+  border: 2px solid #3b2f2f;
+  border-radius: 12px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 3px 3px 0 #3b2f2f;
+  transition: 0.2s ease;
+}
+
+.vinyl-card:hover {
+  transform: translateY(-5px) scale(1.02);
+}
+
+.vinyl-info {
+  padding: 15px;
+}
+
+.vinyl-image {
+  position: absolute;
+  right: -50px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.vinyl-image img {
+  width: 170px;
+  height: 170px;
+  border-radius: 50%;
+  border: 2px solid #3b2f2f;
+}
+
+/* =========================
+   🧠 UTILIDADES
+========================= */
+
+input, button {
+  font-family: inherit;
 }
