@@ -81,7 +81,7 @@ public class DiscogsService {
         return "Sin género";
     }
 
-        public Disco obtenerDetalleDisco(String discogsId) {
+    public Disco obtenerDetalleDisco(String discogsId) {
         try {
             String respuesta = discogsClient.obtenerDetalleDisco(discogsId);
             JsonNode root = objectMapper.readTree(respuesta);
@@ -91,8 +91,7 @@ public class DiscogsService {
             disco.setArtista(extraerArtistasDetalle(root));
             disco.setAnio(root.has("year") ? root.get("year").asInt() : 0);
             disco.setGenero(extraerGenerosDetalle(root));
-            disco.setImagenUrl(root.has("images") && root.get("images").size() > 0 
-                    ? root.get("images").get(0).get("uri").asText() : "");
+            disco.setImagenUrl(extraerImagenDetalle(root));
             
             return disco;
         } catch (Exception e) {
@@ -118,8 +117,15 @@ public class DiscogsService {
         }
         return "Sin género";
     }
+    
+    private String extraerImagenDetalle(JsonNode root) {
+        if (root.has("images") && !root.get("images").isEmpty()) {
+            return root.get("images").get(0).get("uri").asText();
+        }
+        return "";
+    }
 
-        public Disco convertirADisco(JsonNode root, String discogsId) {
+    public Disco convertirADisco(JsonNode root, String discogsId) {
         Disco disco = new Disco();
         disco.setTitulo(root.has("title") ? root.get("title").asText() : "Sin título");
         disco.setArtista(extraerArtistasDetalle(root));
