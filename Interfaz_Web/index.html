@@ -3,202 +3,30 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>VinylMarket - Dashboard</title>
-
-  <!-- CSS GLOBAL -->
+  <title>VinylMarket - Inicio</title>
   <link rel="stylesheet" href="css/styles.css">
 </head>
-
 <body>
 
-<!-- =========================
-     🔝 NAVBAR PRINCIPAL
-     ========================= -->
-<nav class="navbar">
-
-  <!-- FILA SUPERIOR -->
-  <div class="navbar-top">
-
-    <!-- ☰ MENÚ IZQUIERDA (SIDEBAR IZQ) -->
-    <div class="menu-left" id="openSidebarLeft">
-      ☰
-    </div>
-
-    <!-- 🎧 LOGO -->
-    <div class="logo">
-      🎧 VinylMarket
-    </div>
-
-    <!-- 🔍 BUSCADOR PRINCIPAL -->
-    <input 
-      type="text" 
-      class="search-bar" 
-      placeholder="Buscar vinilos, artistas o géneros..."
-    />
-
-    <!-- ☰ MENÚ DERECHA (PERFIL) -->
-    <div class="menu-right" id="openSidebarRight">
-      ☰
-    </div>
-
+<div class="container" style="text-align: center;">
+  <h1>🎧 VinylMarket</h1>
+  <h3>Tu tienda de vinilos de confianza</h3>
+  
+  <div class="button-group">
+    <a href="dashboard.html" class="btn">Explorar tienda</a>
+    <a href="login.html" class="btn btn-secondary">Mi cuenta</a>
   </div>
-
-  <!-- FILA INFERIOR -->
-  <div class="navbar-bottom">
-    <a href="#">Inicio</a>
-    <a href="#">Vinilo del día</a>
-    <a href="#">Novedades</a>
+  
+  <div class="preview-vinilos">
+    <h4>⭐ Vinilos destacados</h4>
+    <div class="preview-grid">
+      <div class="preview-item">Abbey Road</div>
+      <div class="preview-item">Thriller</div>
+      <div class="preview-item">Dark Side of the Moon</div>
+      <div class="preview-item">Back in Black</div>
+    </div>
   </div>
-
-</nav>
-
-
-<!-- =========================
-     🧱 LAYOUT PRINCIPAL
-     ========================= -->
-<div class="dashboard">
-
-
-  <!-- =========================
-       📚 SIDEBAR IZQUIERDA
-       (CAMBIA SEGÚN ROL)
-       ========================= -->
-  <aside class="sidebar-left" id="sidebarLeft">
-
-    <!-- ❌ cerrar -->
-    <div class="close" id="closeSidebarLeft">✖</div>
-
-    <!-- 🟡 COMPRADOR -->
-    <div class="buyer-view">
-
-      <h3>🎵 Géneros</h3>
-      <ul>
-        <li>Rock</li>
-        <li>Jazz</li>
-        <li>Pop</li>
-        <li>Hip-Hop</li>
-        <li>Electrónica</li>
-        <li>Blues</li>
-        <li>Clásica</li>
-      </ul>
-
-      <h3>🎤 Artistas</h3>
-      <div class="artists-list">
-        <!-- dinámico JS -->
-      </div>
-
-      <h3>💸 Ofertas</h3>
-      <div class="offers">
-        <!-- mejores ofertas -->
-      </div>
-
-    </div>
-
-
-    <!-- 🔵 VENDEDOR -->
-    <div class="seller-view" style="display:none;">
-
-      <h3>🔥 Más vendidos</h3>
-
-      <h3>⚖️ Comparar ofertas</h3>
-
-      <h3>➕ Publicar disco</h3>
-
-    </div>
-
-  </aside>
-
-
-  <!-- =========================
-       ⭐ CONTENIDO PRINCIPAL
-       ========================= -->
-  <main class="main-content">
-
-
-    <!-- 🌟 VINILOS DESTACADOS (PAGO 3€) -->
-    <section class="featured">
-
-  <h2>⭐ Vinilos Destacados</h2>
-
-  <div class="featured-wrapper">
-
-    <button class="scroll-btn left" id="scrollLeft">◀</button>
-
-    <div class="featured-grid" id="featuredGrid">
-
-      <!-- dinámico -->
-      <div class="featured-item">Vinilo 1</div>
-      <div class="featured-item">Vinilo 2</div>
-      <div class="featured-item">Vinilo 3</div>
-      <div class="featured-item">Vinilo 4</div>
-      <div class="featured-item">Vinilo 5</div>
-      <div class="featured-item">Vinilo 6</div>
-
-    </div>
-
-    <button class="scroll-btn right" id="scrollRight">▶</button>
-
-  </div>
-
-</section>
-
-    <!-- 🎧 GRID DE VINILOS -->
-    <section class="vinyl-grid">
-
-      <!-- CARD 1 -->
-      <div class="vinyl-card">
-        <div class="vinyl-info">
-          <h3>Álbum ejemplo</h3>
-          <p>Artista</p>
-          <span>25€</span>
-        </div>
-
-        <div class="vinyl-image">
-          <img src="./img/vinilos/vinilo1.png" alt="">
-        </div>
-      </div>
-
-      <!-- más cards dinámicas JS -->
-
-    </section>
-
-
-  </main>
-
-
-  <!-- =========================
-       👤 SIDEBAR DERECHA (PERFIL)
-       ========================= -->
-  <aside class="sidebar-right" id="sidebarRight">
-
-    <!-- ❌ cerrar -->
-    <div class="close" id="closeSidebarRight">✖</div>
-
-    <h3>👤 Mi perfil</h3>
-
-    <!-- selector de rol -->
-    <button id="switchBuyer">Comprador</button>
-    <button id="switchSeller">Vendedor</button>
-
-    <hr>
-
-    <h4>✏️ Editar perfil</h4>
-
-    <input type="text" placeholder="Nombre de usuario">
-    <input type="email" placeholder="Correo">
-    <input type="file">
-
-  </aside>
-
-
 </div>
-
-
-<!-- =========================
-     ⚙️ JS DEL DASHBOARD
-     ========================= -->
-<script src="js/app.js"></script>
 
 </body>
 </html>

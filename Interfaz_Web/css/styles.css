@@ -1,109 +1,150 @@
 /* =========================================
-   🎧 VINYLMARKET - RETRO VINTAGE FULL CSS
+   VINYLMARKET - ESTILOS COMPLETOS
 ========================================= */
 
-body {
+* {
   margin: 0;
-  font-family: "Georgia", serif;
-  background: #f3e7d3;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Georgia", "Times New Roman", serif;
+  background: #f5f0e8;
   color: #3b2f2f;
 }
 
 /* =========================
-   🔝 NAVBAR
+   HEADER FIJO
 ========================= */
-
-.navbar {
-  display: flex;
-  flex-direction: column;
+.header {
   position: fixed;
   top: 0;
   width: 100%;
-  background: #f3e7d3;
-  border-bottom: 2px solid #3b2f2f;
+  background: #f5f0e8;
+  border-bottom: 2px solid #8b5a2b;
   z-index: 1000;
-}
-
-.navbar-top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
   padding: 10px 20px;
 }
 
+.header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
 .logo {
-  font-size: 22px;
+  font-size: 24px;
   font-weight: bold;
+  color: #3b2f2f;
+}
+
+.icon-btn {
+  background: #8b5a2b;
+  color: white;
+  border: none;
+  font-size: 24px;
+  width: 45px;
+  height: 45px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.icon-btn:hover {
+  background: #6b3f1f;
+}
+
+.search-container {
+  flex: 1;
+  display: flex;
+  max-width: 400px;
 }
 
 .search-bar {
   flex: 1;
-  margin: 0 20px;
-  padding: 10px;
-  border: 1px solid #3b2f2f;
-  border-radius: 8px;
-  background: #fffaf3;
+  padding: 12px;
+  border: 1px solid #8b5a2b;
+  border-radius: 8px 0 0 8px;
+  font-family: inherit;
+  background: white;
 }
 
-.menu-left,
-.menu-right {
-  font-size: 24px;
+.search-btn {
+  padding: 12px 15px;
+  background: #8b5a2b;
+  color: white;
+  border: none;
+  border-radius: 0 8px 8px 0;
   cursor: pointer;
 }
 
-.navbar-bottom {
+.nav-links {
   display: flex;
   justify-content: center;
-  gap: 40px;
-  padding: 10px;
-  border-top: 1px solid #3b2f2f;
+  gap: 30px;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid #ddd;
+  flex-wrap: wrap;
 }
 
-.navbar-bottom a:hover {
-  color: #8b0000;
-  text-decoration: underline;
+.nav-links a {
+  color: #3b2f2f;
+  text-decoration: none;
+  font-weight: bold;
 }
 
-/* =========================
-   🧱 LAYOUT PRINCIPAL
-========================= */
-
-.dashboard {
-  display: grid;
-  grid-template-columns: 260px 1fr 260px;
-  min-height: 100vh;
-  margin-top: 120px;
-}
-.dashboard {
-  display: block; /* más limpio con fixed sidebars */
+.nav-links a:hover {
+  color: #8b5a2b;
 }
 
 /* =========================
-   📚 SIDEBARS
+   OVERLAY
 ========================= */
-
-.sidebar-left,
-.sidebar-right {
+.overlay {
   position: fixed;
-  top: 120px;
-  width: 260px;
-  height: calc(100vh - 120px);
-  background: #f3e7d3;
-  padding: 15px;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1001;
+  display: none;
+}
+
+.overlay.active {
+  display: block;
+}
+
+/* =========================
+   SIDEBARS
+========================= */
+.sidebar {
+  position: fixed;
+  top: 0;
+  width: 280px;
+  height: 100%;
+  background: #f5f0e8;
+  padding: 80px 20px 20px 20px;
+  transition: transform 0.3s ease;
+  z-index: 1002;
   overflow-y: auto;
-  transition: 0.3s ease;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
 }
 
 .sidebar-left {
   left: 0;
   transform: translateX(-100%);
-  border-right: 2px solid #3b2f2f;
+  border-right: 2px solid #8b5a2b;
 }
 
 .sidebar-right {
   right: 0;
   transform: translateX(100%);
-  border-left: 2px solid #3b2f2f;
+  border-left: 2px solid #8b5a2b;
 }
 
 .sidebar-left.active {
@@ -114,148 +155,361 @@ body {
   transform: translateX(0);
 }
 
-.close {
+.sidebar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 24px;
   cursor: pointer;
-  font-size: 20px;
+  color: #8b5a2b;
+}
+
+.sidebar-nav a {
+  display: block;
+  padding: 12px 0;
+  color: #3b2f2f;
+  text-decoration: none;
+  transition: 0.2s;
+}
+
+.sidebar-nav a:hover {
+  color: #8b5a2b;
+  padding-left: 10px;
+}
+
+.sidebar-nav h4 {
+  margin: 15px 0 10px 0;
+  color: #8b5a2b;
+}
+
+/* =========================
+   CONTENIDO PRINCIPAL
+========================= */
+.main-content {
+  margin-top: 130px;
+  padding: 20px;
+  transition: margin-left 0.3s ease, margin-right 0.3s ease;
+}
+
+body.sidebar-left-open .main-content {
+  margin-left: 280px;
+}
+
+body.sidebar-right-open .main-content {
+  margin-right: 280px;
+}
+
+/* =========================
+   VINILO DEL DÍA
+========================= */
+.daily-vinyl {
+  background: #fff8f0;
+  border: 2px solid #8b5a2b;
+  border-radius: 15px;
+  padding: 20px;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.daily-vinyl h3 {
+  color: #8b5a2b;
   margin-bottom: 10px;
 }
 
 /* =========================
-   ⭐ CONTENIDO PRINCIPAL
+   CARRUSEL
 ========================= */
-
-.main-content {
-  padding: 20px;
-  margin-left: 260px;
-  margin-right: 260px;
-}
-
-/* =========================
-   ⭐ FEATURED CARRUSEL PRO
-========================= */
-
-.featured-wrapper {
+.carousel-wrapper {
   display: flex;
   align-items: center;
-  position: relative;
+  gap: 10px;
+  margin: 20px 0;
 }
 
-/* zona scroll */
-.featured-grid {
+.carousel-grid {
   display: flex;
-  gap: 15px;
+  gap: 20px;
   overflow-x: auto;
   scroll-behavior: smooth;
   padding: 10px;
-  width: 100%;
+  flex: 1;
 }
 
-/* ocultar scrollbar */
-.featured-grid::-webkit-scrollbar {
+.carousel-grid::-webkit-scrollbar {
   display: none;
 }
 
-/* cards */
-.featured-item {
-  flex: 0 0 180px;
-  height: 180px;
-  background: #fffaf3;
-  border: 2px solid #3b2f2f;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 2px 2px 0 #3b2f2f;
-  border-radius: 10px;
-}
-
-/* botones scroll */
-.scroll-btn {
-  background: #3b2f2f;
-  color: #f3e7d3;
+.carousel-btn {
+  background: #8b5a2b;
+  color: white;
   border: none;
-  width: 35px;
-  height: 35px;
-  cursor: pointer;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
-  margin: 0 5px;
+  cursor: pointer;
+  font-size: 18px;
   transition: 0.2s;
 }
 
-.scroll-btn:hover {
-  transform: scale(1.1);
-}
-/* =========================
-   🎧 GRID VINILOS (4 POR FILA FIX)
-========================= */
-
-.vinyl-grid {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr)); /* 🔥 CLAVE FIX */
-  gap: 25px;
-  padding: 10px;
-}
-
-/* 📱 RESPONSIVE */
-@media (max-width: 1200px) {
-  .vinyl-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-@media (max-width: 900px) {
-  .vinyl-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (max-width: 600px) {
-  .vinyl-grid {
-    grid-template-columns: 1fr;
-  }
+.carousel-btn:hover {
+  background: #6b3f1f;
+  transform: scale(1.05);
 }
 
 /* =========================
-   🎧 CARD VINILO
+   TARJETAS DE VINILO
 ========================= */
-
 .vinyl-card {
-  width: 100%;
-  height: 320px;
-  background: #fffaf3;
-  border: 2px solid #3b2f2f;
+  background: #fff8f0;
+  border: 1px solid #8b5a2b;
   border-radius: 12px;
-  position: relative;
-  overflow: hidden;
-  box-shadow: 3px 3px 0 #3b2f2f;
-  transition: 0.2s ease;
+  padding: 15px;
+  min-width: 200px;
+  text-align: center;
+  transition: 0.2s;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .vinyl-card:hover {
-  transform: translateY(-5px) scale(1.02);
+  transform: translateY(-5px);
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.15);
 }
 
-.vinyl-info {
-  padding: 15px;
+.vinyl-card img {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 10px;
 }
 
-.vinyl-image {
-  position: absolute;
-  right: -50px;
-  top: 50%;
-  transform: translateY(-50%);
+.vinyl-card h3 {
+  font-size: 16px;
+  margin: 10px 0 5px;
 }
 
-.vinyl-image img {
-  width: 170px;
-  height: 170px;
-  border-radius: 50%;
-  border: 2px solid #3b2f2f;
+.vinyl-card p {
+  font-size: 14px;
+  color: #8b5a2b;
+  margin-bottom: 8px;
+}
+
+.vinyl-card .precio {
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.vinyl-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 25px;
+  margin-top: 30px;
 }
 
 /* =========================
-   🧠 UTILIDADES
+   BOTONES
 ========================= */
-
-input, button {
+.btn {
+  display: inline-block;
+  padding: 10px 20px;
+  background: #8b5a2b;
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: 0.2s;
   font-family: inherit;
+}
+
+.btn:hover {
+  background: #6b3f1f;
+}
+
+.btn-secondary {
+  background: #b87a4a;
+}
+
+.btn-secondary:hover {
+  background: #8b5a2b;
+}
+
+.btn-primary {
+  width: 100%;
+  padding: 12px;
+  background: #8b5a2b;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.import-btn, .login-to-buy {
+  margin-top: 10px;
+  padding: 8px 12px;
+  background: #8b5a2b;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 100%;
+}
+
+/* =========================
+   PÁGINAS DE AUTENTICACIÓN
+========================= */
+.auth-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: #f5f0e8;
+}
+
+.auth-container {
+  background: #fff8f0;
+  border-radius: 20px;
+  padding: 40px;
+  width: 100%;
+  max-width: 450px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  border: 1px solid #8b5a2b;
+}
+
+.auth-container h2 {
+  text-align: center;
+  margin-bottom: 25px;
+  color: #3b2f2f;
+}
+
+.input-group {
+  margin-bottom: 20px;
+}
+
+.input-group label {
+  display: block;
+  margin-bottom: 5px;
+  color: #3b2f2f;
+  font-weight: bold;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #d4c5b0;
+  border-radius: 8px;
+  font-family: inherit;
+  background: white;
+}
+
+.input-group input:focus {
+  outline: none;
+  border-color: #8b5a2b;
+}
+
+.auth-links {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  margin-top: 20px;
+  gap: 10px;
+}
+
+.auth-links a {
+  color: #8b5a2b;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.auth-links a:hover {
+  text-decoration: underline;
+}
+
+/* =========================
+   INDEX (BIENVENIDA)
+========================= */
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+  text-align: center;
+}
+
+.button-group {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  margin-top: 30px;
+  flex-wrap: wrap;
+}
+
+.preview-vinilos {
+  margin-top: 50px;
+}
+
+.preview-grid {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 15px;
+}
+
+.preview-item {
+  background: #fff8f0;
+  border: 1px solid #8b5a2b;
+  border-radius: 10px;
+  padding: 15px 25px;
+  font-weight: bold;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+@media (max-width: 768px) {
+  .header-top {
+    flex-direction: column;
+  }
+  
+  .search-container {
+    width: 100%;
+    max-width: none;
+  }
+  
+  .main-content {
+    margin-top: 180px;
+  }
+  
+  .sidebar {
+    width: 100%;
+    max-width: 300px;
+  }
+  
+  body.sidebar-left-open .main-content,
+  body.sidebar-right-open .main-content {
+    margin-left: 0;
+    margin-right: 0;
+  }
+  
+  .vinyl-grid {
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  }
+  
+  .auth-container {
+    margin: 20px;
+    padding: 30px 20px;
+  }
 }

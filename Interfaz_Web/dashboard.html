@@ -2,245 +2,98 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-<<<<<<< Updated upstream
-  <title>Panel</title>
-=======
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>VinylMarket - Dashboard</title>
-
-  <!-- CSS -->
->>>>>>> Stashed changes
+  <title>VinylMarket - Tienda</title>
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
 
-<!-- =========================
-     🔝 NAVBAR
-========================= -->
-<nav class="navbar">
-
-  <div class="navbar-top">
-
-    <!-- ☰ SIDEBAR LEFT -->
-    <div class="menu-left" id="openSidebarLeft">
-      ☰
+<!-- HEADER FIJO -->
+<header class="header">
+  <div class="header-top">
+    <button class="icon-btn" id="openSidebarLeft">☰</button>
+    <div class="logo">🎧 VinylMarket</div>
+    <div class="search-container">
+      <input type="text" class="search-bar" id="searchInput" placeholder="Buscar vinilos...">
+      <button class="search-btn" id="searchBtn">🔍</button>
     </div>
-
-    <!-- LOGO -->
-    <div class="logo">
-      🎧 VinylMarket
-    </div>
-
-    <!-- SEARCH -->
-    <input 
-      type="text"
-      class="search-bar"
-      placeholder="Buscar vinilos, artistas o géneros..."
-    >
-
-    <!-- ☰ SIDEBAR RIGHT -->
-    <div class="menu-right" id="openSidebarRight">
-      ☰
-    </div>
-
+    <button class="icon-btn" id="openSidebarRight">👤</button>
   </div>
-
-  <div class="navbar-bottom">
+  <nav class="nav-links">
     <a href="#">Inicio</a>
     <a href="#">Vinilo del día</a>
     <a href="#">Novedades</a>
+    <a href="login.html">Mi cuenta</a>
+  </nav>
+</header>
+
+<!-- OVERLAY -->
+<div class="overlay" id="overlay"></div>
+
+<!-- SIDEBAR IZQUIERDO (MENÚ) -->
+<div class="sidebar sidebar-left" id="sidebarLeft">
+  <div class="sidebar-header">
+    <h3>📀 Menú</h3>
+    <button class="close-btn" id="closeSidebarLeft">✖</button>
   </div>
-
-</nav>
-
-
-<!-- =========================
-     🧱 LAYOUT
-========================= -->
-<div class="dashboard">
-
-
-  <!-- =========================
-       📚 SIDEBAR IZQUIERDA
-  ========================= -->
- <aside class="sidebar-left" id="sidebarLeft">
-
-  <div class="close" id="closeSidebarLeft">✖</div>
-
-  <h3>🎵 Géneros</h3>
-
-  <ul>
-    <li>Rock</li>
-    <li>Jazz</li>
-    <li>Pop</li>
-    <li>Hip-Hop</li>
-    <li>Electrónica</li>
-    <li>Blues</li>
-    <li>Clásica</li>
-  </ul>
-
-  <h3>🎤 Artistas</h3>
-
-  <ul>
-    <li>The Beatles</li>
-    <li>Daft Punk</li>
-    <li>Queen</li>
-    <li>AC/DC</li>
-  </ul>
-
-  <!-- 🛍️ COMPRADOR -->
-  <div class="buyer-view">
-    <h3>🛍️ Más populares</h3>
-    <p>Los vinilos más vendidos del momento</p>
-  </div>
-
-  <!-- 🔥 VENDEDOR -->
-  <div class="seller-view">
-    <h3>🔥 Más vendidos</h3>
-    <h4>Publicar nuevo álbum</h4>
-    <p>Añade tus vinilos a la tienda</p>
-  </div>
-
-</aside>
-
-
-
-  <!-- =========================
-       ⭐ MAIN CONTENT
-  ========================= -->
-  <main class="main-content">
-
-    <!-- DESTACADOS -->
-    <section class="featured">
-
-      <h2>⭐ Vinilos Destacados</h2>
-
-      <div class="featured-wrapper">
-
-        <button class="scroll-btn">◀</button>
-
-        <div class="featured-grid">
-
-          <div class="featured-item">
-            <img src="https://upload.wikimedia.org/wikipedia/en/4/42/Beatles_-_Abbey_Road.jpg">
-          </div>
-
-          <div class="featured-item">
-            <img src="https://upload.wikimedia.org/wikipedia/en/5/55/Michael_Jackson_-_Thriller.png">
-          </div>
-
-          <div class="featured-item">
-            <img src="https://upload.wikimedia.org/wikipedia/en/a/a7/Random_Access_Memories.jpg">
-          </div>
-
-          <div class="featured-item">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/9/92/Acdc_backinblack_cover.jpg">
-          </div>
-
-        </div>
-
-        <button class="scroll-btn">▶</button>
-
-      </div>
-
-    </section>
-
-
-    <!-- GRID VINILOS -->
-    <section class="vinyl-grid">
-
-      <!-- CARD 1 -->
-      <div class="vinyl-card">
-
-        <div class="vinyl-image">
-          <img src="https://upload.wikimedia.org/wikipedia/en/4/42/Beatles_-_Abbey_Road.jpg">
-        </div>
-
-        <div class="vinyl-info">
-          <h3>Abbey Road</h3>
-          <p>The Beatles</p>
-          <span>25€</span>
-        </div>
-
-      </div>
-
-      <!-- CARD 2 -->
-      <div class="vinyl-card">
-
-        <div class="vinyl-image">
-          <img src="https://upload.wikimedia.org/wikipedia/en/5/55/Michael_Jackson_-_Thriller.png">
-        </div>
-
-        <div class="vinyl-info">
-          <h3>Thriller</h3>
-          <p>Michael Jackson</p>
-          <span>30€</span>
-        </div>
-
-      </div>
-
-      <!-- CARD 3 -->
-      <div class="vinyl-card">
-
-        <div class="vinyl-image">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/9/92/Acdc_backinblack_cover.jpg">
-        </div>
-
-        <div class="vinyl-info">
-          <h3>Back In Black</h3>
-          <p>AC/DC</p>
-          <span>22€</span>
-        </div>
-
-      </div>
-
-      <!-- CARD 4 -->
-      <div class="vinyl-card">
-
-        <div class="vinyl-image">
-          <img src="https://upload.wikimedia.org/wikipedia/en/a/a7/Random_Access_Memories.jpg">
-        </div>
-
-        <div class="vinyl-info">
-          <h3>Random Access Memories</h3>
-          <p>Daft Punk</p>
-          <span>28€</span>
-        </div>
-
-      </div>
-
-    </section>
-
-  </main>
-
-
-
-  <!-- =========================
-       👤 SIDEBAR DERECHA
-  ========================= -->
-  <aside class="sidebar-right" id="sidebarRight">
-
-    <div class="close" id="closeSidebarRight">✖</div>
-
-    <h3>👤 Mi perfil</h3>
-
-    <button id="switchBuyer">
-      Comprador
-    </button>
-    <button id="switchSeller">
-      Vendedor
-    </button>
-
+  <nav class="sidebar-nav">
+    <a href="#">🏠 Inicio</a>
+    <a href="#">🎲 Vinilo del día</a>
+    <a href="#">✨ Novedades</a>
     <hr>
-
-    <input type="text" placeholder="Nombre">
-    <input type="email" placeholder="Correo">
-
-  </aside>
-
+    <div class="buyer-section">
+      <h4>🛍️ Para compradores</h4>
+      <a href="#">🔥 Más solicitados</a>
+      <a href="#">💸 Grandes ofertas</a>
+    </div>
+    <div class="seller-section" style="display:none;">
+      <h4>📦 Para vendedores</h4>
+      <a href="#">📈 Top ventas</a>
+      <a href="#">➕ Nueva publicación</a>
+    </div>
+  </nav>
 </div>
 
-<!-- JS -->
+<!-- SIDEBAR DERECHO (PERFIL) -->
+<div class="sidebar sidebar-right" id="sidebarRight">
+  <div class="sidebar-header">
+    <h3>👤 Mi perfil</h3>
+    <button class="close-btn" id="closeSidebarRight">✖</button>
+  </div>
+  <div id="profileInfo">
+    <p>Inicia sesión para ver tu perfil</p>
+    <button class="btn" onclick="window.location.href='login.html'">Iniciar sesión</button>
+    <button class="btn btn-secondary" onclick="window.location.href='register.html'">Registrarse</button>
+  </div>
+  <hr>
+  <button id="logoutBtn" class="btn btn-secondary" style="display:none;">🚪 Cerrar sesión</button>
+</div>
+
+<!-- CONTENIDO PRINCIPAL -->
+<main class="main-content" id="mainContent">
+  
+  <div class="daily-vinyl">
+    <h3>🎲 Vinilo del día</h3>
+    <p id="viniloDelDia">Cargando...</p>
+  </div>
+
+  <section class="featured-section">
+    <h2>⭐ Vinilos Destacados</h2>
+    <div class="carousel-wrapper">
+      <button class="carousel-btn prev" id="scrollLeft">◀</button>
+      <div class="carousel-grid" id="featuredGrid">
+        <div class="vinyl-card">Cargando...</div>
+      </div>
+      <button class="carousel-btn next" id="scrollRight">▶</button>
+    </div>
+  </section>
+
+  <section class="vinyl-grid" id="vinylGrid">
+    <p>🔍 Busca un artista o título para empezar</p>
+  </section>
+
+</main>
+
 <script src="js/app.js"></script>
 </body>
 </html>
