@@ -70,8 +70,7 @@ if (loginForm) {
           id: data.id,
           nombre: data.nombre,
           email: data.email,
-          username: data.username,
-          tipo: data.tipo || 'comprador'  // Por defecto comprador
+          username: data.username
         }));
         alert('✅ Login exitoso');
         window.location.href = 'dashboard.html';
@@ -96,6 +95,7 @@ if (forgotForm) {
       alert('Ingresa tu correo electrónico');
       return;
     }
+    // Simulación - en producción llamarías al backend
     alert(`📧 Se ha enviado un código de recuperación a ${email}`);
     window.location.href = 'login.html';
   });
@@ -113,36 +113,13 @@ if (window.location.pathname.includes('dashboard.html')) {
   // ========== SIDEBAR DERECHO - PERFIL ==========
   const profileInfo = document.getElementById('profileInfo');
   const logoutBtn = document.getElementById('logoutBtn');
-  const userTypeBadge = document.getElementById('userTypeBadge');
-  const userTypeValue = document.getElementById('userTypeValue');
-  
-  function actualizarTipoUsuario(tipo) {
-    if (!userTypeValue) return;
-    userTypeValue.className = 'user-type-value';
-    if (tipo === 'comprador') {
-      userTypeValue.innerText = '🟡 Comprador';
-      userTypeValue.classList.add('comprador');
-    } else if (tipo === 'vendedor') {
-      userTypeValue.innerText = '🔵 Vendedor';
-      userTypeValue.classList.add('vendedor');
-    } else {
-      userTypeValue.innerText = '🟢 Comprador y Vendedor';
-      userTypeValue.classList.add('ambos');
-    }
-  }
   
   if (token && usuario && profileInfo) {
-    const tipoUsuario = usuario.tipo || 'comprador';
-    
     profileInfo.innerHTML = `
       <p><strong>${usuario.nombre || usuario.username}</strong></p>
       <p>${usuario.email}</p>
       <button class="btn" onclick="verPerfil()">📀 Mi colección</button>
     `;
-    
-    if (userTypeBadge) userTypeBadge.style.display = 'block';
-    actualizarTipoUsuario(tipoUsuario);
-    
     if (logoutBtn) logoutBtn.style.display = 'block';
   } else if (profileInfo) {
     profileInfo.innerHTML = `
@@ -150,7 +127,6 @@ if (window.location.pathname.includes('dashboard.html')) {
       <button class="btn" onclick="window.location.href='login.html'">Iniciar sesión</button>
       <button class="btn btn-secondary" onclick="window.location.href='register.html'">Registrarse</button>
     `;
-    if (userTypeBadge) userTypeBadge.style.display = 'none';
     if (logoutBtn) logoutBtn.style.display = 'none';
   }
   
@@ -172,11 +148,9 @@ if (window.location.pathname.includes('dashboard.html')) {
     if (userRole === 'buyer') {
       if (buyerSection) buyerSection.style.display = 'block';
       if (sellerSection) sellerSection.style.display = 'none';
-      if (userTypeValue && usuario) actualizarTipoUsuario('comprador');
     } else {
       if (buyerSection) buyerSection.style.display = 'none';
       if (sellerSection) sellerSection.style.display = 'block';
-      if (userTypeValue && usuario) actualizarTipoUsuario('vendedor');
     }
   }
   
@@ -256,6 +230,7 @@ if (window.location.pathname.includes('dashboard.html')) {
     if (sidebarLeft) sidebarLeft.classList.add('active');
     if (overlay) overlay.classList.add('active');
     body.classList.add('sidebar-left-open');
+    console.log('Sidebar izquierdo abierto');
   }
   
   function abrirDerecho() {
@@ -263,6 +238,7 @@ if (window.location.pathname.includes('dashboard.html')) {
     if (sidebarRight) sidebarRight.classList.add('active');
     if (overlay) overlay.classList.add('active');
     body.classList.add('sidebar-right-open');
+    console.log('Sidebar derecho abierto');
   }
   
   if (openSidebarLeft) openSidebarLeft.onclick = abrirIzquierdo;
@@ -326,6 +302,7 @@ if (window.location.pathname.includes('dashboard.html')) {
       </div>
     `).join('');
     
+    // Asignar eventos a botones de importar (solo si hay token)
     if (tokenActual) {
       document.querySelectorAll('.import-btn').forEach(btn => {
         btn.onclick = async () => {
@@ -398,10 +375,10 @@ if (window.location.pathname.includes('perfil.html')) {
     perfilInfo.innerHTML = `
       <p><strong>Nombre:</strong> ${usuario.nombre || usuario.username}</p>
       <p><strong>Email:</strong> ${usuario.email}</p>
-      <p><strong>Tipo:</strong> ${usuario.tipo === 'comprador' ? '🟡 Comprador' : usuario.tipo === 'vendedor' ? '🔵 Vendedor' : '🟢 Comprador y Vendedor'}</p>
     `;
   }
   
+  // Cargar colección del usuario
   const miColeccion = document.getElementById('miColeccion');
   if (miColeccion) {
     (async () => {
@@ -427,6 +404,7 @@ if (window.location.pathname.includes('perfil.html')) {
     })();
   }
   
+  // Cerrar sesión desde perfil
   const logoutBtn = document.getElementById('logoutBtn');
   if (logoutBtn) {
     logoutBtn.onclick = () => {
