@@ -1,80 +1,34 @@
-<<<<<<< Updated upstream
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: #1a1f1a; /* verde oliva oscuro tirando a negro */
-  color: #e6e6e6;
-}
-
-/* CONTENEDOR */
-.container {
-  width: 320px;
-  margin: 100px auto;
-  padding: 25px;
-  background: #232a23; /* un poco más claro que el fondo */
-  border-radius: 12px;
-  text-align: center;
-  box-shadow: 0 0 15px rgba(0,0,0,0.5);
-  display: flex;
-  flex-direction: column;
-  align-items: center; /* centra todo */
-}
-
-
-/* TITULO */
-h2 {
-  margin-bottom: 20px;
-}
-
-/* INPUTS */
-input {
-=======
 /* =========================================
-   🎧 VINYLMARKET CSS
+   🎧 VINYLMARKET - RETRO VINTAGE FULL CSS
 ========================================= */
 
 body {
   margin: 0;
-  font-family: Georgia, serif;
+  font-family: "Georgia", serif;
   background: #f3e7d3;
   color: #3b2f2f;
 }
 
 /* =========================
-   NAVBAR
+   🔝 NAVBAR
 ========================= */
 
 .navbar {
+  display: flex;
+  flex-direction: column;
   position: fixed;
   top: 0;
->>>>>>> Stashed changes
   width: 100%;
-  padding: 12px;
-  margin: 10px 0;
-  border: none;
-  border-radius: 6px;
-  background: #2f382f;
-  color: white;
-  
-  box-sizing: border-box; 
+  background: #f3e7d3;
+  border-bottom: 2px solid #3b2f2f;
+  z-index: 1000;
 }
 
-<<<<<<< Updated upstream
-/* BOTONES (IMPORTANTE AQUÍ) */
-button {
-  width: 100%;
-  padding: 12px;
-  margin-top: 10px;
-  background: #556b2f; /* verde oliva */
-  color: white;
-  border: none;
-  border-radius: 6px;
-=======
 .navbar-top {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 15px 20px;
+  padding: 10px 20px;
 }
 
 .logo {
@@ -86,46 +40,43 @@ button {
   flex: 1;
   margin: 0 20px;
   padding: 10px;
-  border-radius: 8px;
   border: 1px solid #3b2f2f;
+  border-radius: 8px;
+  background: #fffaf3;
 }
 
 .menu-left,
 .menu-right {
   font-size: 24px;
->>>>>>> Stashed changes
   cursor: pointer;
-  font-weight: bold;
-  transition: all 0.3s ease;
 }
 
-/* HOVER (efecto bonito) */
-button:hover {
-  background: #6b8e23; /* más claro al pasar el ratón */
-  transform: scale(1.03);
+.navbar-bottom {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  padding: 10px;
+  border-top: 1px solid #3b2f2f;
 }
 
-<<<<<<< Updated upstream
-/* LINKS */
-a {
-  color: #9acd32;
-  text-decoration: none;
-}
-
-a:hover {
+.navbar-bottom a:hover {
+  color: #8b0000;
   text-decoration: underline;
-=======
+}
+
 /* =========================
-   LAYOUT
+   🧱 LAYOUT PRINCIPAL
 ========================= */
 
 .dashboard {
-  display: flex;
-  margin-top: 120px;
+  display: grid;
+  grid-template-columns: 260px 1fr 260px;
   min-height: 100vh;
-  transition: 0.3s ease;
+  margin-top: 120px;
 }
-
+.dashboard {
+  display: block; /* más limpio con fixed sidebars */
+}
 
 /* =========================
    📚 SIDEBARS
@@ -133,212 +84,118 @@ a:hover {
 
 .sidebar-left,
 .sidebar-right {
-
+  position: fixed;
+  top: 120px;
+  width: 260px;
+  height: calc(100vh - 120px);
   background: #f3e7d3;
-
-  transition: 0.3s ease;
-
-  box-sizing: border-box;
-
+  padding: 15px;
   overflow-y: auto;
-
-  flex-shrink: 0;
-
+  transition: 0.3s ease;
 }
-
-
-/* =========================
-   🔹 SIDEBAR IZQUIERDA
-========================= */
 
 .sidebar-left {
-
-  width: 0;
-
-  padding: 0;
-
-  border-right: 0 solid #3b2f2f;
-  .main-content {
-    width:90%;
-    padding: 20px;
-  }
-}
-
-/* ABIERTA */
-.sidebar-left.active {
-
-  width: 20%;
-
-  padding: 20px;
-
+  left: 0;
+  transform: translateX(-100%);
   border-right: 2px solid #3b2f2f;
-  .main-content {
-    width:70%;
-    padding: 20px;
-  }
-
 }
-
-
-/* =========================
-   🔹 SIDEBAR DERECHA
-========================= */
 
 .sidebar-right {
-
-  width: 0;
-
-  padding: 0;
-
-  border-left: 0 solid #3b2f2f;
-
-  .main-content {
-    width:90%;
-    padding: 20px;
-  }
-}
-
-/* ABIERTA */
-.sidebar-right.active {
-
-  width: 20%;
-
-  padding: 20px;
-
+  right: 0;
+  transform: translateX(100%);
   border-left: 2px solid #3b2f2f;
-  .main-content {
-    width:70%;
-    padding: 20px;
-  }
 }
 
-button.active-role {
-
-  background: #3b2f2f;
-
-  color: white;
-
-}
-.buyer-view,
-.seller-view {
-  display: none;
+.sidebar-left.active {
+  transform: translateX(0);
 }
 
-
-/* =========================
-   ❌ BOTÓN CERRAR
-========================= */
+.sidebar-right.active {
+  transform: translateX(0);
+}
 
 .close {
-
-  font-size: 20px;
-
   cursor: pointer;
-
-  margin-bottom: 20px;
-
+  font-size: 20px;
+  margin-bottom: 10px;
 }
+
 /* =========================
-   MAIN
+   ⭐ CONTENIDO PRINCIPAL
 ========================= */
 
 .main-content {
-  width: 70%;
   padding: 20px;
+  margin-left: 260px;
+  margin-right: 260px;
 }
 
 /* =========================
-   DESTACADOS
+   ⭐ FEATURED CARRUSEL PRO
 ========================= */
 
 .featured-wrapper {
   display: flex;
   align-items: center;
+  position: relative;
 }
 
+/* zona scroll */
 .featured-grid {
   display: flex;
   gap: 15px;
   overflow-x: auto;
-  width: 100%;
+  scroll-behavior: smooth;
   padding: 10px;
-}
-
-.featured-item {
-  min-width: 180px;
-  height: 180px;
-  background: white;
-  border: 2px solid #3b2f2f;
-  border-radius: 12px;
-  overflow: hidden;
-}
-
-.featured-item img {
   width: 100%;
-  height: 100%;
-  object-fit: cover;
 }
 
+/* ocultar scrollbar */
+.featured-grid::-webkit-scrollbar {
+  display: none;
+}
+
+/* cards */
+.featured-item {
+  flex: 0 0 180px;
+  height: 180px;
+  background: #fffaf3;
+  border: 2px solid #3b2f2f;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 2px 2px 0 #3b2f2f;
+  border-radius: 10px;
+}
+
+/* botones scroll */
 .scroll-btn {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  border: none;
-  cursor: pointer;
   background: #3b2f2f;
-  color: white;
+  color: #f3e7d3;
+  border: none;
+  width: 35px;
+  height: 35px;
+  cursor: pointer;
+  border-radius: 50%;
+  margin: 0 5px;
+  transition: 0.2s;
 }
 
+.scroll-btn:hover {
+  transform: scale(1.1);
+}
 /* =========================
-   GRID VINILOS
+   🎧 GRID VINILOS (4 POR FILA FIX)
 ========================= */
 
 .vinyl-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(4, minmax(0, 1fr)); /* 🔥 CLAVE FIX */
   gap: 25px;
-  margin-top: 30px;
+  padding: 10px;
 }
 
-/* =========================
-   CARDS
-========================= */
-
-.vinyl-card {
-  background: #fffaf3;
-  border: 2px solid #3b2f2f;
-  border-radius: 12px;
-  padding: 15px;
-  aspect-ratio: 1 / 1;
-  box-shadow: 3px 3px 0 #3b2f2f;
-  transition: 0.2s;
-}
-
-.vinyl-card:hover {
-  transform: translateY(-5px);
-}
-
-.vinyl-image {
-  display: flex;
-  justify-content: center;
-}
-
-.vinyl-image img {
-  width: 180px;
-  height: 180px;
-  object-fit: cover;
-  border-radius: 10px;
-}
-
-.vinyl-info {
-  text-align: center;
-  margin-top: 15px;
-}
-
-/* =========================
-   RESPONSIVE
-========================= */
-
+/* 📱 RESPONSIVE */
 @media (max-width: 1200px) {
   .vinyl-grid {
     grid-template-columns: repeat(3, 1fr);
@@ -355,5 +212,50 @@ button.active-role {
   .vinyl-grid {
     grid-template-columns: 1fr;
   }
->>>>>>> Stashed changes
+}
+
+/* =========================
+   🎧 CARD VINILO
+========================= */
+
+.vinyl-card {
+  width: 100%;
+  height: 320px;
+  background: #fffaf3;
+  border: 2px solid #3b2f2f;
+  border-radius: 12px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 3px 3px 0 #3b2f2f;
+  transition: 0.2s ease;
+}
+
+.vinyl-card:hover {
+  transform: translateY(-5px) scale(1.02);
+}
+
+.vinyl-info {
+  padding: 15px;
+}
+
+.vinyl-image {
+  position: absolute;
+  right: -50px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.vinyl-image img {
+  width: 170px;
+  height: 170px;
+  border-radius: 50%;
+  border: 2px solid #3b2f2f;
+}
+
+/* =========================
+   🧠 UTILIDADES
+========================= */
+
+input, button {
+  font-family: inherit;
 }
