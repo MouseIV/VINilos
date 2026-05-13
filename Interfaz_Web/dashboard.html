@@ -2,11 +2,19 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
+<<<<<<< Updated upstream
   <title>Panel</title>
+=======
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VinylMarket - Dashboard</title>
+
+  <!-- CSS -->
+>>>>>>> Stashed changes
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
 
+<<<<<<< Updated upstream
 <div class="container">
   <h2>Bienvenido 🎵</h2>
   <p>Estás dentro de la app de compra-venta de vinilos</p>
@@ -14,6 +22,235 @@
   <button onclick="logout()">Cerrar sesión</button>
 </div>
 
+=======
+<!-- =========================
+     🔝 NAVBAR
+========================= -->
+<nav class="navbar">
+
+  <div class="navbar-top">
+
+    <!-- ☰ SIDEBAR LEFT -->
+    <div class="menu-left" id="openSidebarLeft">
+      ☰
+    </div>
+
+    <!-- LOGO -->
+    <div class="logo">
+      🎧 VinylMarket
+    </div>
+
+    <!-- SEARCH -->
+    <input 
+      type="text"
+      class="search-bar"
+      placeholder="Buscar vinilos, artistas o géneros..."
+    >
+
+    <!-- ☰ SIDEBAR RIGHT -->
+    <div class="menu-right" id="openSidebarRight">
+      ☰
+    </div>
+
+  </div>
+
+  <div class="navbar-bottom">
+    <a href="#">Inicio</a>
+    <a href="#">Vinilo del día</a>
+    <a href="#">Novedades</a>
+  </div>
+
+</nav>
+
+
+<!-- =========================
+     🧱 LAYOUT
+========================= -->
+<div class="dashboard">
+
+
+  <!-- =========================
+       📚 SIDEBAR IZQUIERDA
+  ========================= -->
+ <aside class="sidebar-left" id="sidebarLeft">
+
+  <div class="close" id="closeSidebarLeft">✖</div>
+
+  <h3>🎵 Géneros</h3>
+
+  <ul>
+    <li>Rock</li>
+    <li>Jazz</li>
+    <li>Pop</li>
+    <li>Hip-Hop</li>
+    <li>Electrónica</li>
+    <li>Blues</li>
+    <li>Clásica</li>
+  </ul>
+
+  <h3>🎤 Artistas</h3>
+
+  <ul>
+    <li>The Beatles</li>
+    <li>Daft Punk</li>
+    <li>Queen</li>
+    <li>AC/DC</li>
+  </ul>
+
+  <!-- 🛍️ COMPRADOR -->
+  <div class="buyer-view">
+    <h3>🛍️ Más populares</h3>
+    <p>Los vinilos más vendidos del momento</p>
+  </div>
+
+  <!-- 🔥 VENDEDOR -->
+  <div class="seller-view">
+    <h3>🔥 Más vendidos</h3>
+    <h4>Publicar nuevo álbum</h4>
+    <p>Añade tus vinilos a la tienda</p>
+  </div>
+
+</aside>
+
+
+
+  <!-- =========================
+       ⭐ MAIN CONTENT
+  ========================= -->
+  <main class="main-content">
+
+    <!-- DESTACADOS -->
+    <section class="featured">
+
+      <h2>⭐ Vinilos Destacados</h2>
+
+      <div class="featured-wrapper">
+
+        <button class="scroll-btn">◀</button>
+
+        <div class="featured-grid">
+
+          <div class="featured-item">
+            <img src="https://upload.wikimedia.org/wikipedia/en/4/42/Beatles_-_Abbey_Road.jpg">
+          </div>
+
+          <div class="featured-item">
+            <img src="https://upload.wikimedia.org/wikipedia/en/5/55/Michael_Jackson_-_Thriller.png">
+          </div>
+
+          <div class="featured-item">
+            <img src="https://upload.wikimedia.org/wikipedia/en/a/a7/Random_Access_Memories.jpg">
+          </div>
+
+          <div class="featured-item">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/9/92/Acdc_backinblack_cover.jpg">
+          </div>
+
+        </div>
+
+        <button class="scroll-btn">▶</button>
+
+      </div>
+
+    </section>
+
+
+    <!-- GRID VINILOS -->
+    <section class="vinyl-grid">
+
+      <!-- CARD 1 -->
+      <div class="vinyl-card">
+
+        <div class="vinyl-image">
+          <img src="https://upload.wikimedia.org/wikipedia/en/4/42/Beatles_-_Abbey_Road.jpg">
+        </div>
+
+        <div class="vinyl-info">
+          <h3>Abbey Road</h3>
+          <p>The Beatles</p>
+          <span>25€</span>
+        </div>
+
+      </div>
+
+      <!-- CARD 2 -->
+      <div class="vinyl-card">
+
+        <div class="vinyl-image">
+          <img src="https://upload.wikimedia.org/wikipedia/en/5/55/Michael_Jackson_-_Thriller.png">
+        </div>
+
+        <div class="vinyl-info">
+          <h3>Thriller</h3>
+          <p>Michael Jackson</p>
+          <span>30€</span>
+        </div>
+
+      </div>
+
+      <!-- CARD 3 -->
+      <div class="vinyl-card">
+
+        <div class="vinyl-image">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/9/92/Acdc_backinblack_cover.jpg">
+        </div>
+
+        <div class="vinyl-info">
+          <h3>Back In Black</h3>
+          <p>AC/DC</p>
+          <span>22€</span>
+        </div>
+
+      </div>
+
+      <!-- CARD 4 -->
+      <div class="vinyl-card">
+
+        <div class="vinyl-image">
+          <img src="https://upload.wikimedia.org/wikipedia/en/a/a7/Random_Access_Memories.jpg">
+        </div>
+
+        <div class="vinyl-info">
+          <h3>Random Access Memories</h3>
+          <p>Daft Punk</p>
+          <span>28€</span>
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+
+  <!-- =========================
+       👤 SIDEBAR DERECHA
+  ========================= -->
+  <aside class="sidebar-right" id="sidebarRight">
+
+    <div class="close" id="closeSidebarRight">✖</div>
+
+    <h3>👤 Mi perfil</h3>
+
+    <button id="switchBuyer">
+      Comprador
+    </button>
+    <button id="switchSeller">
+      Vendedor
+    </button>
+
+    <hr>
+
+    <input type="text" placeholder="Nombre">
+    <input type="email" placeholder="Correo">
+
+  </aside>
+
+</div>
+
+<!-- JS -->
+>>>>>>> Stashed changes
 <script src="js/app.js"></script>
 </body>
 </html>

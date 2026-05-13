@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 body {
   margin: 0;
   font-family: Arial, sans-serif;
@@ -27,6 +28,26 @@ h2 {
 
 /* INPUTS */
 input {
+=======
+/* =========================================
+   🎧 VINYLMARKET CSS
+========================================= */
+
+body {
+  margin: 0;
+  font-family: Georgia, serif;
+  background: #f3e7d3;
+  color: #3b2f2f;
+}
+
+/* =========================
+   NAVBAR
+========================= */
+
+.navbar {
+  position: fixed;
+  top: 0;
+>>>>>>> Stashed changes
   width: 100%;
   padding: 12px;
   margin: 10px 0;
@@ -38,6 +59,7 @@ input {
   box-sizing: border-box; 
 }
 
+<<<<<<< Updated upstream
 /* BOTONES (IMPORTANTE AQUÍ) */
 button {
   width: 100%;
@@ -47,6 +69,31 @@ button {
   color: white;
   border: none;
   border-radius: 6px;
+=======
+.navbar-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px 20px;
+}
+
+.logo {
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.search-bar {
+  flex: 1;
+  margin: 0 20px;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #3b2f2f;
+}
+
+.menu-left,
+.menu-right {
+  font-size: 24px;
+>>>>>>> Stashed changes
   cursor: pointer;
   font-weight: bold;
   transition: all 0.3s ease;
@@ -58,6 +105,7 @@ button:hover {
   transform: scale(1.03);
 }
 
+<<<<<<< Updated upstream
 /* LINKS */
 a {
   color: #9acd32;
@@ -66,4 +114,246 @@ a {
 
 a:hover {
   text-decoration: underline;
+=======
+/* =========================
+   LAYOUT
+========================= */
+
+.dashboard {
+  display: flex;
+  margin-top: 120px;
+  min-height: 100vh;
+  transition: 0.3s ease;
+}
+
+
+/* =========================
+   📚 SIDEBARS
+========================= */
+
+.sidebar-left,
+.sidebar-right {
+
+  background: #f3e7d3;
+
+  transition: 0.3s ease;
+
+  box-sizing: border-box;
+
+  overflow-y: auto;
+
+  flex-shrink: 0;
+
+}
+
+
+/* =========================
+   🔹 SIDEBAR IZQUIERDA
+========================= */
+
+.sidebar-left {
+
+  width: 0;
+
+  padding: 0;
+
+  border-right: 0 solid #3b2f2f;
+  .main-content {
+    width:90%;
+    padding: 20px;
+  }
+}
+
+/* ABIERTA */
+.sidebar-left.active {
+
+  width: 20%;
+
+  padding: 20px;
+
+  border-right: 2px solid #3b2f2f;
+  .main-content {
+    width:70%;
+    padding: 20px;
+  }
+
+}
+
+
+/* =========================
+   🔹 SIDEBAR DERECHA
+========================= */
+
+.sidebar-right {
+
+  width: 0;
+
+  padding: 0;
+
+  border-left: 0 solid #3b2f2f;
+
+  .main-content {
+    width:90%;
+    padding: 20px;
+  }
+}
+
+/* ABIERTA */
+.sidebar-right.active {
+
+  width: 20%;
+
+  padding: 20px;
+
+  border-left: 2px solid #3b2f2f;
+  .main-content {
+    width:70%;
+    padding: 20px;
+  }
+}
+
+button.active-role {
+
+  background: #3b2f2f;
+
+  color: white;
+
+}
+.buyer-view,
+.seller-view {
+  display: none;
+}
+
+
+/* =========================
+   ❌ BOTÓN CERRAR
+========================= */
+
+.close {
+
+  font-size: 20px;
+
+  cursor: pointer;
+
+  margin-bottom: 20px;
+
+}
+/* =========================
+   MAIN
+========================= */
+
+.main-content {
+  width: 70%;
+  padding: 20px;
+}
+
+/* =========================
+   DESTACADOS
+========================= */
+
+.featured-wrapper {
+  display: flex;
+  align-items: center;
+}
+
+.featured-grid {
+  display: flex;
+  gap: 15px;
+  overflow-x: auto;
+  width: 100%;
+  padding: 10px;
+}
+
+.featured-item {
+  min-width: 180px;
+  height: 180px;
+  background: white;
+  border: 2px solid #3b2f2f;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.featured-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.scroll-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  background: #3b2f2f;
+  color: white;
+}
+
+/* =========================
+   GRID VINILOS
+========================= */
+
+.vinyl-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 25px;
+  margin-top: 30px;
+}
+
+/* =========================
+   CARDS
+========================= */
+
+.vinyl-card {
+  background: #fffaf3;
+  border: 2px solid #3b2f2f;
+  border-radius: 12px;
+  padding: 15px;
+  aspect-ratio: 1 / 1;
+  box-shadow: 3px 3px 0 #3b2f2f;
+  transition: 0.2s;
+}
+
+.vinyl-card:hover {
+  transform: translateY(-5px);
+}
+
+.vinyl-image {
+  display: flex;
+  justify-content: center;
+}
+
+.vinyl-image img {
+  width: 180px;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.vinyl-info {
+  text-align: center;
+  margin-top: 15px;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 1200px) {
+  .vinyl-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 900px) {
+  .vinyl-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .vinyl-grid {
+    grid-template-columns: 1fr;
+  }
+>>>>>>> Stashed changes
 }
