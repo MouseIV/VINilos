@@ -60,11 +60,27 @@
     <h3>👤 Mi perfil</h3>
     <button class="close-btn" id="closeSidebarRight">✖</button>
   </div>
+  
+  <!-- Información del perfil -->
   <div id="profileInfo">
     <p>Inicia sesión para ver tu perfil</p>
     <button class="btn" onclick="window.location.href='login.html'">Iniciar sesión</button>
     <button class="btn btn-secondary" onclick="window.location.href='register.html'">Registrarse</button>
   </div>
+  
+  <!-- Selector de tipo de usuario (solo visible cuando hay sesión) -->
+  <div class="user-type-selector" id="userTypeSelector" style="display: none;">
+    <label for="userTypeSelect">🎭 Tipo de usuario:</label>
+    <select id="userTypeSelect" class="user-type-select">
+      <option value="comprador">🟡 Comprador</option>
+      <option value="vendedor">🔵 Vendedor</option>
+      <option value="ambos">🟢 Comprador y Vendedor</option>
+    </select>
+  </div>
+  
+  <!-- Botón Mi colección -->
+  <button class="btn" id="miColeccionBtn" onclick="verPerfil()" style="display: none; margin-top: 15px;">📀 Mi colección</button>
+  
   <hr>
   <button id="logoutBtn" class="btn btn-secondary" style="display:none;">🚪 Cerrar sesión</button>
 </div>

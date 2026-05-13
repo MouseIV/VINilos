@@ -513,3 +513,47 @@ body.sidebar-right-open .main-content {
     padding: 30px 20px;
   }
 }
+
+
+/* =========================
+   SELECTOR DE TIPO DE USUARIO
+========================= */
+
+.user-type-selector {
+  margin-top: 15px;
+  margin-bottom: 15px;
+  padding: 10px;
+  background: #e8dcc8;
+  border-radius: 10px;
+  text-align: left;
+  border: 1px solid #3b2f2f;
+}
+
+.user-type-selector label {
+  display: block;
+  font-size: 13px;
+  font-weight: bold;
+  margin-bottom: 8px;
+  color: #3b2f2f;
+}
+
+.user-type-select {
+  width: 100%;
+  padding: 8px 10px;
+  background: #fffaf3;
+  border: 1px solid #3b2f2f;
+  border-radius: 8px;
+  font-family: "Georgia", serif;
+  font-size: 14px;
+  cursor: pointer;
+  color: #3b2f2f;
+}
+
+.user-type-select:focus {
+  outline: none;
+  border-color: #8b5a2b;
+}
+
+.user-type-select option {
+  padding: 5px;
+}
