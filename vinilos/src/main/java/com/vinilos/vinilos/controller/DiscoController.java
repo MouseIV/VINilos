@@ -21,12 +21,11 @@ public class DiscoController {
         this.jwtUtil = jwtUtil;
     }
     
-    // Extraer email del token (usando el método correcto de JwtUtil)
+    // Extraer email del token
     private String extraerEmail(String token) {
         if (token != null && token.startsWith("Bearer ")) {
             token = token.substring(7);
         }
-        // Usa extractUsername (que devuelve el email) o el método que tengas
         return jwtUtil.extractUsername(token);
     }
     
@@ -52,7 +51,7 @@ public class DiscoController {
         }
     }
     
-    // ========== ENDPOINTS PROTEGIDOS ==========
+    // ========== ENDPOINTS PROTEGIDOS (requieren token) ==========
     
     @PostMapping("/{discoId}/agregar")
     public ResponseEntity<?> agregarAColeccion(@RequestHeader("Authorization") String token,

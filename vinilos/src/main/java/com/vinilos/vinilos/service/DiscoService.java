@@ -27,13 +27,13 @@ public class DiscoService {
         this.discogsService = discogsService;
     }
     
-    // Listar todos los discos (catálogo general)
+    // Listar todos los discos del catálogo general
     public List<Disco> listarCatalogo() {
         return discoRepository.findAll();
     }
     
     // Buscar disco por ID
-    public Disco buscarPorId(Long id) {
+    public Disco buscarDiscoPorId(Long id) {
         return discoRepository.findById(id).orElse(null);
     }
     
@@ -52,7 +52,7 @@ public class DiscoService {
         return discoRepository.save(nuevoDisco);
     }
     
-    // Añadir disco a la colección personal de un usuario
+    // Añadir disco a la colección personal del usuario
     public Coleccion agregarAColeccion(String email, Long discoId) {
         Usuario usuario = usuarioRepository.findByEmail(email)
             .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
@@ -68,7 +68,7 @@ public class DiscoService {
         return coleccionRepository.save(coleccion);
     }
     
-    // Listar la colección personal de un usuario
+    // Listar la colección personal del usuario
     public List<Coleccion> listarColeccion(String email) {
         Usuario usuario = usuarioRepository.findByEmail(email)
             .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
