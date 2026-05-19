@@ -1,0 +1,30 @@
+{
+  "name": "vinilos",
+  "version": "1.0.0",
+  "description": "Este proyecto consiste en una aplicación web diseñada para gestionar colecciones personales de discos de vinilo. Permite a los usuarios registrarse, iniciar sesión, realizar búsquedas manuales de discos mediante APIs externas y guardar sus propios discos en una colección privada. El objetivo principal es ofrecer una herramienta sencilla, moderna y funcional para catalogar música de forma personalizada.",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MouseIV/VINilos.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MouseIV/VINilos/issues"
+  },
+  "homepage": "https://github.com/MouseIV/VINilos#readme",
+  "dependencies": {
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^6.0.1",
+    "vite": "^8.0.0"
+  }
+}

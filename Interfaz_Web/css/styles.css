@@ -1,0 +1,559 @@
+/* =========================================
+   VINYLMARKET - ESTILOS COMPLETOS
+========================================= */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Georgia", "Times New Roman", serif;
+  background: #f5f0e8;
+  color: #3b2f2f;
+}
+
+/* =========================
+   HEADER FIJO
+========================= */
+.header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background: #f5f0e8;
+  border-bottom: 2px solid #8b5a2b;
+  z-index: 1000;
+  padding: 10px 20px;
+}
+
+.header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.logo {
+  font-size: 24px;
+  font-weight: bold;
+  color: #3b2f2f;
+}
+
+.icon-btn {
+  background: #8b5a2b;
+  color: white;
+  border: none;
+  font-size: 24px;
+  width: 45px;
+  height: 45px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.icon-btn:hover {
+  background: #6b3f1f;
+}
+
+.search-container {
+  flex: 1;
+  display: flex;
+  max-width: 400px;
+}
+
+.search-bar {
+  flex: 1;
+  padding: 12px;
+  border: 1px solid #8b5a2b;
+  border-radius: 8px 0 0 8px;
+  font-family: inherit;
+  background: white;
+}
+
+.search-btn {
+  padding: 12px 15px;
+  background: #8b5a2b;
+  color: white;
+  border: none;
+  border-radius: 0 8px 8px 0;
+  cursor: pointer;
+}
+
+.nav-links {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid #ddd;
+  flex-wrap: wrap;
+}
+
+.nav-links a {
+  color: #3b2f2f;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.nav-links a:hover {
+  color: #8b5a2b;
+}
+
+/* =========================
+   OVERLAY
+========================= */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1001;
+  display: none;
+}
+
+.overlay.active {
+  display: block;
+}
+
+/* =========================
+   SIDEBARS
+========================= */
+.sidebar {
+  position: fixed;
+  top: 0;
+  width: 280px;
+  height: 100%;
+  background: #f5f0e8;
+  padding: 80px 20px 20px 20px;
+  transition: transform 0.3s ease;
+  z-index: 1002;
+  overflow-y: auto;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar-left {
+  left: 0;
+  transform: translateX(-100%);
+  border-right: 2px solid #8b5a2b;
+}
+
+.sidebar-right {
+  right: 0;
+  transform: translateX(100%);
+  border-left: 2px solid #8b5a2b;
+}
+
+.sidebar-left.active {
+  transform: translateX(0);
+}
+
+.sidebar-right.active {
+  transform: translateX(0);
+}
+
+.sidebar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #8b5a2b;
+}
+
+.sidebar-nav a {
+  display: block;
+  padding: 12px 0;
+  color: #3b2f2f;
+  text-decoration: none;
+  transition: 0.2s;
+}
+
+.sidebar-nav a:hover {
+  color: #8b5a2b;
+  padding-left: 10px;
+}
+
+.sidebar-nav h4 {
+  margin: 15px 0 10px 0;
+  color: #8b5a2b;
+}
+
+/* =========================
+   CONTENIDO PRINCIPAL
+========================= */
+.main-content {
+  margin-top: 130px;
+  padding: 20px;
+  transition: margin-left 0.3s ease, margin-right 0.3s ease;
+}
+
+body.sidebar-left-open .main-content {
+  margin-left: 280px;
+}
+
+body.sidebar-right-open .main-content {
+  margin-right: 280px;
+}
+
+/* =========================
+   VINILO DEL DÍA
+========================= */
+.daily-vinyl {
+  background: #fff8f0;
+  border: 2px solid #8b5a2b;
+  border-radius: 15px;
+  padding: 20px;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.daily-vinyl h3 {
+  color: #8b5a2b;
+  margin-bottom: 10px;
+}
+
+/* =========================
+   CARRUSEL
+========================= */
+.carousel-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 20px 0;
+}
+
+.carousel-grid {
+  display: flex;
+  gap: 20px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  padding: 10px;
+  flex: 1;
+}
+
+.carousel-grid::-webkit-scrollbar {
+  display: none;
+}
+
+.carousel-btn {
+  background: #8b5a2b;
+  color: white;
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 18px;
+  transition: 0.2s;
+}
+
+.carousel-btn:hover {
+  background: #6b3f1f;
+  transform: scale(1.05);
+}
+
+/* =========================
+   TARJETAS DE VINILO
+========================= */
+.vinyl-card {
+  background: #fff8f0;
+  border: 1px solid #8b5a2b;
+  border-radius: 12px;
+  padding: 15px;
+  min-width: 200px;
+  text-align: center;
+  transition: 0.2s;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.vinyl-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.15);
+}
+
+.vinyl-card img {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.vinyl-card h3 {
+  font-size: 16px;
+  margin: 10px 0 5px;
+}
+
+.vinyl-card p {
+  font-size: 14px;
+  color: #8b5a2b;
+  margin-bottom: 8px;
+}
+
+.vinyl-card .precio {
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.vinyl-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 25px;
+  margin-top: 30px;
+}
+
+/* =========================
+   BOTONES
+========================= */
+.btn {
+  display: inline-block;
+  padding: 10px 20px;
+  background: #8b5a2b;
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: 0.2s;
+  font-family: inherit;
+}
+
+.btn:hover {
+  background: #6b3f1f;
+}
+
+.btn-secondary {
+  background: #b87a4a;
+}
+
+.btn-secondary:hover {
+  background: #8b5a2b;
+}
+
+.btn-primary {
+  width: 100%;
+  padding: 12px;
+  background: #8b5a2b;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.import-btn, .login-to-buy {
+  margin-top: 10px;
+  padding: 8px 12px;
+  background: #8b5a2b;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 100%;
+}
+
+/* =========================
+   PÁGINAS DE AUTENTICACIÓN
+========================= */
+.auth-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: #f5f0e8;
+}
+
+.auth-container {
+  background: #fff8f0;
+  border-radius: 20px;
+  padding: 40px;
+  width: 100%;
+  max-width: 450px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  border: 1px solid #8b5a2b;
+}
+
+.auth-container h2 {
+  text-align: center;
+  margin-bottom: 25px;
+  color: #3b2f2f;
+}
+
+.input-group {
+  margin-bottom: 20px;
+}
+
+.input-group label {
+  display: block;
+  margin-bottom: 5px;
+  color: #3b2f2f;
+  font-weight: bold;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #d4c5b0;
+  border-radius: 8px;
+  font-family: inherit;
+  background: white;
+}
+
+.input-group input:focus {
+  outline: none;
+  border-color: #8b5a2b;
+}
+
+.auth-links {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  margin-top: 20px;
+  gap: 10px;
+}
+
+.auth-links a {
+  color: #8b5a2b;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.auth-links a:hover {
+  text-decoration: underline;
+}
+
+/* =========================
+   INDEX (BIENVENIDA)
+========================= */
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+  text-align: center;
+}
+
+.button-group {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  margin-top: 30px;
+  flex-wrap: wrap;
+}
+
+.preview-vinilos {
+  margin-top: 50px;
+}
+
+.preview-grid {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 15px;
+}
+
+.preview-item {
+  background: #fff8f0;
+  border: 1px solid #8b5a2b;
+  border-radius: 10px;
+  padding: 15px 25px;
+  font-weight: bold;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+@media (max-width: 768px) {
+  .header-top {
+    flex-direction: column;
+  }
+  
+  .search-container {
+    width: 100%;
+    max-width: none;
+  }
+  
+  .main-content {
+    margin-top: 180px;
+  }
+  
+  .sidebar {
+    width: 100%;
+    max-width: 300px;
+  }
+  
+  body.sidebar-left-open .main-content,
+  body.sidebar-right-open .main-content {
+    margin-left: 0;
+    margin-right: 0;
+  }
+  
+  .vinyl-grid {
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  }
+  
+  .auth-container {
+    margin: 20px;
+    padding: 30px 20px;
+  }
+}
+
+
+/* =========================
+   SELECTOR DE TIPO DE USUARIO
+========================= */
+
+.user-type-selector {
+  margin-top: 15px;
+  margin-bottom: 15px;
+  padding: 10px;
+  background: #e8dcc8;
+  border-radius: 10px;
+  text-align: left;
+  border: 1px solid #3b2f2f;
+}
+
+.user-type-selector label {
+  display: block;
+  font-size: 13px;
+  font-weight: bold;
+  margin-bottom: 8px;
+  color: #3b2f2f;
+}
+
+.user-type-select {
+  width: 100%;
+  padding: 8px 10px;
+  background: #fffaf3;
+  border: 1px solid #3b2f2f;
+  border-radius: 8px;
+  font-family: "Georgia", serif;
+  font-size: 14px;
+  cursor: pointer;
+  color: #3b2f2f;
+}
+
+.user-type-select:focus {
+  outline: none;
+  border-color: #8b5a2b;
+}
+
+.user-type-select option {
+  padding: 5px;
+}

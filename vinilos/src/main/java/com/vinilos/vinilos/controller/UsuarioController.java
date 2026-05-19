@@ -1,32 +1,26 @@
 package com.vinilos.vinilos.controller;
 
+import java.util.List;
+
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.vinilos.repository.UsuarioRepository;
-import com.vinilos.vinilos.entity.Usuario;
+import com.vinilos.vinilos.model.Usuario;
+import com.vinilos.vinilos.service.UsuarioService;
 
 @RestController
-@RequestMapping("/usuarios")
+@RequestMapping("/api/usuarios")
 public class UsuarioController {
 
-    private final UsuarioRepository usuarioRepository;
+    private final UsuarioService usuarioService;
 
-    public UsuarioController(UsuarioRepository usuarioRepository) {
-        this.usuarioRepository = usuarioRepository;
+    public UsuarioController(UsuarioService usuarioService) {
+        this.usuarioService = usuarioService;
     }
 
-    @PostMapping
-    public Usuario crearUsuario(@RequestBody Usuario usuario) {
-        return usuarioRepository.save(usuario);
-    }
-
-    @GetMapping("/{id}")
-    public Usuario obtenerUsuario(@PathVariable Long id) {
-        return usuarioRepository.findById(id).orElse(null);
+    @GetMapping
+    public List<Usuario> listarUsuarios() {
+        return usuarioService.listarTodos();
     }
 }

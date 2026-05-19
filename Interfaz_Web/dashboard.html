@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VinylMarket - Tienda</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<!-- HEADER FIJO -->
+<header class="header">
+  <div class="header-top">
+    <button class="icon-btn" id="openSidebarLeft">☰</button>
+    <div class="logo">🎧 VinylMarket</div>
+    <div class="search-container">
+      <input type="text" class="search-bar" id="searchInput" placeholder="Buscar vinilos...">
+      <button class="search-btn" id="searchBtn">🔍</button>
+    </div>
+    <button class="icon-btn" id="openSidebarRight">👤</button>
+  </div>
+  <nav class="nav-links">
+    <a href="#">Inicio</a>
+    <a href="#">Vinilo del día</a>
+    <a href="#">Novedades</a>
+    <a href="login.html">Mi cuenta</a>
+  </nav>
+</header>
+
+<!-- OVERLAY -->
+<div class="overlay" id="overlay"></div>
+
+<!-- SIDEBAR IZQUIERDO (MENÚ) -->
+<div class="sidebar sidebar-left" id="sidebarLeft">
+  <div class="sidebar-header">
+    <h3>📀 Menú</h3>
+    <button class="close-btn" id="closeSidebarLeft">✖</button>
+  </div>
+  <nav class="sidebar-nav">
+    <a href="#">🏠 Inicio</a>
+    <a href="#">🎲 Vinilo del día</a>
+    <a href="#">✨ Novedades</a>
+    <hr>
+    <div class="buyer-section">
+      <h4>🛍️ Para compradores</h4>
+      <a href="#">🔥 Más solicitados</a>
+      <a href="#">💸 Grandes ofertas</a>
+    </div>
+    <div class="seller-section" style="display:none;">
+      <h4>📦 Para vendedores</h4>
+      <a href="#">📈 Top ventas</a>
+      <a href="#">➕ Nueva publicación</a>
+    </div>
+  </nav>
+</div>
+
+<!-- SIDEBAR DERECHO (PERFIL) -->
+<div class="sidebar sidebar-right" id="sidebarRight">
+  <div class="sidebar-header">
+    <h3>👤 Mi perfil</h3>
+    <button class="close-btn" id="closeSidebarRight">✖</button>
+  </div>
+  
+  <!-- Información del perfil -->
+  <div id="profileInfo">
+    <p>Inicia sesión para ver tu perfil</p>
+    <button class="btn" onclick="window.location.href='login.html'">Iniciar sesión</button>
+    <button class="btn btn-secondary" onclick="window.location.href='register.html'">Registrarse</button>
+  </div>
+  
+  <!-- Selector de tipo de usuario (solo visible cuando hay sesión) -->
+  <div class="user-type-selector" id="userTypeSelector" style="display: none;">
+    <label for="userTypeSelect">🎭 Tipo de usuario:</label>
+    <select id="userTypeSelect" class="user-type-select">
+      <option value="comprador">🟡 Comprador</option>
+      <option value="vendedor">🔵 Vendedor</option>
+      <option value="ambos">🟢 Comprador y Vendedor</option>
+    </select>
+  </div>
+  
+  <!-- Botón Mi colección -->
+  <button class="btn" id="miColeccionBtn" onclick="verPerfil()" style="display: none; margin-top: 15px;">📀 Mi colección</button>
+  
+  <hr>
+  <button id="logoutBtn" class="btn btn-secondary" style="display:none;">🚪 Cerrar sesión</button>
+</div>
+
+<!-- CONTENIDO PRINCIPAL -->
+<main class="main-content" id="mainContent">
+  
+  <div class="daily-vinyl">
+    <h3>🎲 Vinilo del día</h3>
+    <p id="viniloDelDia">Cargando...</p>
+  </div>
+
+  <section class="featured-section">
+    <h2>⭐ Vinilos Destacados</h2>
+    <div class="carousel-wrapper">
+      <button class="carousel-btn prev" id="scrollLeft">◀</button>
+      <div class="carousel-grid" id="featuredGrid">
+        <div class="vinyl-card">Cargando...</div>
+      </div>
+      <button class="carousel-btn next" id="scrollRight">▶</button>
+    </div>
+  </section>
+
+  <section class="vinyl-grid" id="vinylGrid">
+    <p>🔍 Busca un artista o título para empezar</p>
+  </section>
+
+</main>
+
+<script src="js/app.js"></script>
+</body>
+</html>
