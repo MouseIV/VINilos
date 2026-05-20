@@ -199,14 +199,6 @@ body {
   transition: margin-left 0.3s ease, margin-right 0.3s ease;
 }
 
-body.sidebar-left-open .main-content {
-  margin-left: 280px;
-}
-
-body.sidebar-right-open .main-content {
-  margin-right: 280px;
-}
-
 /* =========================
    VINILO DEL DÍA
 ========================= */
@@ -456,6 +448,14 @@ body.sidebar-right-open .main-content {
   flex-wrap: wrap;
 }
 
+.icon-btn {
+  transition: opacity 0.2s ease;
+}
+
+.icon-btn[style*="display: none"] {
+  opacity: 0;
+}
+
 .preview-vinilos {
   margin-top: 50px;
 }
@@ -477,40 +477,56 @@ body.sidebar-right-open .main-content {
 }
 
 /* =========================
-   RESPONSIVE
+   DESPLAZAMIENTO Y AUTOAJUSTE DEL CONTENIDO
 ========================= */
+
+/* Estado normal - sin sidebars abiertos */
+.content {
+  transition: margin-left 0.3s ease, margin-right 0.3s ease;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+/* Cuando sidebar izquierdo está abierto */
+body.sidebar-left-open .content {
+  margin-left: 280px;
+}
+
+/* Cuando sidebar derecho está abierto */
+body.sidebar-right-open .content {
+  margin-right: 280px;
+}
+
+/* Cuando ambos sidebars están abiertos (si es posible) */
+body.sidebar-left-open.sidebar-right-open .content {
+  margin-left: 280px;
+  margin-right: 280px;
+}
+
+/* =========================
+   RESPONSIVE - EN MÓVILES
+========================= */
+
 @media (max-width: 768px) {
-  .header-top {
-    flex-direction: column;
-  }
-  
-  .search-container {
-    width: 100%;
-    max-width: none;
-  }
-  
-  .main-content {
-    margin-top: 180px;
-  }
-  
-  .sidebar {
-    width: 100%;
+  /* En móviles, los sidebars ocupan toda la pantalla */
+  .sidebar-left,
+  .sidebar-right {
+    width: 85%;
     max-width: 300px;
   }
   
-  body.sidebar-left-open .main-content,
-  body.sidebar-right-open .main-content {
+  /* En móviles, el contenido no se desplaza, se superpone */
+  body.sidebar-left-open .content,
+  body.sidebar-right-open .content {
     margin-left: 0;
     margin-right: 0;
   }
   
-  .vinyl-grid {
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  }
-  
-  .auth-container {
-    margin: 20px;
-    padding: 30px 20px;
+  /* En móviles, el overlay maneja la interacción */
+  body.sidebar-left-open .content,
+  body.sidebar-right-open .content {
+    transform: scale(0.95);
+    opacity: 0.5;
   }
 }
 

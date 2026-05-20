@@ -206,62 +206,74 @@ if (window.location.pathname.includes('dashboard.html')) {
   if (scrollLeft) scrollLeft.onclick = () => featuredGrid.scrollBy({ left: -300, behavior: 'smooth' });
   if (scrollRight) scrollRight.onclick = () => featuredGrid.scrollBy({ left: 300, behavior: 'smooth' });
   
- // ========== SIDEBARS ==========
-const sidebarLeft = document.getElementById('sidebarLeft');
-const sidebarRight = document.getElementById('sidebarRight');
-const overlay = document.getElementById('sidebarOverlay');
-const openLeft = document.getElementById('openSidebarLeft');
-const closeLeft = document.getElementById('closeSidebarLeft');
-const openRight = document.getElementById('openSidebarRight');
-const closeRight = document.getElementById('closeSidebarRight');
-const body = document.body;
+  // ========== SIDEBARS ==========
+  const sidebarLeft = document.getElementById('sidebarLeft');
+  const sidebarRight = document.getElementById('sidebarRight');
+  const overlay = document.getElementById('sidebarOverlay');
+  const openLeft = document.getElementById('openSidebarLeft');
+  const closeLeft = document.getElementById('closeSidebarLeft');
+  const openRight = document.getElementById('openSidebarRight');
+  const closeRight = document.getElementById('closeSidebarRight');
+  const body = document.body;
 
-function cerrarSidebars() {
-  if (sidebarLeft) sidebarLeft.classList.remove('active');
-  if (sidebarRight) sidebarRight.classList.remove('active');
-  if (overlay) overlay.classList.remove('active');
-  body.classList.remove('sidebar-left-open', 'sidebar-right-open');
-}
+  function cerrarSidebars() {
+    if (sidebarLeft) sidebarLeft.classList.remove('active');
+    if (sidebarRight) sidebarRight.classList.remove('active');
+    if (overlay) overlay.classList.remove('active');
+    body.classList.remove('sidebar-left-open', 'sidebar-right-open');
+    
+    // Usar visibility en lugar de display para mantener el espacio
+    if (openLeft) openLeft.style.visibility = 'visible';
+    if (openRight) openRight.style.visibility = 'visible';
+  }
 
-function abrirSidebarLeft() {
-  cerrarSidebars();
-  if (sidebarLeft) sidebarLeft.classList.add('active');
-  if (overlay) overlay.classList.add('active');
-  body.classList.add('sidebar-left-open');
-  console.log('Sidebar izquierdo abierto');
-}
+  function abrirSidebarLeft() {
+    cerrarSidebars();
+    if (sidebarLeft) sidebarLeft.classList.add('active');
+    if (overlay) overlay.classList.add('active');
+    body.classList.add('sidebar-left-open');
+    console.log('Sidebar izquierdo abierto');
+    
+    // Ocultar solo el botón izquierdo (mantiene el espacio)
+    if (openLeft) openLeft.style.visibility = 'hidden';
+    if (openRight) openRight.style.visibility = 'visible';
+  }
 
-function abrirSidebarRight() {
-  cerrarSidebars();
-  if (sidebarRight) sidebarRight.classList.add('active');
-  if (overlay) overlay.classList.add('active');
-  body.classList.add('sidebar-right-open');
-  console.log('Sidebar derecho abierto');
-}
+  function abrirSidebarRight() {
+    cerrarSidebars();
+    if (sidebarRight) sidebarRight.classList.add('active');
+    if (overlay) overlay.classList.add('active');
+    body.classList.add('sidebar-right-open');
+    console.log('Sidebar derecho abierto');
+    
+    // Ocultar solo el botón derecho (mantiene el espacio)
+    if (openRight) openRight.style.visibility = 'hidden';
+    if (openLeft) openLeft.style.visibility = 'visible';
+  }
 
-// Asignar eventos
-if (openLeft) {
-  openLeft.onclick = abrirSidebarLeft;
-  console.log('Botón izquierdo asignado');
-} else {
-  console.error('openSidebarLeft no encontrado');
-}
+  // Asignar eventos
+  if (openLeft) {
+    openLeft.onclick = abrirSidebarLeft;
+    console.log('Botón izquierdo asignado');
+  } else {
+    console.error('openSidebarLeft no encontrado');
+  }
 
-if (closeLeft) closeLeft.onclick = cerrarSidebars;
-if (openRight) {
-  openRight.onclick = abrirSidebarRight;
-  console.log('Botón derecho asignado');
-} else {
-  console.error('openSidebarRight no encontrado');
-}
-if (closeRight) closeRight.onclick = cerrarSidebars;
-if (overlay) overlay.onclick = cerrarSidebars;
+  if (closeLeft) closeLeft.onclick = cerrarSidebars;
+  if (openRight) {
+    openRight.onclick = abrirSidebarRight;
+    console.log('Botón derecho asignado');
+  } else {
+    console.error('openSidebarRight no encontrado');
+  }
+  if (closeRight) closeRight.onclick = cerrarSidebars;
+  if (overlay) overlay.onclick = cerrarSidebars;
 
-// Cerrar con tecla Escape
-document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape') cerrarSidebars();
-});
-  
+  // Cerrar con tecla Escape
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') cerrarSidebars();
+  });
+
   // ========== BÚSQUEDA ==========
   const searchInput = document.getElementById('searchInput');
   const vinylGrid = document.getElementById('vinylGrid');
