@@ -2,6 +2,7 @@ DROP DATABASE IF EXISTS Vinilos;
 CREATE DATABASE Vinilos;
 USE Vinilos;
 
+
 CREATE TABLE Clientes (
     id_cliente INT PRIMARY KEY,
     Nombre VARCHAR(100),
