@@ -46,8 +46,17 @@ if (registerForm) {
 }
 
 // ============================================
-// 🔐 LOGIN
+//  LOGIN
 // ============================================
+
+// INDEX - REDIRECCIÓN SI ESTÁ CONECTADO
+if (window.location.pathname.includes('index.html') || window.location.pathname === '/' || window.location.pathname === '/index.html') {
+  const token = localStorage.getItem('token');
+  if (token) {
+    window.location.href = 'perfil.html';
+  }
+}
+
 const loginForm = document.getElementById('loginForm');
 if (loginForm) {
   loginForm.addEventListener('submit', async (e) => {
