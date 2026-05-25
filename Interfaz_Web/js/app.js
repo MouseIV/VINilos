@@ -2,7 +2,8 @@
 // 🎧 VINYLMARKET - APP COMPLETA
 // ============================================
 
-const API_URL = 'http://localhost:8080/api';
+// RUTA CORRECTA PARA TU BACKEND
+const API_URL = 'http://localhost:8080/usuarios';
 
 // ============================================
 // 🔐 REGISTRO
@@ -26,7 +27,7 @@ if (registerForm) {
     };
     
     try {
-      const response = await fetch(`${API_URL}/auth/registro`, {
+      const response = await fetch(`${API_URL}/registro`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(userData)
@@ -46,13 +47,13 @@ if (registerForm) {
 }
 
 // ============================================
-//  LOGIN
+// 🔐 LOGIN
 // ============================================
 
-// INDEX - REDIRECCIÓN SI ESTÁ CONECTADO
+// Redirección si ya está logueado
 if (window.location.pathname.includes('index.html') || window.location.pathname === '/' || window.location.pathname === '/index.html') {
-  const token = localStorage.getItem('token');
-  if (token) {
+  const usuario = localStorage.getItem('usuario');
+  if (usuario) {
     window.location.href = 'perfil.html';
   }
 }
@@ -66,7 +67,7 @@ if (loginForm) {
     const password = document.getElementById('loginPassword').value;
     
     try {
-      const response = await fetch(`${API_URL}/auth/login`, {
+      const response = await fetch(`${API_URL}/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password })
@@ -74,7 +75,8 @@ if (loginForm) {
       
       if (response.ok) {
         const data = await response.json();
-        localStorage.setItem('token', data.token);
+
+        // GUARDAMOS SOLO EL USUARIO (NO TOKEN)
         localStorage.setItem('usuario', JSON.stringify({
           id: data.id,
           nombre: data.nombre,
@@ -82,6 +84,7 @@ if (loginForm) {
           username: data.username,
           tipo: 'comprador'
         }));
+
         alert('✅ Login exitoso');
         window.location.href = 'dashboard.html';
       } else {
@@ -111,7 +114,6 @@ if (forgotForm) {
 
 if (window.location.pathname.includes('dashboard.html')) {
   
-  const token = localStorage.getItem('token');
   const usuario = JSON.parse(localStorage.getItem('usuario'));
   
   // Elementos
@@ -137,9 +139,9 @@ if (window.location.pathname.includes('dashboard.html')) {
       sellerSection.style.display = 'block';
     }
   }
-  
+
   // Mostrar info si está logueado
-  if (token && usuario && profileInfo) {
+  if (usuario && profileInfo) {
     const tipoUsuario = usuario.tipo || 'comprador';
     
     profileInfo.innerHTML = `
@@ -167,7 +169,7 @@ if (window.location.pathname.includes('dashboard.html')) {
     if (logoutBtn) logoutBtn.style.display = 'none';
   }
   
-  // Evento cambiar tipo de usuario
+  // Cambiar tipo de usuario
   if (userTypeSelect) {
     userTypeSelect.onchange = function(e) {
       const nuevoTipo = e.target.value;
@@ -176,11 +178,11 @@ if (window.location.pathname.includes('dashboard.html')) {
         usuarioActual.tipo = nuevoTipo;
         localStorage.setItem('usuario', JSON.stringify(usuarioActual));
         actualizarSeccionesPorTipo(nuevoTipo);
-        alert(`✅ Tipo cambiado a: ${nuevoTipo === 'comprador' ? 'Comprador' : nuevoTipo === 'vendedor' ? 'Vendedor' : 'Comprador y Vendedor'}`);
+        alert(`✅ Tipo cambiado a: ${nuevoTipo}`);
       }
     };
   }
-  
+
   // Cerrar sesión
   if (logoutBtn) {
     logoutBtn.onclick = function() {
@@ -231,7 +233,6 @@ if (window.location.pathname.includes('dashboard.html')) {
     if (overlay) overlay.classList.remove('active');
     body.classList.remove('sidebar-left-open', 'sidebar-right-open');
     
-    // Usar visibility en lugar de display para mantener el espacio
     if (openLeft) openLeft.style.visibility = 'visible';
     if (openRight) openRight.style.visibility = 'visible';
   }
@@ -241,9 +242,7 @@ if (window.location.pathname.includes('dashboard.html')) {
     if (sidebarLeft) sidebarLeft.classList.add('active');
     if (overlay) overlay.classList.add('active');
     body.classList.add('sidebar-left-open');
-    console.log('Sidebar izquierdo abierto');
     
-    // Ocultar solo el botón izquierdo (mantiene el espacio)
     if (openLeft) openLeft.style.visibility = 'hidden';
     if (openRight) openRight.style.visibility = 'visible';
   }
@@ -253,32 +252,17 @@ if (window.location.pathname.includes('dashboard.html')) {
     if (sidebarRight) sidebarRight.classList.add('active');
     if (overlay) overlay.classList.add('active');
     body.classList.add('sidebar-right-open');
-    console.log('Sidebar derecho abierto');
     
-    // Ocultar solo el botón derecho (mantiene el espacio)
     if (openRight) openRight.style.visibility = 'hidden';
     if (openLeft) openLeft.style.visibility = 'visible';
   }
 
-  // Asignar eventos
-  if (openLeft) {
-    openLeft.onclick = abrirSidebarLeft;
-    console.log('Botón izquierdo asignado');
-  } else {
-    console.error('openSidebarLeft no encontrado');
-  }
-
+  if (openLeft) openLeft.onclick = abrirSidebarLeft;
   if (closeLeft) closeLeft.onclick = cerrarSidebars;
-  if (openRight) {
-    openRight.onclick = abrirSidebarRight;
-    console.log('Botón derecho asignado');
-  } else {
-    console.error('openSidebarRight no encontrado');
-  }
+  if (openRight) openRight.onclick = abrirSidebarRight;
   if (closeRight) closeRight.onclick = cerrarSidebars;
   if (overlay) overlay.onclick = cerrarSidebars;
 
-  // Cerrar con tecla Escape
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') cerrarSidebars();
   });
@@ -291,7 +275,7 @@ if (window.location.pathname.includes('dashboard.html')) {
     if (!query.trim()) return alert('Escribe un artista o título');
     vinylGrid.innerHTML = '<p>🔄 Cargando...</p>';
     try {
-      const response = await fetch(`${API_URL}/discos/buscar?q=${encodeURIComponent(query)}`);
+      const response = await fetch(`http://localhost:8080/discos/buscar?q=${encodeURIComponent(query)}`);
       if (response.ok) {
         const discos = await response.json();
         if (!discos.length) vinylGrid.innerHTML = '<p>No se encontraron vinilos</p>';
@@ -302,23 +286,15 @@ if (window.location.pathname.includes('dashboard.html')) {
               <h3>${d.titulo || 'Sin título'}</h3>
               <p>${d.artista || 'Desconocido'}</p>
               <p>${d.anio || 'N/A'}</p>
-              <button class="import-btn" data-titulo="${d.titulo || ''}" data-artista="${d.artista || ''}" data-anio="${d.anio || 0}" data-genero="${d.genero || ''}" data-imagen="${d.imagenUrl || ''}">➕ Importar</button>
+              <button class="import-btn" data-id="${d.discogsId}">➕ Importar</button>
             </div>
           `).join('');
           
           document.querySelectorAll('.import-btn').forEach(btn => {
             btn.onclick = async () => {
-              const discoData = {
-                titulo: btn.dataset.titulo,
-                artista: btn.dataset.artista,
-                anio: parseInt(btn.dataset.anio) || 0,
-                genero: btn.dataset.genero,
-                imagenUrl: btn.dataset.imagen
-              };
-              const res = await fetch(`${API_URL}/discos`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-                body: JSON.stringify(discoData)
+              const discogsId = btn.dataset.id;
+              const res = await fetch(`http://localhost:8080/discos/importar/${discogsId}`, {
+                method: 'POST'
               });
               alert(res.ok ? '✅ Importado' : '❌ Error');
             };

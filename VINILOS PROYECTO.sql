@@ -13,7 +13,6 @@ CREATE TABLE Clientes (
     Password_bash VARCHAR(100),
     Direccion VARCHAR(200),
     Codigo_Postal VARCHAR(10),
-    Fecha_registro DATETIME,
     Tipo_de_cliente ENUM('comprador','vendedor','ambos'),
     Valoracion_cliente INT
 );

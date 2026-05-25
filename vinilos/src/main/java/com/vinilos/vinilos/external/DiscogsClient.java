@@ -28,9 +28,10 @@ public class DiscogsClient {
     }
 
     public String obtenerDetalleDisco(String discogsId) {
-    String url = "https://api.discogs.com/releases/" + discogsId;
-    return webClient.get()
-            .uri(url)
+        return webClient.get()
+            .uri(uriBuilder -> uriBuilder
+                .path("/releases/{id}")
+                .build(discogsId))
             .retrieve()
             .bodyToMono(String.class)
             .block();

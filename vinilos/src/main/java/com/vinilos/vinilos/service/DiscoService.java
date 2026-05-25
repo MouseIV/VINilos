@@ -1,13 +1,15 @@
 package com.vinilos.vinilos.service;
 
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
 import com.vinilos.vinilos.model.Coleccion;
 import com.vinilos.vinilos.model.Disco;
 import com.vinilos.vinilos.model.Usuario;
 import com.vinilos.vinilos.repository.ColeccionRepository;
 import com.vinilos.vinilos.repository.DiscoRepository;
 import com.vinilos.vinilos.repository.UsuarioRepository;
-import org.springframework.stereotype.Service;
-import java.util.List;
 
 @Service
 public class DiscoService {
@@ -27,17 +29,14 @@ public class DiscoService {
         this.discogsService = discogsService;
     }
     
-    // Listar todos los discos del catálogo general
     public List<Disco> listarCatalogo() {
         return discoRepository.findAll();
     }
     
-    // Buscar disco por ID
     public Disco buscarDiscoPorId(Long id) {
         return discoRepository.findById(id).orElse(null);
     }
     
-    // Importar disco desde Discogs al catálogo general
     public Disco importarAlCatalogo(String discogsId) {
         Disco existente = discoRepository.findByDiscogsId(discogsId).orElse(null);
         if (existente != null) {
@@ -52,7 +51,6 @@ public class DiscoService {
         return discoRepository.save(nuevoDisco);
     }
     
-    // Añadir disco a la colección personal del usuario
     public Coleccion agregarAColeccion(String email, Long discoId) {
         Usuario usuario = usuarioRepository.findByEmail(email)
             .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
@@ -60,7 +58,7 @@ public class DiscoService {
         Disco disco = discoRepository.findById(discoId)
             .orElseThrow(() -> new RuntimeException("Disco no encontrado"));
         
-        if (coleccionRepository.existsByUsuarioAndDiscoId(usuario, discoId)) {
+        if (coleccionRepository.existsByUsuarioAndDisco_Id(usuario, discoId)) {
             throw new RuntimeException("El disco ya está en tu colección");
         }
         
@@ -68,7 +66,6 @@ public class DiscoService {
         return coleccionRepository.save(coleccion);
     }
     
-    // Listar la colección personal del usuario
     public List<Coleccion> listarColeccion(String email) {
         Usuario usuario = usuarioRepository.findByEmail(email)
             .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
@@ -76,7 +73,6 @@ public class DiscoService {
         return coleccionRepository.findByUsuario(usuario);
     }
     
-    // Buscar en Discogs (público)
     public List<Disco> buscarEnDiscogs(String query) {
         return discogsService.buscarDiscos(query);
     }
