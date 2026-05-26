@@ -210,13 +210,31 @@ if (window.location.pathname.includes('dashboard.html')) {
     const destacados = ['Abbey Road', 'Thriller', 'Dark Side', 'Back in Black'];
     featuredGrid.innerHTML = destacados.map(v => `<div class="featured-item">⭐ ${v}</div>`).join('');
   }
-  
-  // Scroll
-  const scrollLeft = document.getElementById('scrollLeft');
-  const scrollRight = document.getElementById('scrollRight');
-  if (scrollLeft) scrollLeft.onclick = () => featuredGrid.scrollBy({ left: -300, behavior: 'smooth' });
-  if (scrollRight) scrollRight.onclick = () => featuredGrid.scrollBy({ left: 300, behavior: 'smooth' });
-  
+
+  // ========== VINILOS DESDE BACKEND ==========
+  const vinilosDestacados = document.getElementById('vinilos-destacados');
+
+  if (vinilosDestacados) {
+    fetch("http://localhost:8080/vinilos")
+      .then(res => res.json())
+      .then(vinilos => {
+        console.log("Vinilos recibidos:", vinilos);
+
+        vinilosDestacados.innerHTML = "";
+
+        vinilos.forEach(v => {
+          vinilosDestacados.innerHTML += `
+            <div class="vinilo-card">
+              <h3>${v.titulo}</h3>
+              <p>${v.artista}</p>
+              <small>${v.genero || "Sin género"}</small>
+            </div>
+          `;
+        });
+      })
+      .catch(err => console.error("Error cargando vinilos:", err));
+  }
+
   // ========== SIDEBARS ==========
   const sidebarLeft = document.getElementById('sidebarLeft');
   const sidebarRight = document.getElementById('sidebarRight');
