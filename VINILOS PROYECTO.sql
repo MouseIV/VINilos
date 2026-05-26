@@ -60,3 +60,5 @@ CREATE TABLE vinilos_en_venta (
     precio DECIMAL(10,2) NOT NULL,
     stock INT NOT NULL DEFAULT 100
 );
+USE vinilos;
+SELECT * FROM usuarios;
