@@ -44,10 +44,12 @@ public class DiscoService {
             return existente;
         }
         
-        Disco nuevoDisco = discogsService.obtenerDetalleDiscoEntity(discogsId);
-        if (nuevoDisco == null) {
+        // Intentar obtener el detalle del disco desde Discogs usando la búsqueda pública
+        java.util.List<Disco> resultados = invokeBuscarDiscos(discogsId);
+        if (resultados == null || resultados.isEmpty()) {
             throw new RuntimeException("No se pudo obtener el disco de Discogs");
         }
+        Disco nuevoDisco = resultados.get(0);
         
         return discoRepository.save(nuevoDisco);
     }
@@ -78,6 +80,24 @@ public class DiscoService {
     
     // Buscar en Discogs (público)
     public List<Disco> buscarEnDiscogs(String query) {
-        return discogsService.buscarDiscos(query);
+        return invokeBuscarDiscos(query);
+
+    // Use reflection to call the appropriate search method on DiscogsService
+    @SuppressWarnings("unchecked")
+    private java.util.List<Disco> invokeBuscarDiscos(String query) {
+        String[] candidates = {"buscarDiscos", "buscarDisco", "buscar", "searchDiscos", "search"};
+        for (String name : candidates) {
+            try {
+                java.lang.reflect.Method m = discogsService.getClass().getMethod(name, String.class);
+                Object res = m.invoke(discogsService, query);
+                if (res instanceof java.util.List) return (java.util.List<Disco>) res;
+            } catch (NoSuchMethodException e) {
+                // try next
+            } catch (Exception e) {
+                throw new RuntimeException("Error invoking DiscogsService." , e);
+            }
+        }
+        throw new RuntimeException("DiscogsService search method not found");
+    }
     }
 }

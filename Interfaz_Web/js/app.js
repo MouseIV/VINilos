@@ -208,13 +208,31 @@ if (window.location.pathname.includes('dashboard.html')) {
     const destacados = ['Abbey Road', 'Thriller', 'Dark Side', 'Back in Black'];
     featuredGrid.innerHTML = destacados.map(v => `<div class="featured-item">⭐ ${v}</div>`).join('');
   }
-  
-  // Scroll
-  const scrollLeft = document.getElementById('scrollLeft');
-  const scrollRight = document.getElementById('scrollRight');
-  if (scrollLeft) scrollLeft.onclick = () => featuredGrid.scrollBy({ left: -300, behavior: 'smooth' });
-  if (scrollRight) scrollRight.onclick = () => featuredGrid.scrollBy({ left: 300, behavior: 'smooth' });
-  
+
+  // ========== VINILOS DESDE BACKEND ==========
+  const vinilosDestacados = document.getElementById('vinilos-destacados');
+
+  if (vinilosDestacados) {
+    fetch("http://localhost:8080/vinilos")
+      .then(res => res.json())
+      .then(vinilos => {
+        console.log("Vinilos recibidos:", vinilos);
+
+        vinilosDestacados.innerHTML = "";
+
+        vinilos.forEach(v => {
+          vinilosDestacados.innerHTML += `
+            <div class="vinilo-card">
+              <h3>${v.titulo}</h3>
+              <p>${v.artista}</p>
+              <small>${v.genero || "Sin género"}</small>
+            </div>
+          `;
+        });
+      })
+      .catch(err => console.error("Error cargando vinilos:", err));
+  }
+
   // ========== SIDEBARS ==========
   const sidebarLeft = document.getElementById('sidebarLeft');
   const sidebarRight = document.getElementById('sidebarRight');
@@ -231,7 +249,6 @@ if (window.location.pathname.includes('dashboard.html')) {
     if (overlay) overlay.classList.remove('active');
     body.classList.remove('sidebar-left-open', 'sidebar-right-open');
     
-    // Usar visibility en lugar de display para mantener el espacio
     if (openLeft) openLeft.style.visibility = 'visible';
     if (openRight) openRight.style.visibility = 'visible';
   }
@@ -241,9 +258,7 @@ if (window.location.pathname.includes('dashboard.html')) {
     if (sidebarLeft) sidebarLeft.classList.add('active');
     if (overlay) overlay.classList.add('active');
     body.classList.add('sidebar-left-open');
-    console.log('Sidebar izquierdo abierto');
     
-    // Ocultar solo el botón izquierdo (mantiene el espacio)
     if (openLeft) openLeft.style.visibility = 'hidden';
     if (openRight) openRight.style.visibility = 'visible';
   }
@@ -253,32 +268,17 @@ if (window.location.pathname.includes('dashboard.html')) {
     if (sidebarRight) sidebarRight.classList.add('active');
     if (overlay) overlay.classList.add('active');
     body.classList.add('sidebar-right-open');
-    console.log('Sidebar derecho abierto');
     
-    // Ocultar solo el botón derecho (mantiene el espacio)
     if (openRight) openRight.style.visibility = 'hidden';
     if (openLeft) openLeft.style.visibility = 'visible';
   }
 
-  // Asignar eventos
-  if (openLeft) {
-    openLeft.onclick = abrirSidebarLeft;
-    console.log('Botón izquierdo asignado');
-  } else {
-    console.error('openSidebarLeft no encontrado');
-  }
-
+  if (openLeft) openLeft.onclick = abrirSidebarLeft;
   if (closeLeft) closeLeft.onclick = cerrarSidebars;
-  if (openRight) {
-    openRight.onclick = abrirSidebarRight;
-    console.log('Botón derecho asignado');
-  } else {
-    console.error('openSidebarRight no encontrado');
-  }
+  if (openRight) openRight.onclick = abrirSidebarRight;
   if (closeRight) closeRight.onclick = cerrarSidebars;
   if (overlay) overlay.onclick = cerrarSidebars;
 
-  // Cerrar con tecla Escape
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') cerrarSidebars();
   });
