@@ -61,8 +61,8 @@ public class DiscogsService {
     }
     
     private String extraerArtista(JsonNode item) {
-        if (item.has("artist") && !item.get("artist").isEmpty()) {
-            return item.get("artist").get(0).asText();
+        if (item.has("artist") && !item.get("artist").isNull()) {
+            return item.get("artist").asText();
         }
         return "Artista desconocido";
     }
@@ -75,7 +75,7 @@ public class DiscogsService {
     }
     
     private String extraerGenero(JsonNode item) {
-        if (item.has("genre") && !item.get("genre").isEmpty()) {
+        if (item.has("genre") && item.get("genre").isArray() && item.get("genre").size() > 0) {
             return item.get("genre").get(0).asText();
         }
         return "Sin género";
@@ -101,14 +101,14 @@ public class DiscogsService {
     }
     
     private String extraerArtistasDetalle(JsonNode root) {
-        if (root.has("artists") && !root.get("artists").isEmpty()) {
+        if (root.has("artists") && root.get("artists").isArray() && root.get("artists").size() > 0) {
             return root.get("artists").get(0).get("name").asText();
         }
         return "Artista desconocido";
     }
     
     private String extraerGenerosDetalle(JsonNode root) {
-        if (root.has("genres") && !root.get("genres").isEmpty()) {
+        if (root.has("genres") && root.get("genres").isArray() && root.get("genres").size() > 0) {
             List<String> generos = new ArrayList<>();
             for (JsonNode g : root.get("genres")) {
                 generos.add(g.asText());
@@ -119,7 +119,7 @@ public class DiscogsService {
     }
     
     private String extraerImagenDetalle(JsonNode root) {
-        if (root.has("images") && !root.get("images").isEmpty()) {
+        if (root.has("images") && root.get("images").isArray() && root.get("images").size() > 0) {
             return root.get("images").get(0).get("uri").asText();
         }
         return "";

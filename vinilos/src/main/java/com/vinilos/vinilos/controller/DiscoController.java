@@ -1,78 +1,44 @@
 package com.vinilos.vinilos.controller;
 
-import com.vinilos.vinilos.config.JwtUtil;
-import com.vinilos.vinilos.model.Coleccion;
-import com.vinilos.vinilos.model.Disco;
-import com.vinilos.vinilos.service.DiscoService;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.vinilos.vinilos.model.Disco;
+import com.vinilos.vinilos.service.DiscoService;
+
+@CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("/api/discos")
+@RequestMapping("/discos")
 public class DiscoController {
-    
-    private final DiscoService discoService;
-    private final JwtUtil jwtUtil;
-    
-    public DiscoController(DiscoService discoService, JwtUtil jwtUtil) {
-        this.discoService = discoService;
-        this.jwtUtil = jwtUtil;
-    }
-    
-    // Extraer email del token
-    private String extraerEmail(String token) {
-        if (token != null && token.startsWith("Bearer ")) {
-            token = token.substring(7);
-        }
-        return jwtUtil.extractUsername(token);
-    }
-    
-    // ========== ENDPOINTS PÚBLICOS ==========
-    
-    @GetMapping
+
+    @Autowired
+    private DiscoService discoService;
+
+    @GetMapping("/catalogo")
     public List<Disco> listarCatalogo() {
         return discoService.listarCatalogo();
     }
-    
+
+    @GetMapping("/{id}")
+    public Disco obtenerDisco(@PathVariable Long id) {
+        return discoService.buscarDiscoPorId(id);
+    }
+
     @GetMapping("/buscar")
     public List<Disco> buscarEnDiscogs(@RequestParam String q) {
         return discoService.buscarEnDiscogs(q);
     }
-    
+
     @PostMapping("/importar/{discogsId}")
-    public ResponseEntity<?> importarAlCatalogo(@PathVariable String discogsId) {
-        try {
-            Disco disco = discoService.importarAlCatalogo(discogsId);
-            return ResponseEntity.ok(disco);
-        } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
-    
-    // ========== ENDPOINTS PROTEGIDOS (requieren token) ==========
-    
-    @PostMapping("/{discoId}/agregar")
-    public ResponseEntity<?> agregarAColeccion(@RequestHeader("Authorization") String token,
-                                                @PathVariable Long discoId) {
-        try {
-            String email = extraerEmail(token);
-            Coleccion coleccion = discoService.agregarAColeccion(email, discoId);
-            return ResponseEntity.status(HttpStatus.CREATED).body(coleccion);
-        } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
-    
-    @GetMapping("/mi-coleccion")
-    public ResponseEntity<?> listarMiColeccion(@RequestHeader("Authorization") String token) {
-        try {
-            String email = extraerEmail(token);
-            List<Coleccion> coleccion = discoService.listarColeccion(email);
-            return ResponseEntity.ok(coleccion);
-        } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+    public Disco importar(@PathVariable String discogsId) {
+        return discoService.importarAlCatalogo(discogsId);
     }
 }
