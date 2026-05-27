@@ -2,8 +2,7 @@
 // 🎧 VINYLMARKET - APP COMPLETA
 // ============================================
 
-// RUTA CORRECTA PARA TU BACKEND
-const API_URL = 'http://localhost:8080/usuarios';
+const API_URL = 'http://localhost:8080/api';
 
 // ============================================
 // 🔐 REGISTRO
@@ -27,7 +26,7 @@ if (registerForm) {
     };
     
     try {
-      const response = await fetch(`${API_URL}/registro`, {
+      const response = await fetch(`${API_URL}/auth/registro`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(userData)
@@ -52,8 +51,8 @@ if (registerForm) {
 
 // Redirección si ya está logueado
 if (window.location.pathname.includes('index.html') || window.location.pathname === '/' || window.location.pathname === '/index.html') {
-  const usuario = localStorage.getItem('usuario');
-  if (usuario) {
+  const token = localStorage.getItem('token');
+  if (token) {
     window.location.href = 'perfil.html';
   }
 }
@@ -67,7 +66,7 @@ if (loginForm) {
     const password = document.getElementById('loginPassword').value;
     
     try {
-      const response = await fetch(`${API_URL}/login`, {
+      const response = await fetch(`${API_URL}/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password })
@@ -76,7 +75,7 @@ if (loginForm) {
       if (response.ok) {
         const data = await response.json();
 
-        // GUARDAMOS SOLO EL USUARIO (NO TOKEN)
+        localStorage.setItem('token', data.token);
         localStorage.setItem('usuario', JSON.stringify({
           id: data.id,
           nombre: data.nombre,
@@ -114,6 +113,7 @@ if (forgotForm) {
 
 if (window.location.pathname.includes('dashboard.html')) {
   
+  const token = localStorage.getItem('token');
   const usuario = JSON.parse(localStorage.getItem('usuario'));
   
   // Elementos
@@ -141,7 +141,7 @@ if (window.location.pathname.includes('dashboard.html')) {
   }
 
   // Mostrar info si está logueado
-  if (usuario && profileInfo) {
+  if (token && usuario && profileInfo) {
     const tipoUsuario = usuario.tipo || 'comprador';
     
     profileInfo.innerHTML = `
@@ -192,7 +192,7 @@ if (window.location.pathname.includes('dashboard.html')) {
   }
   
   // ========== VINILO DEL DÍA ==========
-  const vinilosLista = ['Dark Side of the Moon - Pink Floyd', 'Thriller - Michael Jackson', 'Abbey Road - The Beatles'];
+  const vinilosLista = ['Dark Side of the Moon - Pink Floyd', 'Thriller - Michael Jackson', 'Abbey Road - The Beatles', 'Back in Black - AC/DC'];
   const hoy = new Date().toDateString();
   let viniloDia = localStorage.getItem('viniloDia');
   if (!viniloDia || !viniloDia.includes(hoy)) {
@@ -211,28 +211,12 @@ if (window.location.pathname.includes('dashboard.html')) {
     featuredGrid.innerHTML = destacados.map(v => `<div class="featured-item">⭐ ${v}</div>`).join('');
   }
 
-  // ========== VINILOS DESDE BACKEND ==========
-  const vinilosDestacados = document.getElementById('vinilos-destacados');
-
-  if (vinilosDestacados) {
-    fetch("http://localhost:8080/vinilos")
-      .then(res => res.json())
-      .then(vinilos => {
-        console.log("Vinilos recibidos:", vinilos);
-
-        vinilosDestacados.innerHTML = "";
-
-        vinilos.forEach(v => {
-          vinilosDestacados.innerHTML += `
-            <div class="vinilo-card">
-              <h3>${v.titulo}</h3>
-              <p>${v.artista}</p>
-              <small>${v.genero || "Sin género"}</small>
-            </div>
-          `;
-        });
-      })
-      .catch(err => console.error("Error cargando vinilos:", err));
+  // Scroll para destacados
+  const scrollLeft = document.getElementById('scrollLeft');
+  const scrollRight = document.getElementById('scrollRight');
+  if (scrollLeft && featuredGrid) {
+    scrollLeft.onclick = () => featuredGrid.scrollBy({ left: -300, behavior: 'smooth' });
+    scrollRight.onclick = () => featuredGrid.scrollBy({ left: 300, behavior: 'smooth' });
   }
 
   // ========== SIDEBARS ==========
@@ -285,49 +269,196 @@ if (window.location.pathname.includes('dashboard.html')) {
     if (e.key === 'Escape') cerrarSidebars();
   });
 
-  // ========== BÚSQUEDA ==========
-  const searchInput = document.getElementById('searchInput');
+  // ========== VINILOS ALEATORIOS ==========
   const vinylGrid = document.getElementById('vinylGrid');
+  
+  const artistasPopulares = [
+    'pink floyd', 'beatles', 'michael jackson', 'queen', 'ac dc',
+    'nirvana', 'radiohead', 'bowie', 'led zeppelin', 'rolling stones',
+    'fleetwood mac', 'prince', 'u2', 'metallica', 'guns and roses',
+    'abba', 'elvis presley', 'bob dylan', 'the clash', 'ramones'
+  ];
+
+  function mostrarVinilos(discos) {
+    if (!vinylGrid) return;
+    
+    if (!discos || discos.length === 0) {
+      vinylGrid.innerHTML = '<p>🎧 No se encontraron vinilos</p>';
+      return;
+    }
+    
+    const tokenActual = localStorage.getItem('token');
+    
+    vinylGrid.innerHTML = discos.map(disco => `
+      <div class="vinyl-card">
+        ${disco.imagenUrl ? `<img src="${disco.imagenUrl}" alt="portada">` : '<div style="height:100px; background:#e0d5c0;">Sin imagen</div>'}
+        <h3>${disco.titulo || 'Sin título'}</h3>
+        <p>🎤 ${disco.artista || 'Desconocido'}</p>
+        <p>📅 ${disco.anio || 'N/A'}</p>
+        <p>🎸 ${disco.genero || 'Sin género'}</p>
+        ${tokenActual ? 
+          `<button class="import-btn" data-titulo="${disco.titulo || ''}" data-artista="${disco.artista || ''}" data-anio="${disco.anio || 0}" data-genero="${disco.genero || ''}" data-imagen="${disco.imagenUrl || ''}">➕ Importar a colección</button>` :
+          `<button class="login-to-buy" onclick="window.location.href='login.html'">🔒 Inicia sesión para importar</button>`
+        }
+      </div>
+    `).join('');
+    
+    if (tokenActual) {
+      document.querySelectorAll('.import-btn').forEach(btn => {
+        btn.onclick = async () => {
+          const discoData = {
+            titulo: btn.dataset.titulo,
+            artista: btn.dataset.artista,
+            anio: parseInt(btn.dataset.anio) || 0,
+            genero: btn.dataset.genero,
+            imagenUrl: btn.dataset.imagen
+          };
+          
+          try {
+            const res = await fetch(`${API_URL}/discos`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${tokenActual}`
+              },
+              body: JSON.stringify(discoData)
+            });
+            alert(res.ok ? '✅ Disco importado a tu colección' : '❌ Error al importar');
+          } catch (error) {
+            alert('❌ Error de conexión');
+          }
+        };
+      });
+    }
+  }
+
+  async function cargarVinilosAleatorios() {
+    if (!vinylGrid) return;
+    
+    vinylGrid.innerHTML = '<p>🔄 Cargando vinilos destacados...</p>';
+    
+    try {
+      const artistasSeleccionados = [...artistasPopulares]
+        .sort(() => 0.5 - Math.random())
+        .slice(0, 3);
+      
+      const query = artistasSeleccionados.join(' ');
+      
+      const response = await fetch(`${API_URL}/discos/buscar?q=${encodeURIComponent(query)}`);
+      
+      if (response.ok) {
+        let discos = await response.json();
+        
+        if (discos.length > 15) {
+          discos = discos.sort(() => 0.5 - Math.random()).slice(0, 15);
+        }
+        
+        mostrarVinilos(discos);
+      } else {
+        vinylGrid.innerHTML = '<p>❌ Error al cargar vinilos</p>';
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      vinylGrid.innerHTML = '<p>❌ Error de conexión</p>';
+    }
+  }
+
+  // ========== BÚSQUEDA MANUAL ==========
+  const searchInput = document.getElementById('searchInput');
   
   async function buscarVinilos(query) {
     if (!query.trim()) return alert('Escribe un artista o título');
     vinylGrid.innerHTML = '<p>🔄 Cargando...</p>';
     try {
-      const response = await fetch(`http://localhost:8080/discos/buscar?q=${encodeURIComponent(query)}`);
+      const response = await fetch(`${API_URL}/discos/buscar?q=${encodeURIComponent(query)}`);
       if (response.ok) {
         const discos = await response.json();
-        if (!discos.length) vinylGrid.innerHTML = '<p>No se encontraron vinilos</p>';
-        else {
-          vinylGrid.innerHTML = discos.map(d => `
-            <div class="vinyl-card">
-              ${d.imagenUrl ? `<img src="${d.imagenUrl}" width="100">` : '<div style="height:100px;">Sin imagen</div>'}
-              <h3>${d.titulo || 'Sin título'}</h3>
-              <p>${d.artista || 'Desconocido'}</p>
-              <p>${d.anio || 'N/A'}</p>
-              <button class="import-btn" data-id="${d.discogsId}">➕ Importar</button>
-            </div>
-          `).join('');
-          
-          document.querySelectorAll('.import-btn').forEach(btn => {
-            btn.onclick = async () => {
-              const discogsId = btn.dataset.id;
-              const res = await fetch(`http://localhost:8080/discos/importar/${discogsId}`, {
-                method: 'POST'
-              });
-              alert(res.ok ? '✅ Importado' : '❌ Error');
-            };
-          });
-        }
+        mostrarVinilos(discos);
+      } else {
+        vinylGrid.innerHTML = '<p>❌ Error al buscar</p>';
       }
-    } catch(e) { vinylGrid.innerHTML = '<p>Error</p>'; }
+    } catch(e) { 
+      vinylGrid.innerHTML = '<p>❌ Error de conexión</p>'; 
+    }
   }
   
   if (searchInput) {
-    searchInput.onkeypress = (e) => { if (e.key === 'Enter') buscarVinilos(searchInput.value); };
+    searchInput.addEventListener('keypress', (e) => { 
+      if (e.key === 'Enter') buscarVinilos(searchInput.value); 
+    });
+  }
+
+  // Cargar vinilos aleatorios al iniciar
+  cargarVinilosAleatorios();
+}
+
+// ============================================
+// 👤 PERFIL / COLECCIÓN PERSONAL
+// ============================================
+
+if (window.location.pathname.includes('perfil.html')) {
+  const token = localStorage.getItem('token');
+  
+  if (!token) {
+    window.location.href = 'login.html';
+  }
+  
+  const usuario = JSON.parse(localStorage.getItem('usuario'));
+  const perfilInfo = document.getElementById('perfilInfo');
+  if (perfilInfo && usuario) {
+    const tipoTexto = usuario.tipo === 'comprador' ? '🟡 Comprador' : usuario.tipo === 'vendedor' ? '🔵 Vendedor' : '🟢 Comprador y Vendedor';
+    perfilInfo.innerHTML = `
+      <p><strong>Nombre:</strong> ${usuario.nombre || usuario.username}</p>
+      <p><strong>Email:</strong> ${usuario.email}</p>
+      <p><strong>Tipo:</strong> ${tipoTexto}</p>
+    `;
+  }
+  
+  const miColeccion = document.getElementById('miColeccion');
+  if (miColeccion) {
+    (async () => {
+      try {
+        const response = await fetch(`${API_URL}/discos/mi-coleccion`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        if (response.ok) {
+          const discos = await response.json();
+          if (discos.length === 0) {
+            miColeccion.innerHTML = '<p>No tienes vinilos en tu colección.</p>';
+          } else {
+            miColeccion.innerHTML = discos.map(d => `
+              <div class="vinyl-card-small">
+                <strong>${d.disco?.titulo || d.titulo}</strong> - ${d.disco?.artista || d.artista}
+              </div>
+            `).join('');
+          }
+        }
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    })();
+  }
+  
+  const logoutBtn = document.getElementById('logoutBtn');
+  if (logoutBtn) {
+    logoutBtn.onclick = () => {
+      localStorage.clear();
+      window.location.href = 'login.html';
+    };
   }
 }
 
-// Funciones globales
+// ============================================
+// 🚪 FUNCIONES GLOBALES
+// ============================================
+
 window.verPerfil = function() {
   window.location.href = 'perfil.html';
 };
+
+window.cerrarSesion = function() {
+  localStorage.clear();
+  window.location.href = 'login.html';
+};
+
+console.log('App cargada correctamente');
