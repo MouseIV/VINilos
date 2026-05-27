@@ -448,7 +448,7 @@ if (window.location.pathname.includes('dashboard.html')) {
               d.artista !== 'Artista desconocido' &&
               !d.artista.toLowerCase().includes('various') &&
               d.titulo &&
-              d.imagenUrl
+              d.imagenUrl !== 'null'
           );
           
           // Eliminar duplicados
