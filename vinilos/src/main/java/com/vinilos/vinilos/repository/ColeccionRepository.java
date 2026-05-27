@@ -12,7 +12,7 @@ public interface ColeccionRepository extends JpaRepository<Coleccion, Long> {
     
     List<Coleccion> findByUsuario(Usuario usuario);
     
-    Optional<Coleccion> findByUsuarioAndDisco_Id(Usuario usuario, Long discoId);
+    Optional<Coleccion> findByUsuarioAndDiscoId(Usuario usuario, Long discoId);
     
-    boolean existsByUsuarioAndDisco_Id(Usuario usuario, Long discoId);
+    boolean existsByUsuarioAndDiscoId(Usuario usuario, Long discoId);
 }
