@@ -16,7 +16,7 @@ import com.vinilos.vinilos.service.DiscoService;
 
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("/discos")
+@RequestMapping("/api/discos")
 public class DiscoController {
 
     @Autowired

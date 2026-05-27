@@ -36,4 +36,14 @@ public class DiscogsClient {
             .bodyToMono(String.class)
             .block();
     }
+    
+    public String obtenerMaster(String masterId) {
+        return webClient.get()
+            .uri(uriBuilder -> uriBuilder
+                .path("/masters/{id}")
+                .build(masterId))
+            .retrieve()
+            .bodyToMono(String.class)
+            .block();
+    }
 }

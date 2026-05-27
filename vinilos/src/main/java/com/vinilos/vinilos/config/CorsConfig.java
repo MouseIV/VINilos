@@ -1,3 +1,4 @@
+/* 
 package com.vinilos.vinilos.config;
 
 import org.springframework.context.annotation.Bean;
@@ -15,8 +16,8 @@ public class CorsConfig {
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
                         .allowedOriginPatterns(
-                                "http://localhost:*",
-                                "http://127.0.0.1:*"
+                                "http://localhost:5500",
+                                "http://127.0.0.1:5500"
                         )
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                         .allowedHeaders("*")
@@ -25,3 +26,4 @@ public class CorsConfig {
         };
     }
 }
+*/
