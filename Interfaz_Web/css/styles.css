@@ -185,22 +185,59 @@ body {
   color: #3b2f2f;
 }
 
-.sidebar-left ul {
-  list-style: none;
-  padding: 0;
-}
+/* =========================
+   BOTONES DEL SIDEBAR
+========================= */
 
-.sidebar-left li {
-  padding: 8px 0;
-  border-bottom: 1px solid #ddd;
+.sidebar-btn {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  margin: 8px 0;
+  background: #e8dcc8;
+  color: #3b2f2f;
+  border: 1px solid #3b2f2f;
+  border-radius: 8px;
   cursor: pointer;
-  transition: 0.2s;
+  font-family: "Georgia", serif;
   font-size: 14px;
+  text-align: center;
+  transition: 0.2s;
 }
 
-.sidebar-left li:hover {
+.sidebar-btn:hover {
+  background: #d4c5b0;
+  transform: translateX(5px);
+}
+
+.generos-list {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-bottom: 20px;
+}
+
+.genero-item {
+  padding: 8px 12px;
+  background: #fffaf3;
+  border: 1px solid #3b2f2f;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: 0.2s;
+}
+
+.genero-item:hover {
+  background: #e8dcc8;
+  transform: translateX(5px);
   color: #8b0000;
-  padding-left: 5px;
+}
+
+.loading-text {
+  padding: 10px;
+  text-align: center;
+  color: #8b5a2b;
+  font-style: italic;
 }
 
 /* =========================
@@ -279,9 +316,84 @@ body.sidebar-right-open .main-content {
   font-weight: bold;
 }
 
+/* =========================
+   TARJETAS DE VINILOS EN INDEX
+========================= */
+
+.preview-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 25px;
+  margin-top: 25px;
+  padding: 10px;
+}
+
+.preview-card {
+  background: #fffaf3;
+  border: 2px solid #3b2f2f;
+  border-radius: 12px;
+  padding: 15px;
+  text-align: center;
+  transition: 0.2s ease;
+  box-shadow: 3px 3px 0 #3b2f2f;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  min-height: 350px;
+}
+
+.preview-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.15);
+}
+
+.preview-card-image {
+  height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.preview-card-image img {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.preview-card-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.preview-card-info h3 {
+  font-size: 16px;
+  margin: 10px 0 5px;
+  color: #3b2f2f;
+  line-height: 1.3;
+}
+
+.preview-card-info p {
+  font-size: 13px;
+  color: #8b5a2b;
+  margin: 5px 0;
+}
+
+.preview-card-info .precio {
+  font-weight: bold;
+  font-size: 18px;
+  color: #2d6a4f;
+  margin-top: 10px;
+  display: block;
+  background: #e8f5e9;
+  padding: 5px 8px;
+  border-radius: 8px;
+}
 
 /* =========================
-   FEATURED CARRUSEL - TARJETAS COMO VINILOS
+   FEATURED CARRUSEL
 ========================= */
 
 .featured-wrapper {
@@ -304,17 +416,6 @@ body.sidebar-right-open .main-content {
   display: none;
 }
 
-.vinyl-card .precio {
-  font-weight: bold;
-  font-size: 18px;
-  color: #2d6a4f;
-  margin-top: 10px;
-  display: block;
-  background: #e8f5e9;
-  padding: 5px;
-  border-radius: 8px;
-}
-
 .featured-grid .vinyl-card {
   flex: 0 0 220px;
   min-width: 220px;
@@ -327,7 +428,6 @@ body.sidebar-right-open .main-content {
   box-shadow: 3px 3px 0 #3b2f2f;
   display: flex;
   flex-direction: column;
-  height: auto;
   min-height: 350px;
 }
 
@@ -373,14 +473,6 @@ body.sidebar-right-open .main-content {
   font-size: 12px;
   color: #8b5a2b;
   margin: 5px 0;
-  line-height: 1.4;
-}
-
-.featured-grid .vinyl-card .precio {
-  font-weight: bold;
-  font-size: 16px;
-  color: #3b2f2f;
-  margin-top: 5px;
 }
 
 .scroll-btn {
@@ -402,7 +494,7 @@ body.sidebar-right-open .main-content {
 }
 
 /* =========================
-   GRID DE VINILOS - TARJETAS UNIFORMES
+   GRID DE VINILOS (BÚSQUEDA)
 ========================= */
 
 .vinyl-grid {
@@ -422,7 +514,6 @@ body.sidebar-right-open .main-content {
   box-shadow: 3px 3px 0 #3b2f2f;
   display: flex;
   flex-direction: column;
-  height: 100%;
   min-height: 380px;
 }
 
@@ -468,14 +559,17 @@ body.sidebar-right-open .main-content {
   font-size: 13px;
   color: #8b5a2b;
   margin: 5px 0;
-  line-height: 1.4;
 }
 
 .vinyl-card .precio {
   font-weight: bold;
   font-size: 18px;
-  color: #3b2f2f;
-  margin-top: 5px;
+  color: #2d6a4f;
+  margin-top: 10px;
+  display: block;
+  background: #e8f5e9;
+  padding: 5px;
+  border-radius: 8px;
 }
 
 .vinyl-card .import-btn,
@@ -485,7 +579,7 @@ body.sidebar-right-open .main-content {
 }
 
 /* =========================
-   BOTONES
+   BOTONES GENERALES
 ========================= */
 
 .btn {
@@ -624,54 +718,6 @@ body.sidebar-right-open .main-content {
 }
 
 /* =========================
-   INDEX (BIENVENIDA)
-========================= */
-
-.container {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  padding: 20px;
-  text-align: center;
-}
-
-.button-group {
-  display: flex;
-  gap: 20px;
-  justify-content: center;
-  margin-top: 30px;
-  flex-wrap: wrap;
-}
-
-.preview-vinilos {
-  margin-top: 50px;
-}
-
-.preview-grid {
-  display: flex;
-  gap: 15px;
-  justify-content: center;
-  flex-wrap: wrap;
-  margin-top: 15px;
-}
-
-.preview-item {
-  background: #fffaf3;
-  border: 1px solid #3b2f2f;
-  border-radius: 10px;
-  padding: 15px 25px;
-  font-weight: bold;
-  transition: 0.2s;
-}
-
-.preview-item:hover {
-  transform: translateY(-3px);
-  box-shadow: 2px 2px 0 #3b2f2f;
-}
-
-/* =========================
    PERFIL - COLECCIÓN
 ========================= */
 
@@ -685,17 +731,76 @@ body.sidebar-right-open .main-content {
 }
 
 /* =========================
+   TOAST NOTIFICATIONS (POPUPS)
+========================= */
+
+.toast-notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 15px 20px;
+  border-radius: 8px;
+  color: white;
+  font-family: "Georgia", serif;
+  font-size: 14px;
+  z-index: 10000;
+  animation: slideIn 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  max-width: 350px;
+  word-wrap: break-word;
+}
+
+.toast-notification.success {
+  background: #2d6a4f;
+  border-left: 5px solid #95d5b2;
+}
+
+.toast-notification.error {
+  background: #9d0208;
+  border-left: 5px solid #ff6b6b;
+}
+
+.toast-notification.info {
+  background: #3b2f2f;
+  border-left: 5px solid #8b5a2b;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+.toast-notification.fade-out {
+  animation: fadeOut 0.5s ease forwards;
+}
+
+/* =========================
    RESPONSIVE
 ========================= */
 
 @media (max-width: 1200px) {
-  .vinyl-grid {
+  .vinyl-grid, .preview-grid {
     grid-template-columns: repeat(3, 1fr);
   }
 }
 
 @media (max-width: 900px) {
-  .vinyl-grid {
+  .vinyl-grid, .preview-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 }
@@ -725,7 +830,7 @@ body.sidebar-right-open .main-content {
     margin-right: 0;
   }
   
-  .vinyl-card {
+  .vinyl-card, .preview-card {
     min-height: 350px;
   }
   
@@ -747,7 +852,7 @@ body.sidebar-right-open .main-content {
 }
 
 @media (max-width: 600px) {
-  .vinyl-grid {
+  .vinyl-grid, .preview-grid {
     grid-template-columns: 1fr;
   }
   
@@ -759,7 +864,7 @@ body.sidebar-right-open .main-content {
     font-size: 12px;
   }
   
-  .vinyl-card h3 {
+  .vinyl-card h3, .preview-card-info h3 {
     font-size: 14px;
   }
   
@@ -769,10 +874,5 @@ body.sidebar-right-open .main-content {
   
   .daily-vinyl p {
     font-size: 14px;
-  }
-  
-  .featured-item {
-    flex: 0 0 150px;
-    height: 150px;
   }
 }
