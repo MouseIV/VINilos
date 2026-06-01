@@ -23,7 +23,7 @@
     <a href="index.html">Inicio</a>
     <a href="#">Vinilo del día</a>
     <a href="#">Novedades</a>
-    <a href="login.html">Mi cuenta</a>
+    <a href="perfil.html">Mi colección</a>
   </div>
 </div>
 
@@ -33,23 +33,22 @@
 <!-- SIDEBAR IZQUIERDO -->
 <div class="sidebar-left" id="sidebarLeft">
   <div class="close" id="closeSidebarLeft">✖</div>
+  
   <h3>🎵 Géneros</h3>
-  <ul>
-    <li>Rock</li>
-    <li>Jazz</li>
-    <li>Pop</li>
-    <li>Hip-Hop</li>
-    <li>Electrónica</li>
-  </ul>
+  <div id="generosList" class="generos-list">
+    <div class="loading-text">Cargando géneros...</div>
+  </div>
+  
   <div class="buyer-section">
     <h3>🛍️ Para compradores</h3>
-    <p>Más solicitados</p>
-    <p>Grandes ofertas</p>
+    <button class="sidebar-btn" id="btnMasSolicitados" data-accion="solicitados">🔥 Más solicitados</button>
+    <button class="sidebar-btn" id="btnGrandesOfertas" data-accion="ofertas">💸 Grandes ofertas</button>
   </div>
+  
   <div class="seller-section" style="display:none;">
     <h3>📦 Para vendedores</h3>
-    <p>Top ventas</p>
-    <p>Nueva publicación</p>
+    <button class="sidebar-btn" id="btnTopVentas" data-accion="topventas">📈 Top ventas</button>
+    <button class="sidebar-btn" id="btnNuevaPublicacion" data-accion="publicar">➕ Nueva publicación</button>
   </div>
 </div>
 

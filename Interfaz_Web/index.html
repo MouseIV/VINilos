@@ -3,99 +3,80 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>VinylMarket - Tienda</title>
+  <title>VinylMarket - Inicio</title>
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
 
-<!-- HEADER FIJO -->
-<div class="navbar">
-  <div class="navbar-top">
-    <div class="menu-left" id="openSidebarLeft">☰</div>
-    <div class="logo">🎧 VinylMarket</div>
-    <div class="search-container">
-      <input type="text" class="search-bar" id="searchInput" placeholder="Buscar vinilos...">
-      <button class="search-btn" id="searchBtn">Buscar</button>
-    </div>
-    <div class="menu-right" id="openSidebarRight">👤</div>
+<div class="container" style="text-align: center;">
+  <h1>📀 VinylMarket</h1>
+  <h3>Tu tienda de vinilos de confianza</h3>
+  
+  <div class="button-group">
+    <a href="dashboard.html" class="btn">Explorar tienda</a>
+    <a href="login.html" class="btn btn-secondary">Mi cuenta</a>
   </div>
-  <div class="navbar-bottom">
-    <a href="index.html">Inicio</a>
-    <a href="#">Vinilo del día</a>
-    <a href="#">Novedades</a>
-    <a href="login.html">Mi cuenta</a>
+  
+  <div class="preview-vinilos">
+    <h4>⭐ Vinilos destacados</h4>
+    <div class="preview-grid" id="destacadosGrid"></div>
   </div>
 </div>
 
-<!-- OVERLAY -->
-<div class="sidebar-overlay" id="sidebarOverlay"></div>
+<script>
+  const vinilosDestacados = [
+    {
+      titulo: "Abbey Road",
+      artista: "The Beatles",
+      anio: 1969,
+      genero: "Rock",
+      imagenUrl: "https://upload.wikimedia.org/wikipedia/en/4/42/Beatles_-_Abbey_Road.jpg",
+      precio: 29.99
+    },
+    {
+      titulo: "Thriller",
+      artista: "Michael Jackson",
+      anio: 1982,
+      genero: "Pop",
+      imagenUrl: "https://upload.wikimedia.org/wikipedia/en/5/55/Michael_Jackson_-_Thriller.png",
+      precio: 24.99
+    },
+    {
+      titulo: "Dark Side of the Moon",
+      artista: "Pink Floyd",
+      anio: 1973,
+      genero: "Rock Progresivo",
+      imagenUrl: "https://upload.wikimedia.org/wikipedia/en/3/3b/Dark_Side_of_the_Moon.png",
+      precio: 34.99
+    },
+    {
+      titulo: "Back in Black",
+      artista: "AC/DC",
+      anio: 1980,
+      genero: "Hard Rock",
+      imagenUrl: "https://upload.wikimedia.org/wikipedia/commons/9/92/Acdc_backinblack_cover.jpg",
+      precio: 27.99
+    }
+  ];
 
-<!-- SIDEBAR IZQUIERDO -->
-<div class="sidebar-left" id="sidebarLeft">
-  <div class="close" id="closeSidebarLeft">✖</div>
-  
-  <h3>🎵 Géneros</h3>
-  <div id="generosList" class="generos-list">
-    <div class="loading-text">Cargando géneros...</div>
-  </div>
-  
-  <div class="buyer-section">
-    <h3>🛍️ Para compradores</h3>
-    <button class="sidebar-btn" id="btnMasSolicitados" data-accion="solicitados">🔥 Más solicitados</button>
-    <button class="sidebar-btn" id="btnGrandesOfertas" data-accion="ofertas">💸 Grandes ofertas</button>
-  </div>
-  
-  <div class="seller-section" style="display:none;">
-    <h3>📦 Para vendedores</h3>
-    <button class="sidebar-btn" id="btnTopVentas" data-accion="topventas">📈 Top ventas</button>
-    <button class="sidebar-btn" id="btnNuevaPublicacion" data-accion="publicar">➕ Nueva publicación</button>
-  </div>
-</div>
+  const grid = document.getElementById('destacadosGrid');
+  if (grid) {
+    grid.innerHTML = vinilosDestacados.map(vinilo => `
+      <div class="preview-card" onclick="window.location.href='dashboard.html?buscar=${encodeURIComponent(vinilo.artista)}'">
+        <div class="preview-card-image">
+          <img src="${vinilo.imagenUrl}" alt="${vinilo.titulo}" onerror="this.src='https://picsum.photos/200/200'">
+        </div>
+        <div class="preview-card-info">
+          <h3>${vinilo.titulo}</h3>
+          <p>🎤 ${vinilo.artista}</p>
+          <p>📅 ${vinilo.anio}</p>
+          <p>🎸 ${vinilo.genero}</p>
+          <span class="precio">💰 ${vinilo.precio}€</span>
+        </div>
+      </div>
+    `).join('');
+  }
+</script>
 
-<!-- SIDEBAR DERECHO -->
-<div class="sidebar-right" id="sidebarRight">
-  <div class="close" id="closeSidebarRight">✖</div>
-  <h3>👤 Mi perfil</h3>
-  
-  <div id="profileInfo">
-    <p>Inicia sesión para ver tu perfil</p>
-    <button class="btn" onclick="window.location.href='login.html'">Iniciar sesión</button>
-    <button class="btn btn-secondary" onclick="window.location.href='register.html'">Registrarse</button>
-  </div>
-  
-  <div class="user-type-selector" id="userTypeSelector" style="display: none;">
-    <label>🎭 Tipo de usuario:</label>
-    <select id="userTypeSelect" class="user-type-select">
-      <option value="comprador">🟡 Comprador</option>
-      <option value="vendedor">🔵 Vendedor</option>
-      <option value="ambos">🟢 Comprador y Vendedor</option>
-    </select>
-  </div>
-  
-  <button class="btn" id="miColeccionBtn" onclick="window.location.href='perfil.html'" style="display: none;">📀 Mi colección</button>
-  <hr>
-  <button class="btn btn-secondary" id="logoutBtn" style="display: none;">🚪 Cerrar sesión</button>
-</div>
-
-<!-- CONTENIDO PRINCIPAL -->
-<div class="main-content">
-  <div class="daily-vinyl">
-    <h3>🎲 Vinilo del día</h3>
-    <p id="viniloDelDia">Cargando...</p>
-  </div>
-
-  <h2>⭐ Vinilos Destacados</h2>
-  <div class="featured-wrapper">
-    <button class="scroll-btn" id="scrollLeft">◀</button>
-    <div class="featured-grid" id="featuredGrid"></div>
-    <button class="scroll-btn" id="scrollRight">▶</button>
-  </div>
-
-  <div class="vinyl-grid" id="vinylGrid">
-    <p>🔍 Busca un artista o título para empezar</p>
-  </div>
-</div>
-
-<script src="js/app.js"></script>
 </body>
 </html>
