@@ -241,6 +241,64 @@ body {
 }
 
 /* =========================
+   DESPLEGABLE DE GÉNEROS
+========================= */
+
+.generos-header {
+  cursor: pointer;
+  user-select: none;
+}
+
+.generos-header:hover {
+  background: #e8dcc8;
+  border-radius: 8px;
+}
+
+.generos-toggle-icon {
+  font-size: 14px;
+  transition: transform 0.2s;
+}
+
+.generos-contenido {
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+  max-height: 500px;
+}
+
+.generos-contenido.collapsed {
+  max-height: 0;
+}
+
+/* =========================
+   DESPLEGABLE DE ESTADÍSTICAS
+========================= */
+
+.estadisticas-header {
+  cursor: pointer;
+  user-select: none;
+}
+
+.estadisticas-header:hover {
+  background: #e8dcc8;
+  border-radius: 8px;
+}
+
+.toggle-icon {
+  font-size: 14px;
+  transition: transform 0.2s;
+}
+
+.estadisticas-contenido {
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+  max-height: 500px;
+}
+
+.estadisticas-contenido.collapsed {
+  max-height: 0;
+}
+
+/* =========================
    TIPO DE USUARIO SELECTOR
 ========================= */
 

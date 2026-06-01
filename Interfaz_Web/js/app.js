@@ -484,26 +484,35 @@ if (window.location.pathname.includes('dashboard.html'))
     renderizarListaGeneros();
   }
 
-  function renderizarListaGeneros() 
-  {
+  function renderizarListaGeneros() {
     const generosList = document.getElementById('generosList');
     if (!generosList) return;
     
-    if (generosDisponibles.size === 0) 
-    {
+    if (generosDisponibles.size === 0) {
       generosList.innerHTML = '<div class="loading-text">No hay géneros disponibles</div>';
       return;
     }
     
     const generosOrdenados = Array.from(generosDisponibles).sort();
-    generosList.innerHTML = generosOrdenados.map(genero => 
-      `<div class="genero-item" data-genero="${genero}">🎸 ${genero}</div>`
-    ).join('');
     
-    // Añadir evento de clic a cada género
-    document.querySelectorAll('.genero-item').forEach(item => 
-    {
-      item.addEventListener('click', () => { buscarPorGenero(item.dataset.genero); });
+    generosList.innerHTML = generosOrdenados.map(genero => `
+      <div class="genero-item" data-genero="${genero}">
+        🎸 ${genero}
+      </div>
+    `).join('');
+    
+    document.querySelectorAll('.genero-item').forEach(item => {
+      item.addEventListener('click', () => {
+        const genero = item.dataset.genero;
+        buscarPorGenero(genero);
+        // Opcional: cerrar el desplegable después de seleccionar
+        const generosContenido = document.getElementById('generosList');
+        if (generosContenido) {
+          generosContenido.classList.add('collapsed');
+          const icon = document.querySelector('.generos-toggle-icon');
+          if (icon) icon.innerHTML = '▶';
+        }
+      });
     });
   }
 

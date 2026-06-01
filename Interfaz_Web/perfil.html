@@ -34,11 +34,18 @@
     <button id="logoutBtn" class="btn btn-secondary" style="width: auto; padding: 8px 20px;">🚪 Cerrar sesión</button>
   </div>
 
-  <!-- ESTADÍSTICAS DE LA COLECCIÓN -->
+  <!-- ESTADÍSTICAS DE LA COLECCIÓN (DESPLEGABLE) -->
   <div class="estadisticas-card">
-    <h3>📊 Estadísticas de tu colección</h3>
-    <div id="estadisticasColeccion" class="estadisticas-grid">
-      <p>Cargando estadísticas...</p>
+    <div class="estadisticas-header" id="toggleEstadisticas">
+      <h3 style="cursor: pointer; display: flex; justify-content: space-between; align-items: center;">
+        📊 Estadísticas de tu colección
+        <span class="toggle-icon">▼</span>
+      </h3>
+    </div>
+    <div id="estadisticasContenido" class="estadisticas-contenido">
+      <div class="estadisticas-grid" id="estadisticasColeccion">
+        <p>Cargando estadísticas...</p>
+      </div>
     </div>
   </div>
 
@@ -146,5 +153,24 @@
 </div>
 
 <script src="js/app.js"></script>
+
+<script>
+  // Desplegable de estadísticas
+  const toggleEstadisticas = document.getElementById('toggleEstadisticas');
+  const estadisticasContenido = document.getElementById('estadisticasContenido');
+  const toggleIcon = document.querySelector('.toggle-icon');
+  
+  if (toggleEstadisticas && estadisticasContenido) {
+    toggleEstadisticas.addEventListener('click', () => {
+      estadisticasContenido.classList.toggle('collapsed');
+      if (estadisticasContenido.classList.contains('collapsed')) {
+        if (toggleIcon) toggleIcon.innerHTML = '▶';
+      } else {
+        if (toggleIcon) toggleIcon.innerHTML = '▼';
+      }
+    });
+  }
+</script>
+
 </body>
 </html>

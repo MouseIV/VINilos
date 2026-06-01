@@ -34,8 +34,14 @@
 <div class="sidebar-left" id="sidebarLeft">
   <div class="close" id="closeSidebarLeft">✖</div>
   
-  <h3>🎵 Géneros</h3>
-  <div id="generosList" class="generos-list">
+  <!-- GÉNEROS - DESPLEGABLE MANUAL -->
+  <div class="generos-header" id="toggleGeneros">
+    <h3 style="cursor: pointer; display: flex; justify-content: space-between; align-items: center;">
+      🎵 Géneros
+      <span class="generos-toggle-icon">▼</span>
+    </h3>
+  </div>
+  <div id="generosList" class="generos-list generos-contenido">
     <div class="loading-text">Cargando géneros...</div>
   </div>
   
@@ -97,5 +103,28 @@
 </div>
 
 <script src="js/app.js"></script>
+
+<script>
+  // Desplegable de géneros
+  const toggleGeneros = document.getElementById('toggleGeneros');
+  const generosContenido = document.getElementById('generosList');
+  const generosIcon = document.querySelector('.generos-toggle-icon');
+  
+  if (toggleGeneros && generosContenido) {
+    // Inicialmente cerrado
+    generosContenido.classList.add('collapsed');
+    if (generosIcon) generosIcon.innerHTML = '▶';
+    
+    toggleGeneros.addEventListener('click', () => {
+      generosContenido.classList.toggle('collapsed');
+      if (generosContenido.classList.contains('collapsed')) {
+        if (generosIcon) generosIcon.innerHTML = '▶';
+      } else {
+        if (generosIcon) generosIcon.innerHTML = '▼';
+      }
+    });
+  }
+</script>
+
 </body>
 </html>
