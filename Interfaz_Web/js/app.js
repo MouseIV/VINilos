@@ -777,30 +777,174 @@ if (window.location.pathname.includes('perfil.html')) {
     `;
   }
   
-  const miColeccion = document.getElementById('miColeccion');
-  if (miColeccion) {
-    (async () => {
-      try {
-        const response = await fetch(`${API_URL}/discos/mi-coleccion`, {
-          headers: { 'Authorization': `Bearer ${token}` }
-        });
-        if (response.ok) {
-          const discos = await response.json();
-          if (discos.length === 0) {
-            miColeccion.innerHTML = '<p>No tienes vinilos en tu colección.</p>';
-          } else {
-            miColeccion.innerHTML = discos.map(d => `
-              <div class="vinyl-card-small">
-                <strong>${d.disco?.titulo || d.titulo}</strong> - ${d.disco?.artista || d.artista}
-              </div>
-            `).join('');
-          }
-        }
-      } catch (error) {
-        console.error('Error:', error);
-      }
-    })();
+  // ========== DATOS ADICIONALES DEL USUARIO ==========
+  function cargarDatosAdicionales() {
+    const ciudad = localStorage.getItem('user_ciudad') || '';
+    const telefono = localStorage.getItem('user_telefono') || '';
+    const tipoColeccionista = localStorage.getItem('user_tipo_coleccionista') || 'principiante';
+    
+    const ciudadInput = document.getElementById('ciudad');
+    const telefonoInput = document.getElementById('telefono');
+    const tipoSelect = document.getElementById('tipoColeccionista');
+    
+    if (ciudadInput) ciudadInput.value = ciudad;
+    if (telefonoInput) telefonoInput.value = telefono;
+    if (tipoSelect) tipoSelect.value = tipoColeccionista;
   }
+  
+  function guardarDatosAdicionales() {
+    const ciudad = document.getElementById('ciudad')?.value || '';
+    const telefono = document.getElementById('telefono')?.value || '';
+    const tipoColeccionista = document.getElementById('tipoColeccionista')?.value || 'principiante';
+    
+    localStorage.setItem('user_ciudad', ciudad);
+    localStorage.setItem('user_telefono', telefono);
+    localStorage.setItem('user_tipo_coleccionista', tipoColeccionista);
+    
+    mostrarNotificacion('✅ Datos adicionales guardados correctamente', 'success');
+  }
+  
+  const guardarDatosBtn = document.getElementById('guardarDatosAdicionales');
+  if (guardarDatosBtn) {
+    guardarDatosBtn.onclick = guardarDatosAdicionales;
+  }
+  
+  // ========== AGREGAR VINILO MANUALMENTE ==========
+  async function agregarViniloManual() {
+    const titulo = document.getElementById('nuevoTitulo')?.value.trim();
+    const artista = document.getElementById('nuevoArtista')?.value.trim();
+    const anio = parseInt(document.getElementById('nuevoAnio')?.value) || 0;
+    const genero = document.getElementById('nuevoGenero')?.value.trim() || 'Sin género';
+    const imagenUrl = document.getElementById('nuevaImagen')?.value.trim() || '';
+    const estadoVinilo = document.getElementById('estadoVinilo')?.value || 'NUEVO';
+    const calificacion = parseInt(document.getElementById('calificacion')?.value) || 5;
+    
+    if (!titulo || !artista) {
+      mostrarNotificacion('❌ El título y el artista son obligatorios', 'error');
+      return;
+    }
+    
+    const discoData = { titulo, artista, anio, genero, imagenUrl };
+    
+    try {
+      const response = await fetch(`${API_URL}/discos`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(discoData)
+      });
+      
+      if (response.ok) {
+        const discoGuardado = await response.json();
+        const discoId = discoGuardado.id;
+        
+        const coleccionData = {
+          discoId: discoId,
+          estado: estadoVinilo,
+          calificacion: calificacion
+        };
+        
+        const coleccionResponse = await fetch(`${API_URL}/discos/${discoId}/agregar`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify(coleccionData)
+        });
+        
+        if (coleccionResponse.ok) {
+          mostrarNotificacion('✅ Vinilo añadido a tu colección', 'success');
+          
+          // Limpiar formulario
+          const inputs = ['nuevoTitulo', 'nuevoArtista', 'nuevoAnio', 'nuevoGenero', 'nuevaImagen'];
+          inputs.forEach(id => {
+            const input = document.getElementById(id);
+            if (input) input.value = '';
+          });
+          
+          cargarColeccion();
+        } else {
+          const error = await coleccionResponse.text();
+          mostrarNotificacion('❌ Error al añadir a colección: ' + error, 'error');
+        }
+      } else {
+        const error = await response.text();
+        mostrarNotificacion('❌ Error al guardar el disco: ' + error, 'error');
+      }
+    } catch (error) {
+      mostrarNotificacion('❌ Error de conexión: ' + error.message, 'error');
+    }
+  }
+  
+  const agregarBtn = document.getElementById('btnAgregarVinilo');
+  if (agregarBtn) {
+    agregarBtn.onclick = agregarViniloManual;
+  }
+  
+  // ========== CARGAR COLECCIÓN ==========
+  async function cargarColeccion() {
+    const miColeccion = document.getElementById('miColeccion');
+    if (!miColeccion) return;
+    
+    miColeccion.innerHTML = '<p>🔄 Cargando tu colección...</p>';
+    
+    try {
+      const response = await fetch(`${API_URL}/discos/mi-coleccion`, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      
+      if (response.ok) {
+        const coleccion = await response.json();
+        
+        if (coleccion.length === 0) {
+          miColeccion.innerHTML = '<p>📀 No tienes vinilos en tu colección. ¡Añade algunos desde la tienda o desde este formulario!</p>';
+        } else {
+          miColeccion.innerHTML = coleccion.map(item => {
+            const disco = item.disco;
+            const estadoTexto = {
+              'NUEVO': '🟢 Nuevo',
+              'MUY_BUENO': '🟡 Muy bueno',
+              'BUENO': '🟠 Bueno',
+              'REGULAR': '🔴 Regular'
+            }[item.estado] || item.estado;
+            
+            const estrellas = '⭐'.repeat(item.calificacion || 5);
+            
+            return `
+              <div class="vinyl-card-small">
+                <div style="display: flex; gap: 15px; align-items: center; flex-wrap: wrap;">
+                  ${disco.imagenUrl ? `<img src="${disco.imagenUrl}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 5px;">` : '<div style="width: 50px; height: 50px; background: #e0d5c0; border-radius: 5px;"></div>'}
+                  <div style="flex: 1;">
+                    <strong>${disco.titulo}</strong> - ${disco.artista}
+                    <br>
+                    <small>📅 ${disco.anio || 'N/A'} | 🎸 ${disco.genero || 'Sin género'}</small>
+                    <br>
+                    <small>💿 ${estadoTexto} | ${estrellas} (${item.calificacion || 5}/5)</small>
+                    <br>
+                    <small>📅 Añadido: ${new Date(item.fechaAdquisicion).toLocaleDateString()}</small>
+                  </div>
+                </div>
+              </div>
+            `;
+          }).join('');
+        }
+      } else if (response.status === 401) {
+        window.location.href = 'login.html';
+      } else {
+        miColeccion.innerHTML = '<p>❌ Error al cargar tu colección</p>';
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      miColeccion.innerHTML = '<p>❌ Error de conexión</p>';
+    }
+  }
+  
+  // Cargar datos adicionales y colección
+  cargarDatosAdicionales();
+  cargarColeccion();
   
   const logoutBtn = document.getElementById('logoutBtn');
   if (logoutBtn) {

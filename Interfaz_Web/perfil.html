@@ -3,21 +3,100 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mi perfil - VinylMarket</title>
+  <title>Mi Perfil - VinylMarket</title>
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body class="auth-page">
 
-<div class="auth-container">
+<div class="auth-container" style="max-width: 600px;">
   <h2>👤 Mi Perfil</h2>
   <div id="perfilInfo"></div>
+  
   <hr>
+  
+  <!-- SECCIÓN DE DATOS ADICIONALES DEL USUARIO -->
+  <h3>📝 Datos adicionales</h3>
+  <div class="datos-adicionales">
+    <div class="input-group">
+      <label>📍 Ciudad</label>
+      <input type="text" id="ciudad" placeholder="Tu ciudad">
+    </div>
+    <div class="input-group">
+      <label>📞 Teléfono</label>
+      <input type="tel" id="telefono" placeholder="Tu teléfono">
+    </div>
+    <div class="input-group">
+      <label>🎯 Tipo de coleccionista</label>
+      <select id="tipoColeccionista">
+        <option value="principiante">Principiante (1-10 vinilos)</option>
+        <option value="aficionado">Aficionado (11-50 vinilos)</option>
+        <option value="coleccionista">Coleccionista (51-200 vinilos)</option>
+        <option value="experto">Experto (más de 200 vinilos)</option>
+      </select>
+    </div>
+    <button id="guardarDatosAdicionales" class="btn" style="margin-top: 10px;">💾 Guardar datos</button>
+  </div>
+  
+  <hr>
+  
+  <!-- SECCIÓN PARA AÑADIR VINILO MANUALMENTE -->
+  <h3>➕ Añadir vinilo a mi colección</h3>
+  <div class="agregar-vinilo">
+    <div class="input-group">
+      <label>🎵 Título del vinilo *</label>
+      <input type="text" id="nuevoTitulo" placeholder="Ej: Dark Side of the Moon" required>
+    </div>
+    <div class="input-group">
+      <label>🎤 Artista *</label>
+      <input type="text" id="nuevoArtista" placeholder="Ej: Pink Floyd" required>
+    </div>
+    <div class="input-group">
+      <label>📅 Año</label>
+      <input type="number" id="nuevoAnio" placeholder="Ej: 1973">
+    </div>
+    <div class="input-group">
+      <label>🎸 Género</label>
+      <input type="text" id="nuevoGenero" placeholder="Ej: Rock Progresivo">
+    </div>
+    <div class="input-group">
+      <label>🖼️ URL de imagen (opcional)</label>
+      <input type="text" id="nuevaImagen" placeholder="https://...">
+    </div>
+    
+    <!-- Datos específicos de la colección -->
+    <h4 style="margin-top: 15px;">📀 Datos de tu ejemplar</h4>
+    <div class="input-group">
+      <label>💿 Estado del vinilo</label>
+      <select id="estadoVinilo">
+        <option value="NUEVO">🟢 Nuevo (Sin usar)</option>
+        <option value="MUY_BUENO">🟡 Muy bueno (Pocos usos)</option>
+        <option value="BUENO">🟠 Bueno (Usado normal)</option>
+        <option value="REGULAR">🔴 Regular (Marcas o rayones)</option>
+      </select>
+    </div>
+    <div class="input-group">
+      <label>⭐ Calificación (1-5)</label>
+      <select id="calificacion">
+        <option value="5">⭐⭐⭐⭐⭐ - 5 estrellas</option>
+        <option value="4">⭐⭐⭐⭐ - 4 estrellas</option>
+        <option value="3">⭐⭐⭐ - 3 estrellas</option>
+        <option value="2">⭐⭐ - 2 estrellas</option>
+        <option value="1">⭐ - 1 estrella</option>
+      </select>
+    </div>
+    <button id="btnAgregarVinilo" class="btn" style="margin-top: 10px;">➕ Añadir a mi colección</button>
+  </div>
+  
+  <hr>
+  
+  <!-- SECCIÓN DE COLECCIÓN -->
   <h3>📀 Mi Colección</h3>
   <div id="miColeccion"></div>
+  
   <br>
   <a href="dashboard.html" class="btn">← Volver a la tienda</a>
   <br><br>
-  <button id="logoutBtn" class="btn btn-secondary">Cerrar sesión</button>
+  <button id="logoutBtn" class="btn btn-secondary">🚪 Cerrar sesión</button>
 </div>
 
 <script src="js/app.js"></script>

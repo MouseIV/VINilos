@@ -790,6 +790,59 @@ body.sidebar-right-open .main-content {
 }
 
 /* =========================
+   DATOS ADICIONALES Y AGREGAR VINILO (PERFIL)
+========================= */
+
+.datos-adicionales, .agregar-vinilo {
+  margin: 15px 0;
+  padding: 15px;
+  background: #fff8f0;
+  border: 1px solid #8b5a2b;
+  border-radius: 12px;
+}
+
+.datos-adicionales .input-group,
+.agregar-vinilo .input-group {
+  margin-bottom: 12px;
+}
+
+.datos-adicionales label,
+.agregar-vinilo label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: #3b2f2f;
+  font-size: 13px;
+}
+
+.datos-adicionales input,
+.agregar-vinilo input,
+.datos-adicionales select,
+.agregar-vinilo select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #d4c5b0;
+  border-radius: 8px;
+  background: white;
+  font-family: inherit;
+  font-size: 14px;
+}
+
+.datos-adicionales input:focus,
+.agregar-vinilo input:focus,
+.datos-adicionales select:focus,
+.agregar-vinilo select:focus {
+  outline: none;
+  border-color: #8b5a2b;
+}
+
+.datos-adicionales h4,
+.agregar-vinilo h4 {
+  margin: 15px 0 10px 0;
+  color: #8b5a2b;
+}
+
+/* =========================
    RESPONSIVE
 ========================= */
 
@@ -799,8 +852,14 @@ body.sidebar-right-open .main-content {
   }
 }
 
+@media (max-width: 1000px) {
+  .preview-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
 @media (max-width: 900px) {
-  .vinyl-grid, .preview-grid {
+  .vinyl-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 }
@@ -849,6 +908,12 @@ body.sidebar-right-open .main-content {
     font-size: 12px;
     height: 30px;
   }
+  
+  .auth-container {
+    max-width: 90%;
+    margin: 20px;
+    padding: 20px;
+  }
 }
 
 @media (max-width: 600px) {
@@ -874,5 +939,10 @@ body.sidebar-right-open .main-content {
   
   .daily-vinyl p {
     font-size: 14px;
+  }
+  
+  .featured-item {
+    flex: 0 0 150px;
+    height: 150px;
   }
 }
