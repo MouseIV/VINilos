@@ -1,17 +1,33 @@
 // ============================================
 // 🎧 DASHBOARD - TIENDA PRINCIPAL
 // ============================================
+// Funcionalidades:
+//   - Vinilos destacados (carrusel)
+//   - Búsqueda en Discogs
+//   - Sidebars izquierdo (géneros) y derecho (perfil)
+//   - Carga aleatoria de vinilos al iniciar
+//   - Filtro persistente por género
+// ============================================
 
 if (window.location.pathname.includes('dashboard.html')) {
   
-  // ========== AVISO DE PÁGINA EN DESARROLLO ==========
+  // ========== AVISO DE PÁGINA EN DESARROLLO (una sola vez) ==========
+  let avisoMostrado = false;
   setTimeout(() => {
-    mostrarNotificacionPorCodigo('FINETUNING_BIENVENIDA');
+    if (!avisoMostrado) {
+      mostrarNotificacion('🎧 VinylMarket está en fase de finetuning. ¡Gracias por tu paciencia!', 'info', true);
+      avisoMostrado = true;
+    }
   }, 1500);
   
+  // ========== VARIABLE PARA FILTRO DE GÉNERO ACTIVO ==========
+  let generoActivo = null;
+  
+  // Obtener token y datos del usuario
   const token = localStorage.getItem('token');
   const usuario = JSON.parse(localStorage.getItem('usuario'));
   
+  // Elementos del DOM
   const profileInfo = document.getElementById('profileInfo');
   const logoutBtn = document.getElementById('logoutBtn');
   const miColeccionBtn = document.getElementById('miColeccionBtn');
@@ -20,6 +36,7 @@ if (window.location.pathname.includes('dashboard.html')) {
   const buyerSection = document.querySelector('.buyer-section');
   const sellerSection = document.querySelector('.seller-section');
   
+  // ========== FUNCIÓN PARA ACTUALIZAR SECCIONES SEGÚN TIPO DE USUARIO ==========
   function actualizarSeccionesPorTipo(tipo) {
     if (!buyerSection || !sellerSection) return;
     if (tipo === 'comprador') {
@@ -34,6 +51,7 @@ if (window.location.pathname.includes('dashboard.html')) {
     }
   }
 
+  // ========== MOSTRAR INFORMACIÓN DEL PERFIL SI ESTÁ LOGUEADO ==========
   if (token && usuario && profileInfo) {
     const tipoUsuario = usuario.tipo || 'comprador';
     profileInfo.innerHTML = `<p><strong>${usuario.nombre || usuario.username}</strong></p><p>${usuario.email}</p>`;
@@ -55,6 +73,7 @@ if (window.location.pathname.includes('dashboard.html')) {
     if (logoutBtn) logoutBtn.style.display = 'none';
   }
   
+  // ========== CAMBIO DE TIPO DE USUARIO ==========
   if (userTypeSelect) {
     userTypeSelect.onchange = function(e) {
       const nuevoTipo = e.target.value;
@@ -63,19 +82,17 @@ if (window.location.pathname.includes('dashboard.html')) {
         usuarioActual.tipo = nuevoTipo;
         localStorage.setItem('usuario', JSON.stringify(usuarioActual));
         actualizarSeccionesPorTipo(nuevoTipo);
-        mostrarNotificacionPorCodigo('TIPO_USUARIO_CAMBIADO');
+        mostrarNotificacion(`✅ Tipo de usuario cambiado a: ${nuevoTipo === 'comprador' ? 'Comprador' : nuevoTipo === 'vendedor' ? 'Vendedor' : 'Comprador y Vendedor'}`, 'success');
       }
     };
   }
 
+  // ========== CERRAR SESIÓN ==========
   if (logoutBtn) {
-    logoutBtn.onclick = () => { 
-      localStorage.clear(); 
-      mostrarNotificacionPorCodigo('CERRAR_SESION');
-      setTimeout(() => { window.location.href = 'login.html'; }, 500);
-    };
+    logoutBtn.onclick = () => { localStorage.clear(); window.location.href = 'login.html'; };
   }
   
+  // ========== VINILO DEL DÍA ==========
   const vinilosLista = [
     'Dark Side of the Moon - Pink Floyd', 
     'Thriller - Michael Jackson', 
@@ -96,6 +113,7 @@ if (window.location.pathname.includes('dashboard.html')) {
   const viniloDiaElem = document.getElementById('viniloDelDia');
   if (viniloDiaElem) viniloDiaElem.innerText = viniloDia;
   
+  // ========== DESTACADOS (CARRUSEL) ==========
   const featuredGrid = document.getElementById('featuredGrid');
   
   async function cargarDestacados() {
@@ -103,11 +121,11 @@ if (window.location.pathname.includes('dashboard.html')) {
     featuredGrid.innerHTML = '<div class="vinyl-card">Cargando destacados...</div>';
     
     try {
-      const response = await fetch(`${API_URL}/discos/buscar?q=beatles%20OR%20pink%20floyd%20OR%20michael%20jackson&type=release&per_page=10`);
+      const response = await fetch(`${API_URL}/discos/buscar?q=beatles%20OR%20pink%20floyd%20OR%20michael%20jackson`);
       
       if (response.status === 429) {
         featuredGrid.innerHTML = '<div class="vinyl-card">⏳ Límite de peticiones. Reintentando...</div>';
-        mostrarNotificacionPorCodigo('FINETUNING_LIMITE');
+        mostrarNotificacion('⏳ La página está en fase de ajuste (finetuning).', 'info', true);
         setTimeout(() => cargarDestacados(), 3000);
         return;
       }
@@ -163,15 +181,16 @@ if (window.location.pathname.includes('dashboard.html')) {
         }
       } else {
         featuredGrid.innerHTML = '<div class="vinyl-card">Error al cargar destacados</div>';
-        mostrarNotificacionPorCodigo('ERROR_CONEXION_DESTACADOS');
+        mostrarNotificacion('❌ Error al cargar vinilos destacados', 'error');
       }
     } catch (error) {
       console.error('Error cargando destacados:', error);
       featuredGrid.innerHTML = '<div class="vinyl-card">Error de conexión</div>';
-      mostrarNotificacionPorCodigo('ERROR_CONEXION_DESTACADOS');
+      mostrarNotificacion('❌ Error de conexión al cargar destacados', 'error');
     }
   }
 
+  // ========== SIDEBARS ==========
   const sidebarLeft = document.getElementById('sidebarLeft');
   const sidebarRight = document.getElementById('sidebarRight');
   const overlay = document.getElementById('sidebarOverlay');
@@ -216,11 +235,13 @@ if (window.location.pathname.includes('dashboard.html')) {
   
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape') cerrarSidebars(); });
 
+  // ========== FUNCIÓN PARA LEER PARÁMETROS DE LA URL ==========
   function getParameterByName(name) {
     const urlParams = new URLSearchParams(window.location.search);
     return urlParams.get(name);
   }
 
+  // ========== VINILOS ALEATORIOS ==========
   const vinylGrid = document.getElementById('vinylGrid');
   
   const artistasPopulares = [
@@ -234,6 +255,7 @@ if (window.location.pathname.includes('dashboard.html')) {
   let ultimaPeticion = 0;
   let generosDisponibles = new Set();
 
+  // ========== FUNCIONES DE GÉNEROS ==========
   function actualizarGeneros(discos) {
     if (!discos || discos.length === 0) return;
     
@@ -259,16 +281,27 @@ if (window.location.pathname.includes('dashboard.html')) {
     const generosOrdenados = Array.from(generosDisponibles).sort();
     
     generosList.innerHTML = generosOrdenados.map(genero => `
-      <div class="genero-item" data-genero="${genero}">
-        🎸 ${genero}
+      <div class="genero-item ${generoActivo === genero ? 'genero-activo' : ''}" data-genero="${genero}">
+        🎸 ${genero} ${generoActivo === genero ? '✅' : ''}
       </div>
     `).join('');
     
     document.querySelectorAll('.genero-item').forEach(item => {
       item.addEventListener('click', () => {
         const genero = item.dataset.genero;
-        mostrarNotificacionPorCodigo('BUSCANDO_GENERO', genero);
-        buscarPorGenero(genero);
+        
+        if (generoActivo === genero) {
+          generoActivo = null;
+          mostrarNotificacion(`✅ Filtro de género desactivado. Mostrando todos los vinilos.`, 'success');
+          cargarVinilosAleatorios();
+        } else {
+          generoActivo = genero;
+          mostrarNotificacion(`🎵 Mostrando discos del género "${genero}"...`, 'info');
+          buscarPorGenero(genero);
+        }
+        
+        renderizarListaGeneros();
+        
         const generosContenido = document.getElementById('generosList');
         if (generosContenido) {
           generosContenido.classList.add('collapsed');
@@ -282,6 +315,9 @@ if (window.location.pathname.includes('dashboard.html')) {
   async function buscarPorGenero(genero) {
     if (!genero) return;
     
+    generoActivo = genero;
+    
+    mostrarNotificacion(`🔍 Buscando discos de ${genero}...`, 'info');
     vinylGrid.innerHTML = '<p>🔄 Cargando discos por género...</p>';
     
     try {
@@ -289,7 +325,7 @@ if (window.location.pathname.includes('dashboard.html')) {
       
       if (response.status === 429) {
         vinylGrid.innerHTML = '<p>⏳ Límite de peticiones. Reintentando...</p>';
-        mostrarNotificacionPorCodigo('FINETUNING_LIMITE');
+        mostrarNotificacion('⏳ La página está en fase de ajuste (finetuning).', 'info', true);
         setTimeout(() => buscarPorGenero(genero), 3000);
         return;
       }
@@ -310,7 +346,7 @@ if (window.location.pathname.includes('dashboard.html')) {
         if (discos.length === 0) {
           vinylGrid.innerHTML = `<p>🎧 No se encontraron discos de "${genero}".</p>
                                   <p style="font-size: 14px; margin-top: 10px;">🎧 VinylMarket está en fase de finetuning. Pronto habrá más variedad de géneros.</p>`;
-          mostrarNotificacionPorCodigo('FINETUNING_GENERO_VACIO');
+          mostrarNotificacion(`🎸 No encontramos discos de "${genero}" aún. VinylMarket está en fase de crecimiento.`, 'info', true);
           return;
         }
         
@@ -319,26 +355,27 @@ if (window.location.pathname.includes('dashboard.html')) {
         }
         
         mostrarVinilos(discos);
-        mostrarNotificacionPorCodigo('DISCOS_ENCONTRADOS_GENERO', discos.length, genero);
+        mostrarNotificacion(`✅ Encontrados ${discos.length} discos de ${genero}`, 'success');
         actualizarGeneros(discos);
         
         if (discos.length < 3) {
-          mostrarNotificacionPorCodigo('FINETUNING_POCOS_RESULTADOS');
+          mostrarNotificacion('🎧 Estamos en fase de finetuning. Pronto más variedad.', 'info', true);
         }
       } else if (response.status === 500) {
         vinylGrid.innerHTML = '<p>⚠️ Estamos mejorando nuestro catálogo. Pronto habrá más discos por género.</p>';
-        mostrarNotificacionPorCodigo('FINETUNING_ERROR_SERVIDOR');
+        mostrarNotificacion('⚠️ VinylMarket está en fase de finetuning.', 'info', true);
       } else {
         vinylGrid.innerHTML = '<p>❌ Error al buscar por género. La página está en desarrollo.</p>';
-        mostrarNotificacionPorCodigo('GENERO_BUSQUEDA_FALLIDA');
+        mostrarNotificacion('⚠️ Esta función está en fase de ajuste.', 'info', true);
       }
     } catch (error) {
       console.error(error);
       vinylGrid.innerHTML = '<p>❌ Error de conexión. VinylMarket está en fase de mejora.</p>';
-      mostrarNotificacionPorCodigo('ERROR_CONEXION_GENERO');
+      mostrarNotificacion('⚠️ VinylMarket está en finetuning. ¡Vuelve pronto!', 'info', true);
     }
   }
 
+  // ========== BOTONES DEL SIDEBAR ==========
   function inicializarBotonesSidebar() {
     const btnMasSolicitados = document.getElementById('btnMasSolicitados');
     const btnGrandesOfertas = document.getElementById('btnGrandesOfertas');
@@ -347,36 +384,37 @@ if (window.location.pathname.includes('dashboard.html')) {
     
     if (btnMasSolicitados) {
       btnMasSolicitados.addEventListener('click', () => {
-        mostrarNotificacionPorCodigo('PROXIMAMENTE_SOLICITADOS');
+        mostrarNotificacion('🎧 Próximamente: Los vinilos más solicitados por la comunidad', 'info');
       });
     }
     
     if (btnGrandesOfertas) {
       btnGrandesOfertas.addEventListener('click', () => {
-        mostrarNotificacionPorCodigo('PROXIMAMENTE_OFERTAS');
+        mostrarNotificacion('💸 Próximamente: Las mejores ofertas y descuentos', 'info');
       });
     }
     
     if (btnTopVentas) {
       btnTopVentas.addEventListener('click', () => {
-        mostrarNotificacionPorCodigo('PROXIMAMENTE_TOP_VENTAS');
+        mostrarNotificacion('📈 Próximamente: Los vinilos más vendidos del mes', 'info');
       });
     }
     
     if (btnNuevaPublicacion) {
       btnNuevaPublicacion.addEventListener('click', () => {
-        const usuario = JSON.parse(localStorage.getItem('usuario'));
-        const tipo = usuario?.tipo || 'comprador';
+        const usuarioActual = JSON.parse(localStorage.getItem('usuario'));
+        const tipo = usuarioActual?.tipo || 'comprador';
         
         if (tipo === 'comprador') {
-          mostrarNotificacionPorCodigo('PUBLICAR_SOLO_VENDEDOR');
+          mostrarNotificacion('🔒 Debes ser vendedor para publicar vinilos. Cambia tu tipo de usuario en el perfil.', 'error');
         } else {
-          mostrarNotificacionPorCodigo('PROXIMAMENTE_PUBLICAR');
+          mostrarNotificacion('➕ Próximamente: Publica tus propios vinilos a la venta', 'info');
         }
       });
     }
   }
 
+  // ========== MOSTRAR VINILOS ==========
   function mostrarVinilos(discos) {
     if (!vinylGrid) return;
     if (!discos || discos.length === 0) {
@@ -440,12 +478,13 @@ if (window.location.pathname.includes('dashboard.html')) {
               body: JSON.stringify(discoData)
             });
             if (res.ok) {
-              mostrarNotificacionPorCodigo('VINILO_IMPORTADO');
+              mostrarNotificacion('✅ Disco importado a tu colección', 'success');
             } else {
-              mostrarNotificacionPorCodigo('IMPORTAR_FALLIDO');
+              const error = await res.text();
+              mostrarNotificacion('❌ Error al importar: ' + error, 'error');
             }
           } catch (error) {
-            mostrarNotificacionPorCodigo('ERROR_CONEXION_IMPORTAR');
+            mostrarNotificacion('❌ Error de conexión al importar', 'error');
           }
         };
       });
@@ -454,8 +493,14 @@ if (window.location.pathname.includes('dashboard.html')) {
     actualizarGeneros(discos);
   }
 
+  // ========== CARGAR VINILOS ALEATORIOS ==========
   async function cargarVinilosAleatorios() {
     if (!vinylGrid) return;
+    
+    if (generoActivo) {
+      buscarPorGenero(generoActivo);
+      return;
+    }
     
     const ahora = Date.now();
     if (discosEnCache && (ahora - ultimaPeticion) < 30000) {
@@ -476,7 +521,7 @@ if (window.location.pathname.includes('dashboard.html')) {
       
       if (response.status === 429) {
         vinylGrid.innerHTML = '<p>⏳ Demasiadas peticiones. Reintentando...</p>';
-        mostrarNotificacionPorCodigo('FINETUNING_LIMITE');
+        mostrarNotificacion('⏳ La página está en fase de ajuste (finetuning).', 'info', true);
         setTimeout(() => cargarVinilosAleatorios(), 3000);
         return;
       }
@@ -496,7 +541,7 @@ if (window.location.pathname.includes('dashboard.html')) {
         
         if (discos.length === 0) {
           vinylGrid.innerHTML = '<p>🎧 Próximamente más vinilos. La página está en fase de finetuning.</p>';
-          mostrarNotificacionPorCodigo('FINETUNING_CATALOGO');
+          mostrarNotificacion('🎧 VinylMarket está en desarrollo. Pronto tendremos cientos de vinilos disponibles.', 'info', true);
           setTimeout(() => cargarVinilosAleatorios(), 3000);
           return;
         }
@@ -521,14 +566,14 @@ if (window.location.pathname.includes('dashboard.html')) {
         mostrarVinilos(discosFinal);
         
         if (discosFinal.length < 5) {
-          mostrarNotificacionPorCodigo('FINETUNING_CATALOGO');
+          mostrarNotificacion('🎧 Estamos ampliando nuestro catálogo. ¡Pronto más vinilos!', 'info', true);
         }
       } else {
         if (discosEnCache) {
           mostrarVinilos(discosEnCache);
         } else {
           vinylGrid.innerHTML = '<p>⚠️ Esta página está en fase de ajuste. Vuelve pronto para más contenido.</p>';
-          mostrarNotificacionPorCodigo('FINETUNING_VUELVE_PRONTO');
+          mostrarNotificacion('⚠️ VinylMarket está en fase de finetuning.', 'info', true);
         }
       }
     } catch (error) {
@@ -537,29 +582,35 @@ if (window.location.pathname.includes('dashboard.html')) {
         mostrarVinilos(discosEnCache);
       } else {
         vinylGrid.innerHTML = '<p>⚠️ VinylMarket está en fase de ajuste. Disculpa las molestias.</p>';
-        mostrarNotificacionPorCodigo('FINETUNING_VUELVE_PRONTO');
+        mostrarNotificacion('⚠️ VinylMarket está en finetuning. ¡Gracias por tu paciencia!', 'info', true);
       }
     }
   }
 
+  // ========== BÚSQUEDA MANUAL ==========
   const searchInput = document.getElementById('searchInput');
   const searchBtn = document.getElementById('searchBtn');
   
   async function buscarVinilos(query) {
     if (!query.trim()) {
-      mostrarNotificacionPorCodigo('BUSCAR_VACIO');
+      mostrarNotificacion('⚠️ Escribe un artista o título para buscar', 'info');
       return;
     }
     
+    if (generoActivo) {
+      generoActivo = null;
+      renderizarListaGeneros();
+    }
+    
     vinylGrid.innerHTML = '<p>🔄 Cargando...</p>';
-    mostrarNotificacionPorCodigo('BUSCANDO');
+    mostrarNotificacion(`🔍 Buscando "${query}"...`, 'info');
     
     try {
       const response = await fetch(`${API_URL}/discos/buscar?q=${encodeURIComponent(query)}`);
       
       if (response.status === 429) {
         vinylGrid.innerHTML = '<p>⏳ Demasiadas peticiones. Espera unos segundos...</p>';
-        mostrarNotificacionPorCodigo('FINETUNING_LIMITE');
+        mostrarNotificacion('⏳ Límite de peticiones. Reintentando...', 'info');
         setTimeout(() => buscarVinilos(query), 3000);
         return;
       }
@@ -568,19 +619,19 @@ if (window.location.pathname.includes('dashboard.html')) {
         const discos = await response.json();
         if (discos.length === 0) {
           vinylGrid.innerHTML = '<p>🎧 No se encontraron vinilos para tu búsqueda.</p>';
-          mostrarNotificacionPorCodigo('FINETUNING_SIN_RESULTADOS');
+          mostrarNotificacion('🔍 No se encontraron resultados. La página está en fase de mejora.', 'info', true);
         } else {
-          mostrarNotificacionPorCodigo('RESULTADOS_ENCONTRADOS', discos.length);
+          mostrarNotificacion(`✅ Encontrados ${discos.length} resultados`, 'success');
           mostrarVinilos(discos);
         }
       } else {
         vinylGrid.innerHTML = '<p>❌ Error al buscar. La página está en fase de desarrollo.</p>';
-        mostrarNotificacionPorCodigo('BUSQUEDA_FALLIDA');
+        mostrarNotificacion('⚠️ Esta página está en fase de ajuste (finetuning).', 'info', true);
       }
     } catch(e) {
       console.error(e);
       vinylGrid.innerHTML = '<p>❌ Error de conexión. La página está en fase de desarrollo.</p>';
-      mostrarNotificacionPorCodigo('ERROR_CONEXION_BUSCAR');
+      mostrarNotificacion('⚠️ VinylMarket está en fase de finetuning.', 'info', true);
     }
   }
   
@@ -593,6 +644,7 @@ if (window.location.pathname.includes('dashboard.html')) {
     });
   }
 
+  // ========== BÚSQUEDA DESDE INDEX ==========
   const buscarQuery = getParameterByName('buscar');
   if (buscarQuery) {
     setTimeout(() => {
@@ -603,6 +655,7 @@ if (window.location.pathname.includes('dashboard.html')) {
     }, 500);
   }
 
+  // ========== DESPLEGABLE DE GÉNEROS ==========
   const toggleGeneros = document.getElementById('toggleGeneros');
   const generosList = document.getElementById('generosList');
   const generosIcon = document.getElementById('generosIcon');
@@ -618,6 +671,7 @@ if (window.location.pathname.includes('dashboard.html')) {
     });
   }
 
+  // ========== INICIALIZAR TODO ==========
   cargarVinilosAleatorios();
   cargarDestacados();
   inicializarBotonesSidebar();

@@ -13,7 +13,7 @@ import com.vinilos.vinilos.dto.RegistroRequest;
 import com.vinilos.vinilos.model.Usuario;
 import com.vinilos.vinilos.service.UsuarioService;
 
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = {"http://localhost:5500", "http://127.0.0.1:5500"})
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {

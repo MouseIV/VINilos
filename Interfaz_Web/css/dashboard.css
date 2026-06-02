@@ -202,3 +202,15 @@
   margin-top: auto;
   margin-bottom: 5px;
 }
+
+/* Género activo en la lista */
+.genero-item.genero-activo {
+  background: #8b5a2b;
+  color: white;
+  border-color: #3b2f2f;
+}
+
+.genero-item.genero-activo:hover {
+  background: #6b3f1f;
+  transform: translateX(5px);
+}
