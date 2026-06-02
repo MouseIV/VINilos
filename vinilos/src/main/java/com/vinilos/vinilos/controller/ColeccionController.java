@@ -5,8 +5,13 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.lang.NonNull;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.vinilos.vinilos.model.Coleccion;
 import com.vinilos.vinilos.repository.ColeccionRepository;
@@ -19,8 +24,9 @@ public class ColeccionController {
     @Autowired
     private ColeccionRepository coleccionRepository;
 
+    @SuppressWarnings("null")
     @PutMapping("/{id}")
-    public ResponseEntity<?> actualizarColeccion(@PathVariable @NonNull Long id, @RequestBody Map<String, Object> body) {
+    public ResponseEntity<?> actualizarColeccion(@PathVariable Long id, @RequestBody Map<String, Object> body) {
         Optional<Coleccion> coleccionOpt = coleccionRepository.findById(id);
         if (coleccionOpt.isEmpty()) {
             return ResponseEntity.notFound().build();
@@ -42,8 +48,9 @@ public class ColeccionController {
         return ResponseEntity.ok(coleccionGuardada);
     }
     
+    @SuppressWarnings("null")
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> eliminarDeColeccion(@PathVariable @NonNull Long id) {
+    public ResponseEntity<?> eliminarDeColeccion(@PathVariable Long id) {
         Optional<Coleccion> coleccionOpt = coleccionRepository.findById(id);
         if (coleccionOpt.isEmpty()) {
             return ResponseEntity.notFound().build();

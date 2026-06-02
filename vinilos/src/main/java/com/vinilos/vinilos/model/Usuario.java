@@ -48,6 +48,9 @@ public class Usuario {
     
     @Column(nullable = true, length = 20)
     private String telefono;
+    
+    @Column(nullable = true, length = 10)
+    private String prefijo;
 
     @Column(nullable = true)
     private String fechaRegistro;

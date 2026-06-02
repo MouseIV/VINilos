@@ -15,33 +15,32 @@ if (window.location.pathname.includes('perfil.html')) {
   function actualizarInfoPerfil(usuarioData) {
     const tipoTexto = usuarioData.tipo === 'comprador' ? '🟡 Comprador' : usuarioData.tipo === 'vendedor' ? '🔵 Vendedor' : '🟢 Comprador y Vendedor';
     const nombreCompleto = usuarioData.apellido ? `${usuarioData.nombre} ${usuarioData.apellido}` : usuarioData.nombre;
-    const perfilHtml = `<p><strong>${nombreCompleto || usuarioData.username}</strong></p>
-                        <p>📧 ${usuarioData.email}</p>
-                        <p>📍 ${usuarioData.ciudad || 'No especificada'}</p>
-                        <p>📞 ${usuarioData.telefono || 'No especificado'}</p>
-                        <p>🎭 ${tipoTexto}</p>`;
+    
+    let telefonoCompleto = 'No especificado';
+    if (usuarioData.prefijo && usuarioData.telefono) {
+      telefonoCompleto = `${usuarioData.prefijo} ${usuarioData.telefono}`;
+    } else if (usuarioData.telefono) {
+      telefonoCompleto = usuarioData.telefono;
+    }
+    
+    const perfilHtml = `
+      <p><strong>👤 Nombre:</strong> ${nombreCompleto || usuarioData.username}</p>
+      <p><strong>📧 Email:</strong> ${usuarioData.email}</p>
+      <p><strong>📍 Ciudad:</strong> ${usuarioData.ciudad || 'No especificada'}</p>
+      <p><strong>📞 Teléfono:</strong> ${telefonoCompleto}</p>
+      <p><strong>🎭 Tipo:</strong> ${tipoTexto}</p>
+      <p><strong>🎯 Coleccionista:</strong> ${usuarioData.tipoColeccionista || 'Principiante'}</p>
+    `;
+    
     if (perfilInfo) perfilInfo.innerHTML = perfilHtml;
     if (sidebarProfileInfo) sidebarProfileInfo.innerHTML = perfilHtml;
   }
   
-  // Mostrar datos básicos del localStorage mientras se cargan del backend
   if (usuario) {
     actualizarInfoPerfil(usuario);
   }
-
   
-  function cargarDatosDesdeLocalStorage() {
-    if (document.getElementById('ciudad')) document.getElementById('ciudad').value = localStorage.getItem('user_ciudad') || '';
-    if (document.getElementById('telefono')) document.getElementById('telefono').value = localStorage.getItem('user_telefono') || '';
-    if (document.getElementById('direccion')) document.getElementById('direccion').value = localStorage.getItem('user_direccion') || '';
-    if (document.getElementById('codigoPostal')) document.getElementById('codigoPostal').value = localStorage.getItem('user_codigoPostal') || '';
-    if (document.getElementById('apellido')) document.getElementById('apellido').value = localStorage.getItem('user_apellido') || '';
-    if (document.getElementById('tipoColeccionista')) {
-      document.getElementById('tipoColeccionista').value = localStorage.getItem('user_tipo_coleccionista') || 'principiante';
-    }
-  }
-
-    // ========== FUNCIÓN PARA CARGAR DATOS COMPLETOS DEL USUARIO ==========
+  // ========== FUNCIÓN PARA CARGAR DATOS COMPLETOS DEL USUARIO ==========
   async function cargarDatosCompletosUsuario() {
     if (!token || !userId) {
       console.error('No hay token o userId');
@@ -60,35 +59,33 @@ if (window.location.pathname.includes('perfil.html')) {
         const datosUsuario = await response.json();
         console.log('Datos del usuario cargados:', datosUsuario);
         
-        // Separar prefijo y número de teléfono si vienen juntos
         let prefijo = datosUsuario.prefijo || '+34';
         let telefono = datosUsuario.telefono || '';
         
-        // Validar que prefijo no tenga más de 3 caracteres
-        if (prefijo.length > 3) prefijo = prefijo.substring(0, 3);
-        
-        // Validar que teléfono sea solo números y máximo 9 dígitos
+        if (prefijo && prefijo.length > 3) prefijo = prefijo.substring(0, 3);
         if (telefono) telefono = telefono.replace(/\D/g, '').substring(0, 9);
         
-        // Actualizar localStorage con los datos completos
         const usuarioActualizado = { ...usuario, ...datosUsuario, prefijo, telefono };
         localStorage.setItem('usuario', JSON.stringify(usuarioActualizado));
         
-        // Actualizar la información en pantalla
         actualizarInfoPerfil(usuarioActualizado);
         
-        // Cargar datos en el formulario de información adicional
-        if (document.getElementById('apellido')) document.getElementById('apellido').value = datosUsuario.apellido || '';
-        if (document.getElementById('ciudad')) document.getElementById('ciudad').value = datosUsuario.ciudad || '';
-        if (document.getElementById('prefijo')) document.getElementById('prefijo').value = prefijo;
-        if (document.getElementById('telefono')) document.getElementById('telefono').value = telefono;
-        if (document.getElementById('direccion')) document.getElementById('direccion').value = datosUsuario.direccion || '';
-        if (document.getElementById('codigoPostal')) document.getElementById('codigoPostal').value = datosUsuario.codigoPostal || '';
-        if (document.getElementById('tipoColeccionista')) {
-          document.getElementById('tipoColeccionista').value = datosUsuario.tipoColeccionista || 'principiante';
-        }
+        const apellidoInput = document.getElementById('apellido');
+        const ciudadInput = document.getElementById('ciudad');
+        const prefijoInput = document.getElementById('prefijo');
+        const telefonoInput = document.getElementById('telefono');
+        const direccionInput = document.getElementById('direccion');
+        const cpInput = document.getElementById('codigoPostal');
+        const tipoSelect = document.getElementById('tipoColeccionista');
         
-        // Guardar en localStorage como respaldo
+        if (apellidoInput) apellidoInput.value = datosUsuario.apellido || '';
+        if (ciudadInput) ciudadInput.value = datosUsuario.ciudad || '';
+        if (prefijoInput) prefijoInput.value = prefijo;
+        if (telefonoInput) telefonoInput.value = telefono;
+        if (direccionInput) direccionInput.value = datosUsuario.direccion || '';
+        if (cpInput) cpInput.value = datosUsuario.codigoPostal || '';
+        if (tipoSelect) tipoSelect.value = datosUsuario.tipoColeccionista || 'principiante';
+        
         localStorage.setItem('user_apellido', datosUsuario.apellido || '');
         localStorage.setItem('user_ciudad', datosUsuario.ciudad || '');
         localStorage.setItem('user_prefijo', prefijo);
@@ -115,45 +112,47 @@ if (window.location.pathname.includes('perfil.html')) {
     let prefijo = localStorage.getItem('user_prefijo') || '+34';
     let telefono = localStorage.getItem('user_telefono') || '';
     
-    // Validar prefijo
-    if (prefijo.length > 3) prefijo = prefijo.substring(0, 3);
+    if (prefijo && prefijo.length > 3) prefijo = prefijo.substring(0, 3);
     if (telefono) telefono = telefono.replace(/\D/g, '').substring(0, 9);
     
-    if (document.getElementById('apellido')) document.getElementById('apellido').value = localStorage.getItem('user_apellido') || '';
-    if (document.getElementById('ciudad')) document.getElementById('ciudad').value = localStorage.getItem('user_ciudad') || '';
-    if (document.getElementById('prefijo')) document.getElementById('prefijo').value = prefijo;
-    if (document.getElementById('telefono')) document.getElementById('telefono').value = telefono;
-    if (document.getElementById('direccion')) document.getElementById('direccion').value = localStorage.getItem('user_direccion') || '';
-    if (document.getElementById('codigoPostal')) {
+    const apellidoInput = document.getElementById('apellido');
+    const ciudadInput = document.getElementById('ciudad');
+    const prefijoInput = document.getElementById('prefijo');
+    const telefonoInput = document.getElementById('telefono');
+    const direccionInput = document.getElementById('direccion');
+    const cpInput = document.getElementById('codigoPostal');
+    const tipoSelect = document.getElementById('tipoColeccionista');
+    
+    if (apellidoInput) apellidoInput.value = localStorage.getItem('user_apellido') || '';
+    if (ciudadInput) ciudadInput.value = localStorage.getItem('user_ciudad') || '';
+    if (prefijoInput) prefijoInput.value = prefijo;
+    if (telefonoInput) telefonoInput.value = telefono;
+    if (direccionInput) direccionInput.value = localStorage.getItem('user_direccion') || '';
+    if (cpInput) {
       let cp = localStorage.getItem('user_codigoPostal') || '';
       cp = cp.replace(/\D/g, '').substring(0, 5);
-      document.getElementById('codigoPostal').value = cp;
+      cpInput.value = cp;
     }
-    if (document.getElementById('tipoColeccionista')) {
-      document.getElementById('tipoColeccionista').value = localStorage.getItem('user_tipo_coleccionista') || 'principiante';
-    }
+    if (tipoSelect) tipoSelect.value = localStorage.getItem('user_tipo_coleccionista') || 'principiante';
   }
   
   // ========== GUARDAR DATOS DEL CLIENTE ==========
   async function guardarDatosCliente() {
-    // Obtener y validar prefijo (máximo 3 caracteres)
     let prefijo = document.getElementById('prefijo')?.value || '+34';
-    if (prefijo.length > 3) {
+    if (prefijo && prefijo.length > 3) {
       mostrarNotificacion('❌ El prefijo debe tener máximo 3 caracteres (ej: +34)', 'error');
       return;
     }
     
-    // Obtener y validar número de teléfono (9 dígitos)
     let telefono = document.getElementById('telefono')?.value || '';
-    telefono = telefono.replace(/\D/g, ''); // Eliminar todo lo que no sea número
+    telefono = telefono.replace(/\D/g, '');
     if (telefono && telefono.length !== 9) {
       mostrarNotificacion('❌ El número de teléfono debe tener exactamente 9 dígitos (ej: 123456789)', 'error');
       return;
     }
     
-    // Obtener y validar código postal (5 dígitos)
     let codigoPostal = document.getElementById('codigoPostal')?.value || '';
-    codigoPostal = codigoPostal.replace(/\D/g, ''); // Eliminar todo lo que no sea número
+    codigoPostal = codigoPostal.replace(/\D/g, '');
     if (codigoPostal && codigoPostal.length !== 5) {
       mostrarNotificacion('❌ El código postal debe tener exactamente 5 dígitos (ej: 12345)', 'error');
       return;
@@ -184,7 +183,6 @@ if (window.location.pathname.includes('perfil.html')) {
       if (response.ok) {
         const usuarioActualizado = await response.json();
         
-        // Actualizar localStorage
         const usuarioStorage = JSON.parse(localStorage.getItem('usuario') || '{}');
         usuarioStorage.apellido = datosCliente.apellido;
         usuarioStorage.ciudad = datosCliente.ciudad;
@@ -195,7 +193,6 @@ if (window.location.pathname.includes('perfil.html')) {
         usuarioStorage.tipoColeccionista = datosCliente.tipoColeccionista;
         localStorage.setItem('usuario', JSON.stringify(usuarioStorage));
         
-        // Guardar respaldo
         localStorage.setItem('user_apellido', datosCliente.apellido);
         localStorage.setItem('user_ciudad', datosCliente.ciudad);
         localStorage.setItem('user_prefijo', datosCliente.prefijo);
@@ -204,7 +201,6 @@ if (window.location.pathname.includes('perfil.html')) {
         localStorage.setItem('user_codigoPostal', datosCliente.codigoPostal);
         localStorage.setItem('user_tipo_coleccionista', datosCliente.tipoColeccionista);
         
-        // Actualizar pantalla
         actualizarInfoPerfil(usuarioStorage);
         
         mostrarNotificacion('✅ Datos guardados correctamente', 'success');
@@ -233,7 +229,6 @@ if (window.location.pathname.includes('perfil.html')) {
   }
   
   function abrirSidebar() {
-    cerrarSidebar();
     if (sidebarRight) sidebarRight.classList.add('active');
     if (overlay) overlay.classList.add('active');
     body.classList.add('sidebar-right-open');
@@ -337,7 +332,8 @@ if (window.location.pathname.includes('perfil.html')) {
         
         if (coleccionResponse.ok) {
           mostrarNotificacion('✅ Vinilo añadido a tu colección', 'success');
-          ['nuevoTitulo', 'nuevoArtista', 'nuevoAnio', 'nuevoGenero', 'nuevaImagen'].forEach(id => {
+          const inputs = ['nuevoTitulo', 'nuevoArtista', 'nuevoAnio', 'nuevoGenero', 'nuevaImagen'];
+          inputs.forEach(id => {
             const input = document.getElementById(id);
             if (input) input.value = '';
           });
@@ -436,12 +432,15 @@ if (window.location.pathname.includes('perfil.html')) {
                                 </div>`;
   }
   
-  // ========== DESPLEGABLE DE ESTADÍSTICAS ==========
+  // ========== DESPLEGABLE DE ESTADÍSTICAS (RECOGIDO POR DEFECTO) ==========
   const toggleEstadisticas = document.getElementById('toggleEstadisticas');
   const estadisticasContenido = document.getElementById('estadisticasContenido');
   const estadisticasIcon = document.getElementById('estadisticasIcon');
   
   if (toggleEstadisticas && estadisticasContenido) {
+    estadisticasContenido.classList.add('collapsed');
+    if (estadisticasIcon) estadisticasIcon.innerHTML = '▶';
+    
     toggleEstadisticas.addEventListener('click', function() {
       estadisticasContenido.classList.toggle('collapsed');
       if (estadisticasContenido.classList.contains('collapsed')) {
@@ -452,15 +451,14 @@ if (window.location.pathname.includes('perfil.html')) {
     });
   }
   
-  // ========== DESPLEGABLE DE DATOS DEL CLIENTE ==========
+  // ========== DESPLEGABLE DE INFORMACIÓN ADICIONAL (RECOGIDO POR DEFECTO) ==========
   const toggleDatosCliente = document.getElementById('toggleDatosCliente');
   const datosClienteContenido = document.getElementById('datosClienteContenido');
   const datosClienteIcon = document.getElementById('datosClienteIcon');
   
   if (toggleDatosCliente && datosClienteContenido) {
-    // Por defecto, el contenido debe estar visible (no collapsed)
-    datosClienteContenido.classList.remove('collapsed');
-    if (datosClienteIcon) datosClienteIcon.innerHTML = '▼';
+    datosClienteContenido.classList.add('collapsed');
+    if (datosClienteIcon) datosClienteIcon.innerHTML = '▶';
     
     toggleDatosCliente.addEventListener('click', function() {
       datosClienteContenido.classList.toggle('collapsed');
@@ -532,14 +530,18 @@ if (window.location.pathname.includes('perfil.html')) {
     });
     
     document.getElementById('guardarEdicionBtn').onclick = guardarEdicionVinilo;
-    document.getElementById('cancelarEdicionBtn').onclick = () => { modal.classList.remove('active'); viniloEditando = null; };
+    document.getElementById('cancelarEdicionBtn').onclick = () => { 
+      modal.classList.remove('active'); 
+      viniloEditando = null; 
+    };
   }
   
   function abrirModalEditar(item) {
     crearModal();
     viniloEditando = item;
     const modal = document.getElementById('modalEditar');
-    document.getElementById('editEstado').value = item.estado || 'NUEVO';
+    const editEstado = document.getElementById('editEstado');
+    if (editEstado) editEstado.value = item.estado || 'NUEVO';
     
     const calificacion = item.calificacion || 5;
     const starsEdit = document.querySelectorAll('#ratingStarsEdit span');
@@ -560,7 +562,7 @@ if (window.location.pathname.includes('perfil.html')) {
   async function guardarEdicionVinilo() {
     if (!viniloEditando) return;
     
-    const nuevoEstado = document.getElementById('editEstado').value;
+    const nuevoEstado = document.getElementById('editEstado')?.value || 'NUEVO';
     const nuevaCalificacion = parseInt(document.getElementById('editCalificacion')?.value || 5);
     
     mostrarNotificacion('🔄 Actualizando vinilo...', 'info');
@@ -574,7 +576,8 @@ if (window.location.pathname.includes('perfil.html')) {
       
       if (response.ok) {
         mostrarNotificacion('✅ Vinilo actualizado correctamente', 'success');
-        document.getElementById('modalEditar').classList.remove('active');
+        const modal = document.getElementById('modalEditar');
+        if (modal) modal.classList.remove('active');
         cargarColeccion();
         viniloEditando = null;
       } else {
@@ -639,7 +642,12 @@ if (window.location.pathname.includes('perfil.html')) {
         } else {
           miColeccion.innerHTML = coleccion.map(item => {
             const disco = item.disco;
-            const estadoTexto = { 'NUEVO': '🟢 Nuevo', 'MUY_BUENO': '🟡 Muy bueno', 'BUENO': '🟠 Bueno', 'REGULAR': '🔴 Regular' }[item.estado] || item.estado;
+            const estadoTexto = { 
+              'NUEVO': '🟢 Nuevo', 
+              'MUY_BUENO': '🟡 Muy bueno', 
+              'BUENO': '🟠 Bueno', 
+              'REGULAR': '🔴 Regular' 
+            }[item.estado] || item.estado;
             const estrellas = '⭐'.repeat(item.calificacion || 5);
             return `<div class="vinyl-card-small">
                       <div style="display: flex; gap: 15px; align-items: center; flex-wrap: wrap;">

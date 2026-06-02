@@ -20,18 +20,18 @@ public class Coleccion {
     private Usuario usuario;
     
     @ManyToOne
-    @JoinColumn(name = "disco_id", nullable = false)
-    private Disco disco;
+    @JoinColumn(name = "vinilo_id", nullable = false)
+    private Vinilo vinilo;
     
     private LocalDateTime fechaAdquisicion;
     
-    private String estado; // NUEVO, MUY_BUENO, BUENO, REGULAR
+    private String estado;
     
-    private Integer calificacion; // 1 a 5
+    private Integer calificacion;
     
-    public Coleccion(Usuario usuario, Disco disco) {
+    public Coleccion(Usuario usuario, Vinilo vinilo) {
         this.usuario = usuario;
-        this.disco = disco;
+        this.vinilo = vinilo;
         this.fechaAdquisicion = LocalDateTime.now();
         this.estado = "NUEVO";
         this.calificacion = 5;
