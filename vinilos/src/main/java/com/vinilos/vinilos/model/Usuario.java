@@ -19,7 +19,6 @@ public class Usuario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // Campos que ya tenías
     @Column(unique = true, nullable = false)
     private String email;
 
@@ -34,10 +33,7 @@ public class Usuario {
 
     private String rol = "USUARIO";
 
-    // -------------------------
-    // CAMPOS NUEVOS (NO OBLIGATORIOS)
-    // -------------------------
-
+    // CAMPOS ADICIONALES
     @Column(nullable = true, length = 150)
     private String apellido;
 
@@ -49,13 +45,19 @@ public class Usuario {
 
     @Column(nullable = true, length = 10)
     private String codigoPostal;
+    
+    @Column(nullable = true, length = 20)
+    private String telefono;
 
     @Column(nullable = true)
     private String fechaRegistro;
 
     @Column(nullable = true)
-    private String tipoCliente;
+    private String tipoCliente;  // comprador, vendedor, ambos
 
     @Column(nullable = true)
     private Integer valoracionVendedor;
+    
+    @Column(nullable = true)
+    private String tipoColeccionista;  // principiante, aficionado, coleccionista, experto
 }

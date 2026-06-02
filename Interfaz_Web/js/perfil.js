@@ -4,46 +4,222 @@
 
 if (window.location.pathname.includes('perfil.html')) {
   
-  setTimeout(() => {
-    mostrarNotificacionPorCodigo('FINETUNING_BIENVENIDA');
-  }, 1500);
-  
   const token = localStorage.getItem('token');
+  const usuario = JSON.parse(localStorage.getItem('usuario'));
+  const userId = usuario?.id;
   
-  function isTokenExpiradoLocal() {
-    if (!token) return true;
+  // ========== MOSTRAR INFORMACIÓN BÁSICA DEL PERFIL ==========
+  const perfilInfo = document.getElementById('perfilInfo');
+  const sidebarProfileInfo = document.getElementById('sidebarProfileInfo');
+  
+  function actualizarInfoPerfil(usuarioData) {
+    const tipoTexto = usuarioData.tipo === 'comprador' ? '🟡 Comprador' : usuarioData.tipo === 'vendedor' ? '🔵 Vendedor' : '🟢 Comprador y Vendedor';
+    const nombreCompleto = usuarioData.apellido ? `${usuarioData.nombre} ${usuarioData.apellido}` : usuarioData.nombre;
+    const perfilHtml = `<p><strong>${nombreCompleto || usuarioData.username}</strong></p>
+                        <p>📧 ${usuarioData.email}</p>
+                        <p>📍 ${usuarioData.ciudad || 'No especificada'}</p>
+                        <p>📞 ${usuarioData.telefono || 'No especificado'}</p>
+                        <p>🎭 ${tipoTexto}</p>`;
+    if (perfilInfo) perfilInfo.innerHTML = perfilHtml;
+    if (sidebarProfileInfo) sidebarProfileInfo.innerHTML = perfilHtml;
+  }
+  
+  // Mostrar datos básicos del localStorage mientras se cargan del backend
+  if (usuario) {
+    actualizarInfoPerfil(usuario);
+  }
+
+  
+  function cargarDatosDesdeLocalStorage() {
+    if (document.getElementById('ciudad')) document.getElementById('ciudad').value = localStorage.getItem('user_ciudad') || '';
+    if (document.getElementById('telefono')) document.getElementById('telefono').value = localStorage.getItem('user_telefono') || '';
+    if (document.getElementById('direccion')) document.getElementById('direccion').value = localStorage.getItem('user_direccion') || '';
+    if (document.getElementById('codigoPostal')) document.getElementById('codigoPostal').value = localStorage.getItem('user_codigoPostal') || '';
+    if (document.getElementById('apellido')) document.getElementById('apellido').value = localStorage.getItem('user_apellido') || '';
+    if (document.getElementById('tipoColeccionista')) {
+      document.getElementById('tipoColeccionista').value = localStorage.getItem('user_tipo_coleccionista') || 'principiante';
+    }
+  }
+
+    // ========== FUNCIÓN PARA CARGAR DATOS COMPLETOS DEL USUARIO ==========
+  async function cargarDatosCompletosUsuario() {
+    if (!token || !userId) {
+      console.error('No hay token o userId');
+      return;
+    }
+    
     try {
-      const payload = JSON.parse(atob(token.split('.')[1]));
-      return payload.exp * 1000 < Date.now();
-    } catch (e) {
-      return true;
+      const response = await fetch(`${API_URL}/usuarios/${userId}`, {
+        headers: { 
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      });
+      
+      if (response.ok) {
+        const datosUsuario = await response.json();
+        console.log('Datos del usuario cargados:', datosUsuario);
+        
+        // Separar prefijo y número de teléfono si vienen juntos
+        let prefijo = datosUsuario.prefijo || '+34';
+        let telefono = datosUsuario.telefono || '';
+        
+        // Validar que prefijo no tenga más de 3 caracteres
+        if (prefijo.length > 3) prefijo = prefijo.substring(0, 3);
+        
+        // Validar que teléfono sea solo números y máximo 9 dígitos
+        if (telefono) telefono = telefono.replace(/\D/g, '').substring(0, 9);
+        
+        // Actualizar localStorage con los datos completos
+        const usuarioActualizado = { ...usuario, ...datosUsuario, prefijo, telefono };
+        localStorage.setItem('usuario', JSON.stringify(usuarioActualizado));
+        
+        // Actualizar la información en pantalla
+        actualizarInfoPerfil(usuarioActualizado);
+        
+        // Cargar datos en el formulario de información adicional
+        if (document.getElementById('apellido')) document.getElementById('apellido').value = datosUsuario.apellido || '';
+        if (document.getElementById('ciudad')) document.getElementById('ciudad').value = datosUsuario.ciudad || '';
+        if (document.getElementById('prefijo')) document.getElementById('prefijo').value = prefijo;
+        if (document.getElementById('telefono')) document.getElementById('telefono').value = telefono;
+        if (document.getElementById('direccion')) document.getElementById('direccion').value = datosUsuario.direccion || '';
+        if (document.getElementById('codigoPostal')) document.getElementById('codigoPostal').value = datosUsuario.codigoPostal || '';
+        if (document.getElementById('tipoColeccionista')) {
+          document.getElementById('tipoColeccionista').value = datosUsuario.tipoColeccionista || 'principiante';
+        }
+        
+        // Guardar en localStorage como respaldo
+        localStorage.setItem('user_apellido', datosUsuario.apellido || '');
+        localStorage.setItem('user_ciudad', datosUsuario.ciudad || '');
+        localStorage.setItem('user_prefijo', prefijo);
+        localStorage.setItem('user_telefono', telefono);
+        localStorage.setItem('user_direccion', datosUsuario.direccion || '');
+        localStorage.setItem('user_codigoPostal', datosUsuario.codigoPostal || '');
+        localStorage.setItem('user_tipo_coleccionista', datosUsuario.tipoColeccionista || 'principiante');
+        
+        return datosUsuario;
+      } else if (response.status === 404) {
+        console.log('Usuario no encontrado en backend, usando datos locales');
+        cargarDatosDesdeLocalStorage();
+      } else {
+        console.error('Error al cargar usuario:', response.status);
+        cargarDatosDesdeLocalStorage();
+      }
+    } catch (error) {
+      console.error('Error de conexión:', error);
+      cargarDatosDesdeLocalStorage();
     }
   }
   
-  if (!token || isTokenExpiradoLocal()) {
-    localStorage.clear();
-    mostrarNotificacionPorCodigo('SESION_EXPIRADA');
-    setTimeout(() => { window.location.href = 'login.html'; }, 2000);
+  function cargarDatosDesdeLocalStorage() {
+    let prefijo = localStorage.getItem('user_prefijo') || '+34';
+    let telefono = localStorage.getItem('user_telefono') || '';
+    
+    // Validar prefijo
+    if (prefijo.length > 3) prefijo = prefijo.substring(0, 3);
+    if (telefono) telefono = telefono.replace(/\D/g, '').substring(0, 9);
+    
+    if (document.getElementById('apellido')) document.getElementById('apellido').value = localStorage.getItem('user_apellido') || '';
+    if (document.getElementById('ciudad')) document.getElementById('ciudad').value = localStorage.getItem('user_ciudad') || '';
+    if (document.getElementById('prefijo')) document.getElementById('prefijo').value = prefijo;
+    if (document.getElementById('telefono')) document.getElementById('telefono').value = telefono;
+    if (document.getElementById('direccion')) document.getElementById('direccion').value = localStorage.getItem('user_direccion') || '';
+    if (document.getElementById('codigoPostal')) {
+      let cp = localStorage.getItem('user_codigoPostal') || '';
+      cp = cp.replace(/\D/g, '').substring(0, 5);
+      document.getElementById('codigoPostal').value = cp;
+    }
+    if (document.getElementById('tipoColeccionista')) {
+      document.getElementById('tipoColeccionista').value = localStorage.getItem('user_tipo_coleccionista') || 'principiante';
+    }
   }
   
-  const usuario = JSON.parse(localStorage.getItem('usuario'));
-  
-  const perfilInfo = document.getElementById('perfilInfo');
-  if (perfilInfo && usuario) {
-    const tipoTexto = usuario.tipo === 'comprador' ? '🟡 Comprador' : usuario.tipo === 'vendedor' ? '🔵 Vendedor' : '🟢 Comprador y Vendedor';
-    perfilInfo.innerHTML = `<p><strong>${usuario.nombre || usuario.username}</strong></p>
-                            <p>📧 ${usuario.email}</p>
-                            <p>🎭 ${tipoTexto}</p>`;
+  // ========== GUARDAR DATOS DEL CLIENTE ==========
+  async function guardarDatosCliente() {
+    // Obtener y validar prefijo (máximo 3 caracteres)
+    let prefijo = document.getElementById('prefijo')?.value || '+34';
+    if (prefijo.length > 3) {
+      mostrarNotificacion('❌ El prefijo debe tener máximo 3 caracteres (ej: +34)', 'error');
+      return;
+    }
+    
+    // Obtener y validar número de teléfono (9 dígitos)
+    let telefono = document.getElementById('telefono')?.value || '';
+    telefono = telefono.replace(/\D/g, ''); // Eliminar todo lo que no sea número
+    if (telefono && telefono.length !== 9) {
+      mostrarNotificacion('❌ El número de teléfono debe tener exactamente 9 dígitos (ej: 123456789)', 'error');
+      return;
+    }
+    
+    // Obtener y validar código postal (5 dígitos)
+    let codigoPostal = document.getElementById('codigoPostal')?.value || '';
+    codigoPostal = codigoPostal.replace(/\D/g, ''); // Eliminar todo lo que no sea número
+    if (codigoPostal && codigoPostal.length !== 5) {
+      mostrarNotificacion('❌ El código postal debe tener exactamente 5 dígitos (ej: 12345)', 'error');
+      return;
+    }
+    
+    const datosCliente = {
+      apellido: document.getElementById('apellido')?.value || '',
+      ciudad: document.getElementById('ciudad')?.value || '',
+      prefijo: prefijo,
+      telefono: telefono,
+      direccion: document.getElementById('direccion')?.value || '',
+      codigoPostal: codigoPostal,
+      tipoColeccionista: document.getElementById('tipoColeccionista')?.value || 'principiante'
+    };
+    
+    console.log('Guardando datos:', datosCliente);
+    
+    try {
+      const response = await fetch(`${API_URL}/usuarios/${userId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(datosCliente)
+      });
+      
+      if (response.ok) {
+        const usuarioActualizado = await response.json();
+        
+        // Actualizar localStorage
+        const usuarioStorage = JSON.parse(localStorage.getItem('usuario') || '{}');
+        usuarioStorage.apellido = datosCliente.apellido;
+        usuarioStorage.ciudad = datosCliente.ciudad;
+        usuarioStorage.prefijo = datosCliente.prefijo;
+        usuarioStorage.telefono = datosCliente.telefono;
+        usuarioStorage.direccion = datosCliente.direccion;
+        usuarioStorage.codigoPostal = datosCliente.codigoPostal;
+        usuarioStorage.tipoColeccionista = datosCliente.tipoColeccionista;
+        localStorage.setItem('usuario', JSON.stringify(usuarioStorage));
+        
+        // Guardar respaldo
+        localStorage.setItem('user_apellido', datosCliente.apellido);
+        localStorage.setItem('user_ciudad', datosCliente.ciudad);
+        localStorage.setItem('user_prefijo', datosCliente.prefijo);
+        localStorage.setItem('user_telefono', datosCliente.telefono);
+        localStorage.setItem('user_direccion', datosCliente.direccion);
+        localStorage.setItem('user_codigoPostal', datosCliente.codigoPostal);
+        localStorage.setItem('user_tipo_coleccionista', datosCliente.tipoColeccionista);
+        
+        // Actualizar pantalla
+        actualizarInfoPerfil(usuarioStorage);
+        
+        mostrarNotificacion('✅ Datos guardados correctamente', 'success');
+      } else {
+        const error = await response.text();
+        console.error('Error del servidor:', error);
+        mostrarNotificacion('❌ Error al guardar los datos', 'error');
+      }
+    } catch (error) {
+      console.error('Error de conexión:', error);
+      mostrarNotificacion('❌ Error de conexión al guardar', 'error');
+    }
   }
   
-  const sidebarProfileInfo = document.getElementById('sidebarProfileInfo');
-  if (sidebarProfileInfo && usuario) {
-    const tipoTexto = usuario.tipo === 'comprador' ? '🟡 Comprador' : usuario.tipo === 'vendedor' ? '🔵 Vendedor' : '🟢 Comprador y Vendedor';
-    sidebarProfileInfo.innerHTML = `<p><strong>${usuario.nombre || usuario.username}</strong></p>
-                                    <p>📧 ${usuario.email}</p>
-                                    <p>🎭 ${tipoTexto}</p>`;
-  }
-  
+  // ========== SIDEBAR DERECHO ==========
   const sidebarRight = document.getElementById('sidebarRight');
   const overlay = document.getElementById('sidebarOverlay');
   const openRight = document.getElementById('openSidebarRight');
@@ -68,48 +244,39 @@ if (window.location.pathname.includes('perfil.html')) {
   if (overlay) overlay.onclick = cerrarSidebar;
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape') cerrarSidebar(); });
   
+  // ========== CAMBIO DE TIPO DE USUARIO ==========
   const userTypeSelect = document.getElementById('userTypeSelect');
-  if (userTypeSelect) {
-    userTypeSelect.value = usuario?.tipo || 'comprador';
-    userTypeSelect.onchange = function(e) {
+  if (userTypeSelect && usuario) {
+    userTypeSelect.value = usuario.tipo || 'comprador';
+    userTypeSelect.onchange = async function(e) {
       const nuevoTipo = e.target.value;
-      const usuarioActual = JSON.parse(localStorage.getItem('usuario'));
-      if (usuarioActual) {
-        usuarioActual.tipo = nuevoTipo;
-        localStorage.setItem('usuario', JSON.stringify(usuarioActual));
-        mostrarNotificacionPorCodigo('TIPO_USUARIO_CAMBIADO');
-        const tipoTexto = nuevoTipo === 'comprador' ? '🟡 Comprador' : nuevoTipo === 'vendedor' ? '🔵 Vendedor' : '🟢 Comprador y Vendedor';
-        if (perfilInfo) perfilInfo.innerHTML = `<p><strong>${usuarioActual.nombre || usuarioActual.username}</strong></p><p>📧 ${usuarioActual.email}</p><p>🎭 ${tipoTexto}</p>`;
-        if (sidebarProfileInfo) sidebarProfileInfo.innerHTML = `<p><strong>${usuarioActual.nombre || usuarioActual.username}</strong></p><p>📧 ${usuarioActual.email}</p><p>🎭 ${tipoTexto}</p>`;
+      try {
+        const response = await fetch(`${API_URL}/usuarios/${userId}/tipo`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({ tipo: nuevoTipo })
+        });
+        
+        if (response.ok) {
+          const usuarioActual = JSON.parse(localStorage.getItem('usuario'));
+          usuarioActual.tipo = nuevoTipo;
+          localStorage.setItem('usuario', JSON.stringify(usuarioActual));
+          mostrarNotificacion(`✅ Tipo de usuario cambiado a: ${nuevoTipo === 'comprador' ? 'Comprador' : nuevoTipo === 'vendedor' ? 'Vendedor' : 'Comprador y Vendedor'}`, 'success');
+          actualizarInfoPerfil(usuarioActual);
+        } else {
+          mostrarNotificacion('❌ Error al actualizar el tipo de usuario', 'error');
+        }
+      } catch (error) {
+        console.error(error);
+        mostrarNotificacion('❌ Error de conexión', 'error');
       }
     };
   }
   
-  function cargarDatosAdicionales() {
-    const ciudad = localStorage.getItem('user_ciudad') || '';
-    const telefono = localStorage.getItem('user_telefono') || '';
-    const tipoColeccionista = localStorage.getItem('user_tipo_coleccionista') || 'principiante';
-    const ciudadInput = document.getElementById('ciudad');
-    const telefonoInput = document.getElementById('telefono');
-    const tipoSelect = document.getElementById('tipoColeccionista');
-    if (ciudadInput) ciudadInput.value = ciudad;
-    if (telefonoInput) telefonoInput.value = telefono;
-    if (tipoSelect) tipoSelect.value = tipoColeccionista;
-  }
-  
-  function guardarDatosAdicionales() {
-    const ciudad = document.getElementById('ciudad')?.value || '';
-    const telefono = document.getElementById('telefono')?.value || '';
-    const tipoColeccionista = document.getElementById('tipoColeccionista')?.value || 'principiante';
-    localStorage.setItem('user_ciudad', ciudad);
-    localStorage.setItem('user_telefono', telefono);
-    localStorage.setItem('user_tipo_coleccionista', tipoColeccionista);
-    mostrarNotificacionPorCodigo('DATOS_GUARDADOS');
-  }
-  
-  const guardarDatosBtn = document.getElementById('guardarDatosAdicionales');
-  if (guardarDatosBtn) guardarDatosBtn.onclick = guardarDatosAdicionales;
-  
+  // ========== VALORACIÓN CON ESTRELLAS ==========
   function inicializarRatingStars() {
     const ratingStars = document.getElementById('ratingStarsNew');
     if (!ratingStars) return;
@@ -122,7 +289,8 @@ if (window.location.pathname.includes('perfil.html')) {
         valorActual = parseInt(this.dataset.valor);
         stars.forEach(s => s.classList.remove('active'));
         for (let i = 0; i < valorActual; i++) stars[i].classList.add('active');
-        document.getElementById('calificacionNueva').value = valorActual;
+        const calificacionInput = document.getElementById('calificacionNueva');
+        if (calificacionInput) calificacionInput.value = valorActual;
       });
     });
     
@@ -130,6 +298,7 @@ if (window.location.pathname.includes('perfil.html')) {
   }
   inicializarRatingStars();
   
+  // ========== AGREGAR VINILO MANUALMENTE ==========
   async function agregarViniloManual() {
     const titulo = document.getElementById('nuevoTitulo')?.value.trim();
     const artista = document.getElementById('nuevoArtista')?.value.trim();
@@ -140,11 +309,11 @@ if (window.location.pathname.includes('perfil.html')) {
     const calificacion = parseInt(document.getElementById('calificacionNueva')?.value) || 5;
     
     if (!titulo || !artista) {
-      mostrarNotificacionPorCodigo('TITULO_ARTISTA_OBLIGATORIOS');
+      mostrarNotificacion('❌ El título y el artista son obligatorios', 'error');
       return;
     }
     
-    mostrarNotificacionPorCodigo('ANADIENDO_VINILO');
+    mostrarNotificacion('🔄 Añadiendo vinilo a tu colección...', 'info');
     
     const discoData = { titulo, artista, anio, genero, imagenUrl };
     
@@ -167,7 +336,7 @@ if (window.location.pathname.includes('perfil.html')) {
         });
         
         if (coleccionResponse.ok) {
-          mostrarNotificacionPorCodigo('VINILO_ANADIDO');
+          mostrarNotificacion('✅ Vinilo añadido a tu colección', 'success');
           ['nuevoTitulo', 'nuevoArtista', 'nuevoAnio', 'nuevoGenero', 'nuevaImagen'].forEach(id => {
             const input = document.getElementById(id);
             if (input) input.value = '';
@@ -175,20 +344,23 @@ if (window.location.pathname.includes('perfil.html')) {
           cargarColeccion();
           cerrarSidebar();
         } else {
-          mostrarNotificacionPorCodigo('VINILO_ANADIR_FALLIDO');
+          const error = await coleccionResponse.text();
+          mostrarNotificacion('❌ Error al añadir a colección: ' + error, 'error');
         }
       } else {
-        mostrarNotificacionPorCodigo('VINILO_ANADIR_FALLIDO');
+        const error = await response.text();
+        mostrarNotificacion('❌ Error al guardar el disco: ' + error, 'error');
       }
     } catch (error) {
       console.error(error);
-      mostrarNotificacionPorCodigo('ERROR_CONEXION');
+      mostrarNotificacion('❌ Error de conexión: ' + error.message, 'error');
     }
   }
   
   const agregarBtn = document.getElementById('btnAgregarVinilo');
   if (agregarBtn) agregarBtn.onclick = agregarViniloManual;
   
+  // ========== ESTADÍSTICAS ==========
   function calcularEstadisticas(coleccion) {
     const total = coleccion.length;
     if (total === 0) return null;
@@ -264,6 +436,7 @@ if (window.location.pathname.includes('perfil.html')) {
                                 </div>`;
   }
   
+  // ========== DESPLEGABLE DE ESTADÍSTICAS ==========
   const toggleEstadisticas = document.getElementById('toggleEstadisticas');
   const estadisticasContenido = document.getElementById('estadisticasContenido');
   const estadisticasIcon = document.getElementById('estadisticasIcon');
@@ -279,6 +452,34 @@ if (window.location.pathname.includes('perfil.html')) {
     });
   }
   
+  // ========== DESPLEGABLE DE DATOS DEL CLIENTE ==========
+  const toggleDatosCliente = document.getElementById('toggleDatosCliente');
+  const datosClienteContenido = document.getElementById('datosClienteContenido');
+  const datosClienteIcon = document.getElementById('datosClienteIcon');
+  
+  if (toggleDatosCliente && datosClienteContenido) {
+    // Por defecto, el contenido debe estar visible (no collapsed)
+    datosClienteContenido.classList.remove('collapsed');
+    if (datosClienteIcon) datosClienteIcon.innerHTML = '▼';
+    
+    toggleDatosCliente.addEventListener('click', function() {
+      datosClienteContenido.classList.toggle('collapsed');
+      if (datosClienteContenido.classList.contains('collapsed')) {
+        if (datosClienteIcon) datosClienteIcon.innerHTML = '▶';
+      } else {
+        if (datosClienteIcon) datosClienteIcon.innerHTML = '▼';
+      }
+    });
+  }
+  
+  // ========== BOTONES DE DATOS ADICIONALES ==========
+  const guardarDatosBtn = document.getElementById('guardarDatosClienteBtn');
+  const cargarDatosBtn = document.getElementById('cargarDatosClienteBtn');
+  
+  if (guardarDatosBtn) guardarDatosBtn.onclick = guardarDatosCliente;
+  if (cargarDatosBtn) cargarDatosBtn.onclick = cargarDatosCompletosUsuario;
+  
+  // ========== MODAL PARA EDITAR ==========
   let viniloEditando = null;
   
   function crearModal() {
@@ -362,7 +563,7 @@ if (window.location.pathname.includes('perfil.html')) {
     const nuevoEstado = document.getElementById('editEstado').value;
     const nuevaCalificacion = parseInt(document.getElementById('editCalificacion')?.value || 5);
     
-    mostrarNotificacionPorCodigo('ACTUALIZANDO_VINILO');
+    mostrarNotificacion('🔄 Actualizando vinilo...', 'info');
     
     try {
       const response = await fetch(`${API_URL}/coleccion/${viniloEditando.id}`, {
@@ -372,22 +573,24 @@ if (window.location.pathname.includes('perfil.html')) {
       });
       
       if (response.ok) {
-        mostrarNotificacionPorCodigo('VINILO_ACTUALIZADO');
+        mostrarNotificacion('✅ Vinilo actualizado correctamente', 'success');
         document.getElementById('modalEditar').classList.remove('active');
         cargarColeccion();
         viniloEditando = null;
       } else {
-        mostrarNotificacionPorCodigo('VINILO_ACTUALIZAR_FALLIDO');
+        const error = await response.text();
+        mostrarNotificacion('❌ Error al actualizar: ' + error, 'error');
       }
     } catch (error) {
       console.error(error);
-      mostrarNotificacionPorCodigo('ERROR_CONEXION');
+      mostrarNotificacion('❌ Error de conexión', 'error');
     }
   }
   
+  // ========== ELIMINAR VINILO ==========
   async function eliminarVinilo(coleccionId, titulo) {
     if (confirm(`¿Seguro que quieres eliminar "${titulo}" de tu colección?`)) {
-      mostrarNotificacionPorCodigo('ELIMINANDO_VINILO');
+      mostrarNotificacion('🔄 Eliminando vinilo...', 'info');
       try {
         const response = await fetch(`${API_URL}/coleccion/${coleccionId}`, {
           method: 'DELETE',
@@ -395,24 +598,25 @@ if (window.location.pathname.includes('perfil.html')) {
         });
         
         if (response.ok) {
-          mostrarNotificacionPorCodigo('VINILO_ELIMINADO');
+          mostrarNotificacion('✅ Vinilo eliminado de tu colección', 'success');
           cargarColeccion();
         } else {
-          mostrarNotificacionPorCodigo('VINILO_ELIMINAR_FALLIDO');
+          const error = await response.text();
+          mostrarNotificacion('❌ Error al eliminar: ' + error, 'error');
         }
       } catch (error) {
         console.error(error);
-        mostrarNotificacionPorCodigo('ERROR_CONEXION');
+        mostrarNotificacion('❌ Error de conexión', 'error');
       }
     }
   }
   
+  // ========== CARGAR COLECCIÓN ==========
   async function cargarColeccion() {
     const miColeccion = document.getElementById('miColeccion');
     if (!miColeccion) return;
     
     miColeccion.innerHTML = '<p style="text-align: center;">🔄 Cargando tu colección...</p>';
-    mostrarNotificacionPorCodigo('CARGANDO_COLECCION');
     
     try {
       const response = await fetch(`${API_URL}/discos/mi-coleccion`, {
@@ -474,33 +678,35 @@ if (window.location.pathname.includes('perfil.html')) {
           });
         }
       } else if (response.status === 401) {
-        mostrarNotificacionPorCodigo('SESION_EXPIRADA');
+        mostrarNotificacion('⚠️ Tu sesión ha expirado. Redirigiendo al login...', 'info');
         localStorage.clear();
         setTimeout(() => { window.location.href = 'login.html'; }, 2000);
       } else {
         miColeccion.innerHTML = '<p style="text-align: center;">❌ Error al cargar tu colección</p>';
-        mostrarNotificacionPorCodigo('COLECCION_CARGAR_FALLIDO');
+        mostrarNotificacion('❌ Error al cargar tu colección', 'error');
       }
     } catch (error) {
       console.error('Error:', error);
       miColeccion.innerHTML = '<p style="text-align: center;">❌ Error de conexión</p>';
-      mostrarNotificacionPorCodigo('ERROR_CONEXION_COLECCION');
+      mostrarNotificacion('❌ Error de conexión al cargar tu colección', 'error');
     }
   }
   
-  cargarDatosAdicionales();
-  cargarColeccion();
-  
+  // ========== CERRAR SESIÓN ==========
   const logoutBtn = document.getElementById('logoutBtn');
   if (logoutBtn) {
     logoutBtn.onclick = function(e) {
       e.preventDefault();
       localStorage.clear();
       sessionStorage.clear();
-      mostrarNotificacionPorCodigo('CERRAR_SESION');
+      mostrarNotificacion('👋 Sesión cerrada correctamente', 'success');
       setTimeout(() => {
         window.location.href = 'login.html';
       }, 500);
     };
   }
+  
+  // ========== INICIALIZAR TODO ==========
+  cargarDatosCompletosUsuario();
+  cargarColeccion();
 }

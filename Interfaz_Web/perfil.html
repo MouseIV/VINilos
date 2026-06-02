@@ -1,155 +1,63 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mi Perfil - VinylMarket</title>
-  <link rel="stylesheet" href="css/styles.css">
-</head>
-<body class="perfil-page">
-
-<!-- NAVBAR -->
-<div class="navbar">
-  <div class="navbar-top">
-    <div class="logo">🎧 VinylMarket</div>
-    <div class="menu-right" id="openSidebarRight">👤</div>
-  </div>
-  <div class="navbar-bottom">
-    <a href="dashboard.html">Tienda</a>
-    <a href="index.html">Inicio</a>
-  </div>
-</div>
-
-<!-- OVERLAY -->
-<div class="sidebar-overlay" id="sidebarOverlay"></div>
-
-<!-- CONTENIDO PRINCIPAL -->
-<div class="main-content" style="margin-top: 100px; max-width: 1000px; margin-left: auto; margin-right: auto;">
-  
-  <div class="perfil-card">
-    <h2>👤 Mi Perfil</h2>
-    <div id="perfilInfo"></div>
-    <hr>
-    <button id="logoutBtn" class="btn btn-secondary" style="width: auto; padding: 8px 20px;">🚪 Cerrar sesión</button>
-  </div>
-
-  <div class="estadisticas-card">
-    <div class="estadisticas-header" id="toggleEstadisticas" style="cursor: pointer;">
+  <!-- ========== DESPLEGABLE PARA INFORMACIÓN ADICIONAL ========== -->
+  <div class="datos-cliente-card">
+    <div class="datos-cliente-header" id="toggleDatosCliente" style="cursor: pointer;">
       <h3 style="display: flex; justify-content: space-between; align-items: center; margin: 0;">
-        📊 Estadísticas de tu colección
-        <span class="toggle-icon" id="estadisticasIcon">▼</span>
+        📋 Información adicional
+        <span class="toggle-icon" id="datosClienteIcon">▼</span>
       </h3>
     </div>
-    <div id="estadisticasContenido" class="estadisticas-contenido">
-      <div class="estadisticas-grid" id="estadisticasColeccion">
-        <p>Cargando estadísticas...</p>
+    <div id="datosClienteContenido" class="datos-cliente-contenido">
+      <div class="datos-cliente-form">
+        
+        <!-- GRID: Fila 1 - Apellido y Ciudad -->
+        <div class="form-grid">
+          <div class="input-group">
+            <label>👤 Apellido</label>
+            <input type="text" id="apellido" placeholder="Tu apellido">
+          </div>
+          <div class="input-group">
+            <label>📍 Ciudad</label>
+            <input type="text" id="ciudad" placeholder="Tu ciudad">
+          </div>
+        </div>
+        
+        <!-- GRID: Fila 2 - Prefijo (pequeño), Teléfono, Código Postal -->
+        <div class="form-grid form-grid-3cols">
+          <div class="input-group prefijo-group">
+            <label>📞 Prefijo</label>
+            <input type="text" id="prefijo" placeholder="+34" maxlength="3" value="+34">
+          </div>
+          <div class="input-group telefono-group">
+            <label>📞 Teléfono</label>
+            <input type="tel" id="telefono" placeholder="123456789" maxlength="9" pattern="[0-9]{9}" inputmode="numeric">
+          </div>
+          <div class="input-group cp-group">
+            <label>📮 Código Postal</label>
+            <input type="text" id="codigoPostal" placeholder="12345" maxlength="5" pattern="[0-9]{5}" inputmode="numeric">
+          </div>
+        </div>
+        
+        <!-- GRID: Fila 3 - Dirección y Tipo de coleccionista -->
+        <div class="form-grid">
+          <div class="input-group">
+            <label>🏠 Dirección</label>
+            <input type="text" id="direccion" placeholder="Tu dirección">
+          </div>
+          <div class="input-group">
+            <label>🎯 Tipo de coleccionista</label>
+            <select id="tipoColeccionista">
+              <option value="principiante">Principiante (1-10 vinilos)</option>
+              <option value="aficionado">Aficionado (11-50 vinilos)</option>
+              <option value="coleccionista">Coleccionista (51-200 vinilos)</option>
+              <option value="experto">Experto (más de 200 vinilos)</option>
+            </select>
+          </div>
+        </div>
+        
+        <div class="form-actions">
+          <button id="guardarDatosClienteBtn" class="btn">💾 Guardar información</button>
+          <button id="cargarDatosClienteBtn" class="btn btn-secondary">🔄 Recargar datos</button>
+        </div>
       </div>
     </div>
   </div>
-
-  <div class="coleccion-section">
-    <h3>📀 Mi Colección</h3>
-    <div id="miColeccion" class="coleccion-grid"></div>
-  </div>
-</div>
-
-<!-- SIDEBAR DERECHO -->
-<div class="sidebar-right" id="sidebarRight">
-  <div class="close" id="closeSidebarRight">✖</div>
-  
-  <h3>👤 Mi perfil</h3>
-  <div id="sidebarProfileInfo"></div>
-  
-  <hr>
-  
-  <div class="user-type-selector">
-    <label>🎭 Tipo de usuario:</label>
-    <select id="userTypeSelect" class="user-type-select">
-      <option value="comprador">🟡 Comprador</option>
-      <option value="vendedor">🔵 Vendedor</option>
-      <option value="ambos">🟢 Comprador y Vendedor</option>
-    </select>
-  </div>
-  
-  <hr>
-  
-  <h3>📝 Datos adicionales</h3>
-  <div class="datos-adicionales">
-    <div class="input-group">
-      <label>📍 Ciudad</label>
-      <input type="text" id="ciudad" placeholder="Tu ciudad">
-    </div>
-    <div class="input-group">
-      <label>📞 Teléfono</label>
-      <input type="tel" id="telefono" placeholder="Tu teléfono">
-    </div>
-    <div class="input-group">
-      <label>🎯 Tipo de coleccionista</label>
-      <select id="tipoColeccionista">
-        <option value="principiante">Principiante (1-10 vinilos)</option>
-        <option value="aficionado">Aficionado (11-50 vinilos)</option>
-        <option value="coleccionista">Coleccionista (51-200 vinilos)</option>
-        <option value="experto">Experto (más de 200 vinilos)</option>
-      </select>
-    </div>
-    <button id="guardarDatosAdicionales" class="btn">💾 Guardar datos</button>
-  </div>
-  
-  <hr>
-  
-  <h3>➕ Añadir vinilo</h3>
-  <div class="agregar-vinilo">
-    <div class="input-group">
-      <label>🎵 Título *</label>
-      <input type="text" id="nuevoTitulo" placeholder="Ej: Dark Side of the Moon">
-    </div>
-    <div class="input-group">
-      <label>🎤 Artista *</label>
-      <input type="text" id="nuevoArtista" placeholder="Ej: Pink Floyd">
-    </div>
-    <div class="input-group">
-      <label>📅 Año</label>
-      <input type="number" id="nuevoAnio" placeholder="Ej: 1973">
-    </div>
-    <div class="input-group">
-      <label>🎸 Género</label>
-      <input type="text" id="nuevoGenero" placeholder="Ej: Rock">
-    </div>
-    <div class="input-group">
-      <label>🖼️ URL imagen</label>
-      <input type="text" id="nuevaImagen" placeholder="https://...">
-    </div>
-    
-    <h4>📀 Datos del ejemplar</h4>
-    <div class="input-group">
-      <label>💿 Estado</label>
-      <select id="estadoVinilo">
-        <option value="NUEVO">🟢 Nuevo</option>
-        <option value="MUY_BUENO">🟡 Muy bueno</option>
-        <option value="BUENO">🟠 Bueno</option>
-        <option value="REGULAR">🔴 Regular</option>
-      </select>
-    </div>
-    <div class="input-group">
-      <label>⭐ Calificación</label>
-      <div class="rating-stars" id="ratingStarsNew">
-        <span data-valor="1">☆</span>
-        <span data-valor="2">☆</span>
-        <span data-valor="3">☆</span>
-        <span data-valor="4">☆</span>
-        <span data-valor="5">☆</span>
-      </div>
-      <input type="hidden" id="calificacionNueva" value="5">
-    </div>
-    <button id="btnAgregarVinilo" class="btn">➕ Añadir a colección</button>
-  </div>
-</div>
-
-<script src="js/config.js"></script>
-<script src="js/utils.js"></script>
-<script src="js/notifications.js"></script>
-<script src="js/auth.js"></script>
-<script src="js/perfil.js"></script>
-
-</body>
-</html>
