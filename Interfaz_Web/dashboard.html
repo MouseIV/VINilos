@@ -8,7 +8,6 @@
 </head>
 <body>
 
-<!-- HEADER FIJO -->
 <div class="navbar">
   <div class="navbar-top">
     <div class="menu-left" id="openSidebarLeft">☰</div>
@@ -23,47 +22,43 @@
     <a href="index.html">Inicio</a>
     <a href="#">Vinilo del día</a>
     <a href="#">Novedades</a>
-    <a href="login.html">Mi cuenta</a>
+    <a href="perfil.html">Mi colección</a>
   </div>
 </div>
 
-<!-- OVERLAY -->
 <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-<!-- SIDEBAR IZQUIERDO -->
 <div class="sidebar-left" id="sidebarLeft">
   <div class="close" id="closeSidebarLeft">✖</div>
-  <h3>🎵 Géneros</h3>
-  <ul>
-    <li>Rock</li>
-    <li>Jazz</li>
-    <li>Pop</li>
-    <li>Hip-Hop</li>
-    <li>Electrónica</li>
-  </ul>
+  <div class="generos-header" id="toggleGeneros" style="cursor: pointer;">
+    <h3 style="display: flex; justify-content: space-between; align-items: center; margin: 0;">
+      🎵 Géneros
+      <span class="generos-toggle-icon" id="generosIcon">▶</span>
+    </h3>
+  </div>
+  <div id="generosList" class="generos-list generos-contenido collapsed">
+    <div class="loading-text">Cargando géneros...</div>
+  </div>
   <div class="buyer-section">
     <h3>🛍️ Para compradores</h3>
-    <p>Más solicitados</p>
-    <p>Grandes ofertas</p>
+    <button class="sidebar-btn" id="btnMasSolicitados">🔥 Más solicitados</button>
+    <button class="sidebar-btn" id="btnGrandesOfertas">💸 Grandes ofertas</button>
   </div>
   <div class="seller-section" style="display:none;">
     <h3>📦 Para vendedores</h3>
-    <p>Top ventas</p>
-    <p>Nueva publicación</p>
+    <button class="sidebar-btn" id="btnTopVentas">📈 Top ventas</button>
+    <button class="sidebar-btn" id="btnNuevaPublicacion">➕ Nueva publicación</button>
   </div>
 </div>
 
-<!-- SIDEBAR DERECHO -->
 <div class="sidebar-right" id="sidebarRight">
   <div class="close" id="closeSidebarRight">✖</div>
   <h3>👤 Mi perfil</h3>
-  
   <div id="profileInfo">
     <p>Inicia sesión para ver tu perfil</p>
     <button class="btn" onclick="window.location.href='login.html'">Iniciar sesión</button>
     <button class="btn btn-secondary" onclick="window.location.href='register.html'">Registrarse</button>
   </div>
-  
   <div class="user-type-selector" id="userTypeSelector" style="display: none;">
     <label>🎭 Tipo de usuario:</label>
     <select id="userTypeSelect" class="user-type-select">
@@ -72,31 +67,33 @@
       <option value="ambos">🟢 Comprador y Vendedor</option>
     </select>
   </div>
-  
   <button class="btn" id="miColeccionBtn" onclick="window.location.href='perfil.html'" style="display: none;">📀 Mi colección</button>
   <hr>
   <button class="btn btn-secondary" id="logoutBtn" style="display: none;">🚪 Cerrar sesión</button>
 </div>
 
-<!-- CONTENIDO PRINCIPAL -->
 <div class="main-content">
   <div class="daily-vinyl">
     <h3>🎲 Vinilo del día</h3>
     <p id="viniloDelDia">Cargando...</p>
   </div>
-
   <h2>⭐ Vinilos Destacados</h2>
   <div class="featured-wrapper">
     <button class="scroll-btn" id="scrollLeft">◀</button>
     <div class="featured-grid" id="featuredGrid"></div>
     <button class="scroll-btn" id="scrollRight">▶</button>
   </div>
-
   <div class="vinyl-grid" id="vinylGrid">
     <p>🔍 Busca un artista o título para empezar</p>
   </div>
 </div>
 
-<script src="js/app.js"></script>
+<script src="js/config.js"></script>
+<script src="js/notifications.js"></script>
+<script src="js/dashboard.js"></script>
+<script src="js/utils.js"></script>
+<script src="js/auth.js"></script>
+
+
 </body>
 </html>
