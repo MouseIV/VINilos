@@ -86,6 +86,34 @@ CREATE TABLE Valoraciones (
     FOREIGN KEY (id_cliente_valora) REFERENCES Clientes(id_cliente)
 );
 
+---------------------------------------------------------
+-- TABLA COLECCION (VINILOS QUE TIENE EL USUARIO)
+---------------------------------------------------------
+CREATE TABLE Coleccion (
+    id_coleccion INT AUTO_INCREMENT PRIMARY KEY,
+    id_cliente INT NOT NULL,
+    id_vinilo INT NOT NULL,
+    fecha_adquisicion DATE DEFAULT CURRENT_DATE,
+    estado ENUM('Nuevo', 'Como nuevo', 'Muy bueno', 'Bueno', 'Aceptable') DEFAULT 'Bueno',
+    calificacion INT DEFAULT 5,
+    FOREIGN KEY (id_cliente) REFERENCES Clientes(id_cliente),
+    FOREIGN KEY (id_vinilo) REFERENCES Vinilos(id_vinilo),
+    UNIQUE (id_cliente, id_vinilo)
+);
+
+---------------------------------------------------------
+-- TABLA LISTA DE DESEOS (WISHLIST)
+---------------------------------------------------------
+CREATE TABLE Lista_de_deseos (
+    id_deseo INT AUTO_INCREMENT PRIMARY KEY,
+    id_cliente INT NOT NULL,
+    id_vinilo INT NOT NULL,
+    fecha_agregado DATETIME DEFAULT CURRENT_TIMESTAMP,
+    prioridad ENUM('Alta','Media','Baja') DEFAULT 'Media',
+    FOREIGN KEY (id_cliente) REFERENCES Clientes(id_cliente),
+    FOREIGN KEY (id_vinilo) REFERENCES Vinilos(id_vinilo),
+    UNIQUE (id_cliente, id_vinilo)
+
 INSERT INTO Vinilos (titulo, artista, genero, fecha_lanzamiento, api_source_id) VALUES
 ('Abbey Road', 'The Beatles', 'Rock', '1969-09-26', 'beatles_abbey'),
 ('Thriller', 'Michael Jackson', 'Pop', '1982-11-30', 'mj_thriller'),
