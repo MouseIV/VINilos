@@ -1,10 +1,82 @@
+/*
 // ============================================
 // 🎧 VINYLMARKET - APP COMPLETA
 // ============================================
 
-
 // Configuración de la API
 const API_URL = 'http://localhost:8080/api';
+
+// ============================================
+// 🏠 INDEX - REDIRECCIÓN DEL BOTÓN "MI CUENTA"
+// ============================================
+
+if (window.location.pathname.includes('index.html') || window.location.pathname === '/' || window.location.pathname === '/index.html') {
+  const miCuentaBtn = document.getElementById('miCuentaBtn');
+  const token = localStorage.getItem('token');
+  
+  if (miCuentaBtn) {
+    miCuentaBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      
+      if (token) {
+        // Si hay sesión iniciada, ir al perfil
+        window.location.href = 'perfil.html';
+      } else {
+        // Si no hay sesión, ir al login
+        window.location.href = 'login.html';
+      }
+    });
+  }
+
+  // Cargar vinilos destacados en index.html
+  const vinilosDestacados = [
+    {
+      titulo: "Abbey Road",
+      artista: "The Beatles",
+      anio: 1969,
+      genero: "Rock",
+      imagenUrl: "https://upload.wikimedia.org/wikipedia/en/4/42/Beatles_-_Abbey_Road.jpg"
+    },
+    {
+      titulo: "Thriller",
+      artista: "Michael Jackson",
+      anio: 1982,
+      genero: "Pop",
+      imagenUrl: "https://upload.wikimedia.org/wikipedia/en/5/55/Michael_Jackson_-_Thriller.png"
+    },
+    {
+      titulo: "Dark Side of the Moon",
+      artista: "Pink Floyd",
+      anio: 1973,
+      genero: "Rock Progresivo",
+      imagenUrl: "https://upload.wikimedia.org/wikipedia/en/3/3b/Dark_Side_of_the_Moon.png"
+    },
+    {
+      titulo: "Back in Black",
+      artista: "AC/DC",
+      anio: 1980,
+      genero: "Hard Rock",
+      imagenUrl: "https://upload.wikimedia.org/wikipedia/commons/9/92/Acdc_backinblack_cover.jpg"
+    }
+  ];
+
+  const grid = document.getElementById('destacadosGrid');
+  if (grid) {
+    grid.innerHTML = vinilosDestacados.map(vinilo => `
+      <div class="preview-card" onclick="window.location.href='dashboard.html?buscar=${encodeURIComponent(vinilo.artista)}'">
+        <div class="preview-card-image">
+          <img src="${vinilo.imagenUrl}" alt="${vinilo.titulo}" onerror="this.src='https://picsum.photos/200/200'">
+        </div>
+        <div class="preview-card-info">
+          <h3>${vinilo.titulo}</h3>
+          <p>🎤 ${vinilo.artista}</p>
+          <p>📅 ${vinilo.anio}</p>
+          <p>🎸 ${vinilo.genero}</p>
+        </div>
+      </div>
+    `).join('');
+  }
+}
 
 // ============================================
 // 🔔 NOTIFICACIONES PERSONALIZADAS (POPUPS)
@@ -855,15 +927,6 @@ if (window.location.pathname.includes('dashboard.html'))
 // ============================================
 // 👤 PERFIL / COLECCIÓN PERSONAL
 // ============================================
-// Descripción: Página de perfil del usuario
-// Funcionalidades:
-//   - Ver y editar datos personales (ciudad, teléfono, tipo de coleccionista)
-//   - Ver colección personal de vinilos
-//   - Añadir vinilos manualmente
-//   - Editar estado y calificación de vinilos
-//   - Eliminar vinilos de la colección
-//   - Estadísticas de la colección (total, calificación media, género favorito, década favorita)
-// ============================================
 
 if (window.location.pathname.includes('perfil.html')) 
 {
@@ -1411,3 +1474,5 @@ window.verPerfil = function() { window.location.href = 'perfil.html'; };
 window.cerrarSesion = function() { localStorage.clear(); window.location.href = 'login.html'; };
 
 console.log('🎧 App cargada correctamente');
+
+*/

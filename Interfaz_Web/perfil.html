@@ -26,7 +26,6 @@
 <!-- CONTENIDO PRINCIPAL -->
 <div class="main-content" style="margin-top: 100px; max-width: 1000px; margin-left: auto; margin-right: auto;">
   
-  <!-- Información del perfil -->
   <div class="perfil-card">
     <h2>👤 Mi Perfil</h2>
     <div id="perfilInfo"></div>
@@ -34,12 +33,11 @@
     <button id="logoutBtn" class="btn btn-secondary" style="width: auto; padding: 8px 20px;">🚪 Cerrar sesión</button>
   </div>
 
-  <!-- ESTADÍSTICAS DE LA COLECCIÓN (DESPLEGABLE) -->
   <div class="estadisticas-card">
-    <div class="estadisticas-header" id="toggleEstadisticas">
-      <h3 style="cursor: pointer; display: flex; justify-content: space-between; align-items: center;">
+    <div class="estadisticas-header" id="toggleEstadisticas" style="cursor: pointer;">
+      <h3 style="display: flex; justify-content: space-between; align-items: center; margin: 0;">
         📊 Estadísticas de tu colección
-        <span class="toggle-icon">▼</span>
+        <span class="toggle-icon" id="estadisticasIcon">▼</span>
       </h3>
     </div>
     <div id="estadisticasContenido" class="estadisticas-contenido">
@@ -49,24 +47,21 @@
     </div>
   </div>
 
-  <!-- SECCIÓN COLECCIÓN -->
   <div class="coleccion-section">
     <h3>📀 Mi Colección</h3>
     <div id="miColeccion" class="coleccion-grid"></div>
   </div>
 </div>
 
-<!-- SIDEBAR DERECHO (PERFIL COMPLETO) -->
+<!-- SIDEBAR DERECHO -->
 <div class="sidebar-right" id="sidebarRight">
   <div class="close" id="closeSidebarRight">✖</div>
   
-  <!-- Información básica -->
   <h3>👤 Mi perfil</h3>
   <div id="sidebarProfileInfo"></div>
   
   <hr>
   
-  <!-- Selector de tipo de usuario -->
   <div class="user-type-selector">
     <label>🎭 Tipo de usuario:</label>
     <select id="userTypeSelect" class="user-type-select">
@@ -78,7 +73,6 @@
   
   <hr>
   
-  <!-- DATOS ADICIONALES -->
   <h3>📝 Datos adicionales</h3>
   <div class="datos-adicionales">
     <div class="input-group">
@@ -103,7 +97,6 @@
   
   <hr>
   
-  <!-- AGREGAR VINILO MANUALMENTE -->
   <h3>➕ Añadir vinilo</h3>
   <div class="agregar-vinilo">
     <div class="input-group">
@@ -152,25 +145,11 @@
   </div>
 </div>
 
-<script src="js/app.js"></script>
-
-<script>
-  // Desplegable de estadísticas
-  const toggleEstadisticas = document.getElementById('toggleEstadisticas');
-  const estadisticasContenido = document.getElementById('estadisticasContenido');
-  const toggleIcon = document.querySelector('.toggle-icon');
-  
-  if (toggleEstadisticas && estadisticasContenido) {
-    toggleEstadisticas.addEventListener('click', () => {
-      estadisticasContenido.classList.toggle('collapsed');
-      if (estadisticasContenido.classList.contains('collapsed')) {
-        if (toggleIcon) toggleIcon.innerHTML = '▶';
-      } else {
-        if (toggleIcon) toggleIcon.innerHTML = '▼';
-      }
-    });
-  }
-</script>
+<script src="js/config.js"></script>
+<script src="js/utils.js"></script>
+<script src="js/notifications.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/perfil.js"></script>
 
 </body>
 </html>

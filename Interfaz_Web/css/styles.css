@@ -1304,3 +1304,62 @@ body.sidebar-right-open .main-content {
     padding: 15px;
   }
 }
+
+/* ============================================
+   TOAST NOTIFICATIONS (POPUPS) - ESTILOS COMPLETOS
+   ============================================ */
+
+.toast-notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 15px 20px;
+  border-radius: 8px;
+  color: white;
+  font-family: "Georgia", serif;
+  font-size: 14px;
+  z-index: 10000;
+  animation: slideIn 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  max-width: 350px;
+  word-wrap: break-word;
+}
+
+.toast-notification.success {
+  background: #2d6a4f;
+  border-left: 5px solid #95d5b2;
+}
+
+.toast-notification.error {
+  background: #9d0208;
+  border-left: 5px solid #ff6b6b;
+}
+
+.toast-notification.info {
+  background: #3b2f2f;
+  border-left: 5px solid #8b5a2b;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+.toast-notification.fade-out {
+  animation: fadeOut 0.5s ease forwards;
+}
