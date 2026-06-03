@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.vinilos.vinilos.model.Coleccion;
 import com.vinilos.vinilos.repository.ColeccionRepository;
 
-@CrossOrigin(origins = {"http://localhost:5500", "http://127.0.0.1:5500"})
+@CrossOrigin(origins = {"http://localhost:5500", "http://127.0.0.1:5500"}, allowCredentials = "true", allowedHeaders = "*")
 @RestController
 @RequestMapping("/api/coleccion")
 public class ColeccionController {

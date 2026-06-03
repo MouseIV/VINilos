@@ -4,7 +4,28 @@
 
 if (window.location.pathname.includes('perfil.html')) {
   
+  setTimeout(() => {
+    mostrarNotificacionPorCodigo('FINETUNING_BIENVENIDA');
+  }, 1500);
+  
   const token = localStorage.getItem('token');
+  
+  function isTokenExpiradoLocal() {
+    if (!token) return true;
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      return payload.exp * 1000 < Date.now();
+    } catch (e) {
+      return true;
+    }
+  }
+  
+  if (!token || isTokenExpiradoLocal()) {
+    localStorage.clear();
+    mostrarNotificacionPorCodigo('SESION_EXPIRADA');
+    setTimeout(() => { window.location.href = 'login.html'; }, 2000);
+  }
+  
   const usuario = JSON.parse(localStorage.getItem('usuario'));
   const userId = usuario?.id;
   
@@ -229,6 +250,7 @@ if (window.location.pathname.includes('perfil.html')) {
   }
   
   function abrirSidebar() {
+    cerrarSidebar();
     if (sidebarRight) sidebarRight.classList.add('active');
     if (overlay) overlay.classList.add('active');
     body.classList.add('sidebar-right-open');
@@ -321,10 +343,10 @@ if (window.location.pathname.includes('perfil.html')) {
       
       if (response.ok) {
         const discoGuardado = await response.json();
-        const discoId = discoGuardado.id;
+        const discoId = discoGuardado.idVinilo || discoGuardado.id;
         const coleccionData = { discoId: discoId, estado: estadoVinilo, calificacion: calificacion };
         
-        const coleccionResponse = await fetch(`${API_URL}/discos/${discoId}/agregar`, {
+        const coleccionResponse = await fetch(`${API_URL}/discos/agregar`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
           body: JSON.stringify(coleccionData)
@@ -332,8 +354,7 @@ if (window.location.pathname.includes('perfil.html')) {
         
         if (coleccionResponse.ok) {
           mostrarNotificacion('✅ Vinilo añadido a tu colección', 'success');
-          const inputs = ['nuevoTitulo', 'nuevoArtista', 'nuevoAnio', 'nuevoGenero', 'nuevaImagen'];
-          inputs.forEach(id => {
+          ['nuevoTitulo', 'nuevoArtista', 'nuevoAnio', 'nuevoGenero', 'nuevaImagen'].forEach(id => {
             const input = document.getElementById(id);
             if (input) input.value = '';
           });
@@ -366,13 +387,19 @@ if (window.location.pathname.includes('perfil.html')) {
     const decadas = {};
     
     coleccion.forEach(item => {
-      const disco = item.disco;
-      const genero = disco.genero || 'Sin género';
+      const vinilo = item.vinilo;
+      
+      if (!vinilo) {
+        console.warn('Item sin vinilo:', item);
+        return;
+      }
+      
+      const genero = vinilo.genero || 'Sin género';
       generos[genero] = (generos[genero] || 0) + 1;
       sumaCalificaciones += (item.calificacion || 5);
       
-      if (disco.anio && disco.anio > 0) {
-        const decada = Math.floor(disco.anio / 10) * 10;
+      if (vinilo.anio && vinilo.anio > 0) {
+        const decada = Math.floor(vinilo.anio / 10) * 10;
         decadas[decada] = (decadas[decada] || 0) + 1;
       }
     });
@@ -432,7 +459,7 @@ if (window.location.pathname.includes('perfil.html')) {
                                 </div>`;
   }
   
-  // ========== DESPLEGABLE DE ESTADÍSTICAS (RECOGIDO POR DEFECTO) ==========
+  // ========== DESPLEGABLE DE ESTADÍSTICAS ==========
   const toggleEstadisticas = document.getElementById('toggleEstadisticas');
   const estadisticasContenido = document.getElementById('estadisticasContenido');
   const estadisticasIcon = document.getElementById('estadisticasIcon');
@@ -451,7 +478,7 @@ if (window.location.pathname.includes('perfil.html')) {
     });
   }
   
-  // ========== DESPLEGABLE DE INFORMACIÓN ADICIONAL (RECOGIDO POR DEFECTO) ==========
+  // ========== DESPLEGABLE DE INFORMACIÓN ADICIONAL ==========
   const toggleDatosCliente = document.getElementById('toggleDatosCliente');
   const datosClienteContenido = document.getElementById('datosClienteContenido');
   const datosClienteIcon = document.getElementById('datosClienteIcon');
@@ -626,8 +653,13 @@ if (window.location.pathname.includes('perfil.html')) {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       
+      console.log('Respuesta colección - Status:', response.status);
+      
       if (response.ok) {
         const coleccion = await response.json();
+        console.log('Colección recibida:', coleccion);
+        console.log('Estructura del primer item:', coleccion[0]);
+        
         mostrarEstadisticas(coleccion);
         
         if (coleccion.length === 0) {
@@ -641,7 +673,12 @@ if (window.location.pathname.includes('perfil.html')) {
                                   </div>`;
         } else {
           miColeccion.innerHTML = coleccion.map(item => {
-            const disco = item.disco;
+            const vinilo = item.vinilo;
+            if (!vinilo) {
+              console.warn('Item sin vinilo:', item);
+              return '';
+            }
+            
             const estadoTexto = { 
               'NUEVO': '🟢 Nuevo', 
               'MUY_BUENO': '🟡 Muy bueno', 
@@ -651,19 +688,19 @@ if (window.location.pathname.includes('perfil.html')) {
             const estrellas = '⭐'.repeat(item.calificacion || 5);
             return `<div class="vinyl-card-small">
                       <div style="display: flex; gap: 15px; align-items: center; flex-wrap: wrap;">
-                        ${disco.imagenUrl ? 
-                          `<img src="${disco.imagenUrl}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 5px;">` : 
+                        ${vinilo.imagenUrl ? 
+                          `<img src="${vinilo.imagenUrl}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 5px;">` : 
                           '<div style="width: 50px; height: 50px; background: #e0d5c0; border-radius: 5px; display: flex; align-items: center; justify-content: center;">🎵</div>'
                         }
                         <div style="flex: 1;">
-                          <strong>${disco.titulo}</strong> - ${disco.artista}<br>
-                          <small>📅 ${disco.anio || 'N/A'} | 🎸 ${disco.genero || 'Sin género'}</small><br>
+                          <strong>${vinilo.titulo}</strong> - ${vinilo.artista}<br>
+                          <small>📅 ${vinilo.anio || 'N/A'} | 🎸 ${vinilo.genero || 'Sin género'}</small><br>
                           <small>💿 ${estadoTexto} | ${estrellas} (${item.calificacion || 5}/5)</small><br>
                           <small>📅 Añadido: ${new Date(item.fechaAdquisicion).toLocaleDateString()}</small>
                         </div>
                         <div>
                           <button class="btn-editar" data-id="${item.id}" data-estado="${item.estado}" data-calificacion="${item.calificacion}">✏️ Editar</button>
-                          <button class="btn-eliminar" data-id="${item.id}" data-titulo="${disco.titulo}">🗑️ Eliminar</button>
+                          <button class="btn-eliminar" data-id="${item.id}" data-titulo="${vinilo.titulo}">🗑️ Eliminar</button>
                         </div>
                       </div>
                     </div>`;
@@ -690,6 +727,8 @@ if (window.location.pathname.includes('perfil.html')) {
         localStorage.clear();
         setTimeout(() => { window.location.href = 'login.html'; }, 2000);
       } else {
+        const errorText = await response.text();
+        console.error('Error detallado:', errorText);
         miColeccion.innerHTML = '<p style="text-align: center;">❌ Error al cargar tu colección</p>';
         mostrarNotificacion('❌ Error al cargar tu colección', 'error');
       }

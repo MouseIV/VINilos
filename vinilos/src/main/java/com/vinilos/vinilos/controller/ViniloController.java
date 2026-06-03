@@ -22,7 +22,7 @@ import com.vinilos.vinilos.model.Vinilo;
 import com.vinilos.vinilos.repository.ColeccionRepository;
 import com.vinilos.vinilos.service.ViniloService;
 
-@CrossOrigin(origins = {"http://localhost:5500", "http://127.0.0.1:5500"})
+@CrossOrigin(origins = {"http://localhost:5500", "http://127.0.0.1:5500"}, allowCredentials = "true", allowedHeaders = "*")
 @RestController
 @RequestMapping("/api/discos")
 @SuppressWarnings("null")

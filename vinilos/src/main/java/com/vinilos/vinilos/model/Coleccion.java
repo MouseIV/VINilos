@@ -20,7 +20,7 @@ public class Coleccion {
     private Usuario usuario;
     
     @ManyToOne
-    @JoinColumn(name = "vinilo_id", nullable = false)
+    @JoinColumn(name = "id_vinilo", nullable = false)
     private Vinilo vinilo;
     
     private LocalDateTime fechaAdquisicion;

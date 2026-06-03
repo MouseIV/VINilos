@@ -37,7 +37,6 @@ public class Vinilo {
     @Column(name = "api_source_id", length = 100)
     private String apiSourceId;
     
-    // Campos adicionales para el frontend
     private Integer anio;
     
     private String imagenUrl;
