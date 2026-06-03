@@ -1,0 +1,154 @@
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 1200px) {
+  .vinyl-grid, .preview-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 1000px) {
+  .preview-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 900px) {
+  .vinyl-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .navbar-top {
+    flex-direction: column;
+  }
+  
+  .search-container {
+    width: 100%;
+    max-width: none;
+  }
+  
+  .main-content {
+    margin-top: 180px;
+  }
+  
+  .sidebar-left, .sidebar-right {
+    width: 85%;
+    max-width: 280px;
+  }
+  
+  .perfil-page .sidebar-right {
+    width: 85%;
+    max-width: 350px;
+  }
+  
+  body.sidebar-left-open .main-content,
+  body.sidebar-right-open .main-content {
+    margin-left: 0;
+    margin-right: 0;
+  }
+  
+  .vinyl-card, .preview-card {
+    min-height: 350px;
+  }
+  
+  .featured-grid .vinyl-card {
+    flex: 0 0 180px;
+    min-width: 180px;
+    min-height: 300px;
+  }
+  
+  .featured-grid .vinyl-card img {
+    width: 80px;
+    height: 80px;
+  }
+  
+  .featured-grid .vinyl-card h3 {
+    font-size: 12px;
+    height: 30px;
+  }
+  
+  .auth-container {
+    max-width: 90%;
+    margin: 20px;
+    padding: 20px;
+  }
+  
+  .perfil-card, .coleccion-section, .estadisticas-card {
+    margin: 0 15px 30px 15px;
+  }
+  
+  .main-content {
+    margin-top: 100px !important;
+    padding: 15px;
+  }
+  
+  .estadisticas-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* Grid responsive para formulario */
+  .form-grid {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+  
+  .form-grid-3cols {
+    grid-template-columns: 1fr;
+  }
+  
+  .prefijo-group input {
+    width: 100%;
+    max-width: 100px;
+  }
+  
+  .form-actions {
+    flex-direction: column;
+  }
+  
+  .form-actions .btn {
+    width: 100%;
+  }
+}
+
+@media (max-width: 600px) {
+  .vinyl-grid, .preview-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .navbar-bottom {
+    gap: 15px;
+  }
+  
+  .navbar-bottom a {
+    font-size: 12px;
+  }
+  
+  .vinyl-card h3, .preview-card-info h3 {
+    font-size: 14px;
+  }
+  
+  .daily-vinyl h3 {
+    font-size: 16px;
+  }
+  
+  .daily-vinyl p {
+    font-size: 14px;
+  }
+  
+  .featured-item {
+    flex: 0 0 150px;
+    height: 150px;
+  }
+  
+  .estadisticas-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .modal-content {
+    width: 95%;
+    padding: 15px;
+  }
+}

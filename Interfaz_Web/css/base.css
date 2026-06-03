@@ -1,0 +1,32 @@
+/* =========================================
+   RESET Y VARIABLES GLOBALES
+   ========================================= */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Georgia", serif;
+  background: #f3e7d3;
+  color: #3b2f2f;
+  overflow-x: hidden;
+}
+
+.main-content {
+  margin-top: 120px;
+  padding: 20px;
+  transition: margin-left 0.3s ease, margin-right 0.3s ease;
+  min-height: 100vh;
+}
+
+body.sidebar-left-open .main-content {
+  margin-left: 280px;
+}
+
+body.sidebar-right-open .main-content {
+  margin-right: 280px;
+}

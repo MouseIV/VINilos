@@ -1,0 +1,212 @@
+/* =========================================
+   OVERLAY Y SIDEBARS
+   ========================================= */
+
+.sidebar-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1001;
+  display: none;
+}
+
+.sidebar-overlay.active {
+  display: block;
+}
+
+.sidebar-left, .sidebar-right {
+  position: fixed;
+  top: 0;
+  width: 280px;
+  height: 100%;
+  background: #f3e7d3;
+  padding: 80px 20px 20px 20px;
+  transition: transform 0.3s ease;
+  z-index: 1002;
+  overflow-y: auto;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar-left {
+  left: 0;
+  transform: translateX(-100%);
+  border-right: 2px solid #3b2f2f;
+}
+
+.sidebar-right {
+  right: 0;
+  transform: translateX(100%);
+  border-left: 2px solid #3b2f2f;
+}
+
+.sidebar-left.active, .sidebar-right.active {
+  transform: translateX(0);
+}
+
+.close {
+  font-size: 24px;
+  cursor: pointer;
+  text-align: right;
+  color: #8b0000;
+  margin-bottom: 20px;
+  font-weight: bold;
+  transition: 0.2s;
+}
+
+.close:hover {
+  transform: scale(1.1);
+}
+
+.sidebar-left h3 {
+  margin: 15px 0 10px 0;
+  font-size: 18px;
+  color: #3b2f2f;
+}
+
+/* =========================
+   BOTONES DEL SIDEBAR
+========================= */
+
+.sidebar-btn {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  margin: 8px 0;
+  background: #e8dcc8;
+  color: #3b2f2f;
+  border: 1px solid #3b2f2f;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: "Georgia", serif;
+  font-size: 14px;
+  text-align: center;
+  transition: 0.2s;
+}
+
+.sidebar-btn:hover {
+  background: #d4c5b0;
+  transform: translateX(5px);
+}
+
+.generos-list {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-bottom: 20px;
+}
+
+.genero-item {
+  padding: 8px 12px;
+  background: #fffaf3;
+  border: 1px solid #3b2f2f;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: 0.2s;
+}
+
+.genero-item:hover {
+  background: #e8dcc8;
+  transform: translateX(5px);
+  color: #8b0000;
+}
+
+.loading-text {
+  padding: 10px;
+  text-align: center;
+  color: #8b5a2b;
+  font-style: italic;
+}
+
+/* =========================
+   DESPLEGABLE DE GÉNEROS
+========================= */
+
+.generos-header {
+  cursor: pointer;
+  user-select: none;
+}
+
+.generos-header:hover {
+  background: #e8dcc8;
+  border-radius: 8px;
+}
+
+.generos-toggle-icon {
+  font-size: 14px;
+  transition: transform 0.2s;
+}
+
+.generos-contenido {
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+  max-height: 500px;
+}
+
+.generos-contenido.collapsed {
+  max-height: 0;
+}
+
+/* =========================
+   DESPLEGABLE DE ESTADÍSTICAS
+========================= */
+
+.estadisticas-header {
+  cursor: pointer;
+  user-select: none;
+}
+
+.estadisticas-header:hover {
+  background: #e8dcc8;
+  border-radius: 8px;
+}
+
+.toggle-icon {
+  font-size: 14px;
+  transition: transform 0.2s;
+}
+
+.estadisticas-contenido {
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+  max-height: 500px;
+}
+
+.estadisticas-contenido.collapsed {
+  max-height: 0;
+}
+
+/* =========================
+   TIPO DE USUARIO SELECTOR
+========================= */
+
+.user-type-selector {
+  margin-top: 15px;
+  margin-bottom: 15px;
+  padding: 10px;
+  background: #e8dcc8;
+  border-radius: 10px;
+  border: 1px solid #3b2f2f;
+}
+
+.user-type-selector label {
+  display: block;
+  font-size: 13px;
+  font-weight: bold;
+  margin-bottom: 8px;
+  color: #3b2f2f;
+}
+
+.user-type-select {
+  width: 100%;
+  padding: 8px;
+  background: #fffaf3;
+  border: 1px solid #3b2f2f;
+  border-radius: 8px;
+  font-family: inherit;
+  cursor: pointer;
+  font-size: 14px;
+}
